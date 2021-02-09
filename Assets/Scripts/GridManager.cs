@@ -20,20 +20,6 @@ public class GridManager : MonoBehaviour
     {
         
     }
-
-    //private int[] ArrayCreation()
-    //{
-    //    array = new Points[(int)(ground.transform.localScale.x - 1)*3, (int)(ground.transform.localScale.x - 1)*3];
-    //    for(int y =0; y < ground.transform.localScale.x - 1; y++)
-    //    {
-    //        for (int x = 0; x < ground.transform.localScale.x - 1; x++)
-    //        {
-    //            array[y*3, x*3] = new Points(x*3, y*3);
-    //            Instantiate(cube, new Vector3(x*3, 0, y*3) + transform.position, Quaternion.identity);
-    //        }
-    //    }
-    //    return null;
-    //}
     private int[] ArrayCreation()
     {
         array = new Points[(int)(ground.transform.localScale.x -1) * step, (int)(ground.transform.localScale.x -1) * step];
