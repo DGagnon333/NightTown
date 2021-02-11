@@ -6,7 +6,8 @@ public class SnapToGrid : MonoBehaviour
 {
     public Vector3 gridSize { get; private set; } = new Vector3(10, 10, 10);
     public Vector3 step { get; private set; } = new Vector3(2, 1, 2);
-    GameObject ground;
+    private GameObject ground;
+    //private int stepDiff;
 
     private void Awake()
     {
@@ -22,14 +23,19 @@ public class SnapToGrid : MonoBehaviour
     }
     private void SnapToTiles()
     {
+        //stepDiff = (int)(transform.localScale.x - step.x);
+        //modifier pour que quand on double la grandeur de l'objet il soit à la bonne place
+
+        //-------------------------------------------------------début inspiration
         var position = new Vector3(
-            Mathf.Round(this.transform.position.x / step.x) * step.x,
-            Mathf.Round(this.transform.position.y / step.y) * step.y,
-            Mathf.Round(this.transform.position.z / step.z) * step.z
+            Mathf.Round(transform.position.x / step.x) * step.x,
+            Mathf.Round(transform.position.y / step.y) * step.y,
+            Mathf.Round(transform.position.z / step.z) * step.z
             //Mathf.RoundToInt(this.transform.position.x),
             //Mathf.RoundToInt(this.transform.position.y),
             //Mathf.RoundToInt(this.transform.position.z)
             );
         this.transform.position = position;
+        //--------------------------------------------------------fin d'inspiration
     }
 }
