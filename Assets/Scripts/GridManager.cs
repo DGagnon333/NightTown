@@ -6,33 +6,41 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    GameObject ground;
     Points[,] array;
+    private int gridSizeX;
     [SerializeField] GameObject cube;
-    private int step = 2;
-    void Awake()
+    private int stepX;
+    private void Awake()
     {
-        ground = GameObject.FindGameObjectsWithTag("Ground")[0];
-        ArrayCreation();
-    }
-
-    void Update()
-    {
+        cube.tag = "GridPosition";
         
+    }
+    private void Start()
+    {
+
+        //applique le tag GridPosition à tous les cubes pour pouvoir avoir les accéder plus tard
+        stepX = (int)FindObjectOfType<SnapToGrid>().step.x;
+        Debug.Log(stepX);
+        gridSizeX = (int)FindObjectOfType<SnapToGrid>().gridSize.x;
+        Debug.Log(gridSizeX);
+
+        ArrayCreation();
     }
     private int[] ArrayCreation()
     {
-        array = new Points[(int)(ground.transform.localScale.x -1) * step, (int)(ground.transform.localScale.x -1) * step];
-        for (int y = 0; y < ground.transform.localScale.x - 1; y++)
+        array = new Points[gridSizeX * stepX, gridSizeX * stepX];
+        for (int y = 0; y < gridSizeX - 1; y++)
         {
-            for (int x = 0; x < ground.transform.localScale.x - 1; x++)
+            for (int x = 0; x < gridSizeX - 1; x++)
             {
-                array[y*step, x*step] = new Points(x*step, y*step);
-                Instantiate(cube, new Vector3(x * step, 0, y * step) + transform.position, Quaternion.identity);
+                array[y*stepX, x*stepX] = new Points(x*stepX, y*stepX);
+                Instantiate(cube, new Vector3(x * stepX, 0, y * stepX) + transform.position, Quaternion.identity);
+                //pour snapper on utilise le tag du cube et on arrondie le transform au transform d'un cube le plus proche avec MathF.Round()
             }
         }
         return null;
     }
+    
 }
 public class Points
 {
