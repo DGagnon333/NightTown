@@ -7,7 +7,6 @@ public class PlayerMovementScript : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
     [SerializeField] float moveSpeed = 10f;
-
     private void Update()
     {
         float x = Input.GetAxis("Horizontal");
