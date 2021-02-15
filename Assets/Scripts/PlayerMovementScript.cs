@@ -12,6 +12,6 @@ public class PlayerMovementScript : MonoBehaviour
     }
     private void Update()
     {
-        rb.AddForce(vitesse * Time.deltaTime); //test//
+        rb.AddForce(vitesse * Time.deltaTime); //test// //Nassour Test//
     }
 }
