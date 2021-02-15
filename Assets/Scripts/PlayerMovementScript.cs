@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    private Rigidbody rb;
-    private Vector3 vitesse = new Vector3(400, 0, 150);
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    [SerializeField] Rigidbody rb;
+    [SerializeField] float moveSpeed = 10f;
+
     private void Update()
     {
-        rb.AddForce(vitesse * Time.deltaTime); //test// //Nassour Test//
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
+        Vector3 movement = (transform.right * x + transform.forward * z).normalized;
+        rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
     }
 }
