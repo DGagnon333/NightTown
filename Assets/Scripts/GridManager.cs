@@ -20,9 +20,7 @@ public class GridManager : MonoBehaviour
 
         //applique le tag GridPosition à tous les cubes pour pouvoir avoir les accéder plus tard
         stepX = (int)FindObjectOfType<SnapToGrid>().step.x;
-        Debug.Log(stepX);
         gridSizeX = (int)FindObjectOfType<SnapToGrid>().gridSize.x;
-        Debug.Log(gridSizeX);
 
         ArrayCreation();
     }
