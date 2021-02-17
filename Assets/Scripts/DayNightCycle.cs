@@ -2,40 +2,91 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Ce script est fait par: Nassour Nassour
+
+// Ce qu'il manque: Ajouter des proprietes aux attributs (je veux get) pour les utiliser dans d'autres classes
 public class DayNightCycle : MonoBehaviour
 {
-    [SerializeField]
-    private float targetDayLength;
+    // Ceci est la partie 1: Création de la notion de temps:
 
     [SerializeField]
-    private float timeOfDay;
+    private float targetDayLength; // Cet attribut permet de choisir la longueure d'une jourée. (En minutes)
 
-    public bool pause = false;
+    [SerializeField]
+    private float timeOfDay; // Cet attribut est une valeure de 0 à 1 qui établit l'heure courante de la journée.
 
-    private int dayNumber;
+    public bool pause = false; // Cet attribut permet de pauser le passage du temps. (ne pause pas le jeu)
 
-    private void SetTimeScale()
-    {
-        timeScale = 24 / (targetDayLength / 60) ;
-    }
+    private int dayNumber; // Cet attribut permet d'établir le jour courant du joueur.
 
+    private float timeScale; // Permet de convertir le temps réel en temps virtuel selon la longueure d'une journée.
+
+    const int SECONDS_IN_DAY = 84000;
+
+    /// <summary>
+    /// Cette méthode fait progresser le temps courant. Quand un jour est terminé, le compteur de jour s'incrémente,
+    /// Puis le passage du temps se pause (le jeu ne se pause pas) tant que le joueur n'a pas fini sa vague de zombie.
+    /// </summary>
     private void UpdateTime()
     {
-        timeOfDay += timeScale / 86400; // seconds in a day
+        timeOfDay += Time.deltaTime * timeScale / SECONDS_IN_DAY; // Passage du temps
         if(timeOfDay > 1)
         {
             dayNumber++;
             timeOfDay -= 1;
-            pause = false;
+            pause = false; // [Note pour Nas]: Quand le testage est fini,
+                           // remplace par true pour forcer le joueur a faire sa vague
         }
+    }
+
+    private void Awake()
+    {
+        timeScale = 24 / (targetDayLength / 60); 
     }
 
     private void Update()
     {
         if(!pause)
-        {
-            SetTimeScale();
+        {            
             UpdateTime();
         }
+        AdjustSunRotation();
+        SunIntensity();
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    // Ceci est la partie 2: Intensité et angulation du soleil selon le temps.
+
+    [SerializeField]
+    private Transform dailyRotation;
+
+    private void AdjustSunRotation()
+    {
+        float sunAngle = (timeOfDay * 180f) - 75f;
+        dailyRotation.transform.localRotation = Quaternion.Euler(0, 0, sunAngle); // bruh? newVector3 missing
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+
+    [SerializeField]
+    private Light sun;
+
+    private float intensity;
+
+    private void SunIntensity()
+    {
+        intensity = Vector3.Dot(sun.transform.forward, Vector3.down);
+        Mathf.Clamp01(intensity);
+
+        sun.intensity = intensity;
+    }
+
+
+
+
+
+
+
+
 }
