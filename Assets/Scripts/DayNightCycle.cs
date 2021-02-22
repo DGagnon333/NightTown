@@ -34,7 +34,7 @@ public class DayNightCycle : MonoBehaviour
 
     private float timeScale; // Permet de convertir le temps réel en temps virtuel selon la longueure d'une journée.
 
-    private bool isDay;
+    private bool isDay = true;
     public bool IsDay
     {
         get => isDay;
