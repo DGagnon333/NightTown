@@ -30,7 +30,7 @@ public class PlayerMovementScript : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && playerIsOnGround == true)
         {
-            rb.AddForce(new Vector3(0, 20, 0), ForceMode.Impulse);
+            rb.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
             playerIsOnGround = false;
         }
     }
