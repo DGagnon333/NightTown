@@ -13,7 +13,7 @@ public class GridManager : MonoBehaviour
     private void Awake()
     {
         cube.tag = "GridPosition";
-        
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@faier une option pour seulement activer les box collider de cube et vérifier si un objet est dans leur box collider déjà
     }
     private void Start()
     {
@@ -37,6 +37,7 @@ public class GridManager : MonoBehaviour
             }
         }
         return null;
+        
     }
     
 }
