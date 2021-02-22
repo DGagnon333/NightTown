@@ -26,7 +26,7 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    private GameObject[] joueur;
+    private GameObject[] player;
     [SerializeField] private string targetTag;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private int moveSpeed = 150;
@@ -34,8 +34,8 @@ public class EnemyBehaviour : MonoBehaviour
     private Vector3 dir = new Vector3();
     private void Update()
     {
-        joueur = GameObject.FindGameObjectsWithTag(targetTag);
-        dir = joueur[0].transform.position - transform.position;
+        player = GameObject.FindGameObjectsWithTag(targetTag);
+        dir = player[0].transform.position - transform.position;
         rb.MovePosition(transform.position + dir.normalized * moveSpeed * Time.deltaTime);
     }
 }

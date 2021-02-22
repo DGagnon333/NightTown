@@ -4,19 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
-public class SpawnScript : MonoBehaviour
+public class EnemySpawnScript : MonoBehaviour
 {
 
     float time = 1;
 
-    [SerializeField] int spawnTime = 3;
+    private const int DAY_SPAWN_RATE = 1;
 
-    [SerializeField] private GameObject spawnObject;
+    private const int NIGHT_SPAWN_RATE = 2;
 
-    [SerializeField] private int range;
+    [SerializeField]
+    private int spawnTime = 3;
+
+    [SerializeField]
+    private GameObject spawnObject;
+
     private void Start()
     {
-        
+
     }
     private void Update()
     {
@@ -32,6 +37,7 @@ public class SpawnScript : MonoBehaviour
                 Random.Range(0, 0) + transform.position.y, Random.Range(-range, range) + transform.position.z), Quaternion.identity);
             time += spawnTime;
         }
-
     }
+    private Vector3 DetermineSpawnPosition(GameObject spawnObject, bool isDay, bool isWave) { return Vector3.zero; }
+    private int DetermineSpawnRate(bool isDay, bool isWave)
 }
