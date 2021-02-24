@@ -7,32 +7,28 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     Points[,] array;
-    private int gridSizeX;
-    [SerializeField] GameObject cube;
-    private int stepX;
-    private void Awake()
-    {
-        cube.tag = "GridPosition";
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@faier une option pour seulement activer les box collider de cube et vérifier si un objet est dans leur box collider déjà
-    }
+    public int gridSize =30;
+    [SerializeField] public GameObject tiles;
+    [SerializeField] public GameObject buildingLayout;
+    Vector3 snap;
+    private int step = 2;
     private void Start()
     {
-
-        //applique le tag GridPosition à tous les cubes pour pouvoir avoir les accéder plus tard
-        stepX = (int)FindObjectOfType<SnapToGrid>().step.x;
-        gridSizeX = (int)FindObjectOfType<SnapToGrid>().gridSize.x;
+        Debug.Log(step);
 
         ArrayCreation();
     }
     private int[] ArrayCreation()
     {
-        array = new Points[gridSizeX * stepX, gridSizeX * stepX];
-        for (int y = 0; y < gridSizeX - 1; y++)
+        
+        buildingLayout.transform.position = snap;
+        array = new Points[gridSize * step, gridSize * step];
+        for (int y = 0; y < gridSize - 1; y++)
         {
-            for (int x = 0; x < gridSizeX - 1; x++)
+            for (int x = 0; x < gridSize - 1; x++)
             {
-                array[y*stepX, x*stepX] = new Points(x*stepX, y*stepX);
-                Instantiate(cube, new Vector3(x * stepX, 0, y * stepX) + transform.position, Quaternion.identity);
+                array[y*step, x*step] = new Points(x*step, y*step);
+                Instantiate(tiles, new Vector3(x * step, 0, y * step) + Vector3.zero, Quaternion.identity);
                 //pour snapper on utilise le tag du cube et on arrondie le transform au transform d'un cube le plus proche avec MathF.Round()
             }
         }

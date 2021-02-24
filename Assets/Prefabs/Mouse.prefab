@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6204415615902693997}
   - component: {fileID: 4994153742666991293}
   - component: {fileID: 7735780341477362536}
+  - component: {fileID: -1720724572620493486}
   m_Layer: 0
   m_Name: Mouse
   m_TagString: Mouse
@@ -79,3 +80,15 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &-1720724572620493486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928654282939300400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621e50f177668644aa35f7a350ba7b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

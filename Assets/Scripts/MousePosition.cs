@@ -27,7 +27,7 @@ public class MousePosition : MonoBehaviour
     }
     private void BuidlingTypes()
     {
-        buildingList = GetComponent<BuildingManager>().buildingList;
+        //buildingList = GetComponent<BuildingManager>().buildingList;
     }
     void Update()
     {
@@ -35,11 +35,8 @@ public class MousePosition : MonoBehaviour
         float mouseY = Input.mousePosition.y;
         mousePos = cam.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cam.nearClipPlane));
         mousePosBuilding = cam.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cam.focalLength/2));
-        tf = transform.position;
-        tf.x = mousePosBuilding.x;
-        tf.z = mousePosBuilding.z;
+        transform.position = mousePosBuilding;
         ////////////////////////////////////////////////ajouter une option pour désactiver le MousePos
-        //sp.SnapToTiles(transform.position);
         //le focal Lenghth n'a pas été trouvé par internet, juste avec beaucoup d'essaie de chacun 
         //des difféfenrents éléments de Camera pour voir ce qui est le mieux lors du déplacement de l'objet.
         //Selon moi, focal length est parfait, car plus le curseur sera éloigné du champ de vision, plus il
@@ -47,13 +44,13 @@ public class MousePosition : MonoBehaviour
 
         if (!Input.GetKey(KeyCode.LeftShift))
         {
-            transform.position = tf;
-            GetComponent<SnapToGrid>().SnapToTiles(transform);
+
             mouse.transform.position = mousePos;
+            GetComponent<SnapToGrid>().SnapToTiles(transform);
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            Instantiate(buildingList[0], transform);
+           // Instantiate(buildingList[0], transform, true);
         }
     }
 }
