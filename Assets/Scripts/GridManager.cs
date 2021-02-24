@@ -12,11 +12,24 @@ public class GridManager : MonoBehaviour
     [SerializeField] public GameObject buildingLayout;
     Vector3 snap;
     private int step = 2;
+    private void Awake()
+    {
+        ArrayCreation();
+    }
     private void Start()
     {
-        Debug.Log(step);
-
-        ArrayCreation();
+        
+    }
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Q))
+        {
+            GridState(false);
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            GridState(true);
+        }
     }
     private int[] ArrayCreation()
     {
@@ -28,14 +41,22 @@ public class GridManager : MonoBehaviour
             for (int x = 0; x < gridSize - 1; x++)
             {
                 array[y*step, x*step] = new Points(x*step, y*step);
-                Instantiate(tiles, new Vector3(x * step, 0, y * step) + Vector3.zero, Quaternion.identity);
-                //pour snapper on utilise le tag du cube et on arrondie le transform au transform d'un cube le plus proche avec MathF.Round()
+                Instantiate(tiles, new Vector3(x * step, (float)(-0.08), y * step) + new Vector3 (1,0,1) * (-gridSize), Quaternion.identity);
+                //ici on créer des tiles jusqu'à la grandeur de la grille voulue, à chaque bon du step et on diminue le vecteur par la taille 
+                //de la grille pour qu'ils soient centré lors de leur création.
             }
         }
         return null;
         
     }
-    
+    public void GridState(bool state)
+    {
+        //tiles.GetComponent<Renderer>().enabled = state;
+        //buildingLayout.GetComponent<Renderer>().enabled = state;
+        tiles.SetActive(state);
+        buildingLayout.SetActive(state);
+    }
+
 }
 public class Points
 {
