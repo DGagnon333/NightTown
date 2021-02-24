@@ -51,9 +51,11 @@ public class GridManager : MonoBehaviour
     }
     public void GridState(bool state)
     {
-        //tiles.GetComponent<Renderer>().enabled = state;
-        //buildingLayout.GetComponent<Renderer>().enabled = state;
-        tiles.SetActive(state);
+        GameObject[] allTiles = GameObject.FindGameObjectsWithTag("GridPosition");
+        foreach (GameObject t in allTiles)
+        {
+            t.GetComponent<Renderer>().enabled = state;
+        }
         buildingLayout.SetActive(state);
     }
 
