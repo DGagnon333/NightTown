@@ -7,9 +7,18 @@ public class MeleeWeaponComponent : MonoBehaviour
     [SerializeField()]
     private float meleeDamage;
 
+    public float MeleeDamage
+    {
+        get => meleeDamage;
+    }
+
+
     [SerializeField()]
     private float meleeRange;
 
-
+    public float MeleeRange
+    {
+        get => meleeRange;
+    }
 
 }
