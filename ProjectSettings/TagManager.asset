@@ -5,10 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - GridPosition
   - Enemy
   - Building
   - Mouse
+  - BuildingLayout
+  - Grid
   layers:
   - Default
   - TransparentFX

@@ -7,15 +7,12 @@ using UnityEngine.UIElements;
 
 public class SnapToGrid : MonoBehaviour
 {
-    private Vector3 step = new Vector3 (2,2,2); //la grandeur entre chaque position posible de l'objet
-    private Vector3 stepDiff; //la différence entre la taille de l'objet et le "step" (servira à repositioner l'objet correctement selon sa taille)
-    private void Update()
-    {
-        SnapToTiles(transform);
-    }
     public void SnapToTiles(Transform tf)
     {
+        Vector3 step = new Vector3(2, 2, 2);//la grandeur entre chaque position posible de l'objet
+        Vector3 stepDiff;//la différence entre la taille de l'objet et le "step" (servira à repositioner l'objet correctement selon sa taille)
         stepDiff = tf.localScale - step;
+
         //la fonction SnapToGrid est inspirée de How to Snap Objects to a 
         //Custom Grid in 3 minutes - Unity Tutorial, par Saeed Prez, Youtube
         //

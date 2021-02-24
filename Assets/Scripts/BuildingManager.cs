@@ -1,15 +1,19 @@
-﻿using System.Collections;
+﻿//fait par Dérick
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
 {
     [SerializeField] public List<GameObject> buildingList;
+    [SerializeField] private GameObject test;
     private GameObject buildingLayout;
     private GameObject[] tiles;
     private void Start()
     {
         buildingLayout = GameObject.FindGameObjectsWithTag("BuildingLayout")[0];
+        
         tiles = GameObject.FindGameObjectsWithTag("Grid");
     }
     private void Update()
@@ -33,7 +37,7 @@ public class BuildingManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Instantiate(SelectedBuilding(), buildingLayout.transform);
+            GetComponent<GridManager>().TileState(SelectedBuilding(), buildingLayout.transform);
         }
     }
 
@@ -44,14 +48,19 @@ public class BuildingManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedBuilding = buildingList[0];
+            Debug.Log(selectedBuilding.name);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+
             selectedBuilding = buildingList[1];
+            Debug.Log(selectedBuilding.name);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+
             selectedBuilding = buildingList[2];
+            Debug.Log(selectedBuilding.name);
         }
 
         return selectedBuilding;

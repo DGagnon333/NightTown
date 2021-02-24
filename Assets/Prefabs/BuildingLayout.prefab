@@ -13,8 +13,6 @@ GameObject:
   - component: {fileID: 6034279025414782633}
   - component: {fileID: 6034279025414782632}
   - component: {fileID: 6034279025414782635}
-  - component: {fileID: 291764806368966916}
-  - component: {fileID: -3751483503610201633}
   m_Layer: 0
   m_Name: BuildingLayout
   m_TagString: Untagged
@@ -106,33 +104,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 621e50f177668644aa35f7a350ba7b8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &291764806368966916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6034279025414782634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08e9e48325efcef4a87fef4a44177573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buildingList:
-  - {fileID: 2046962335073822945, guid: 0002ac0c7bc423949bf28aaf93bd54a8, type: 3}
-  - {fileID: 6292387212634838414, guid: 906030127f8ad224b9d163fbcfefe5b8, type: 3}
-  - {fileID: 7539281196462527940, guid: 985c26a8ec7c4d8459b4a6ecd2713cb9, type: 3}
---- !u!114 &-3751483503610201633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6034279025414782634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3270ddf403f1ba4ab13f66c23196001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
