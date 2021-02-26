@@ -7,9 +7,9 @@ using UnityEngine;
 public class BuildingManager : MonoBehaviour
 {
     [SerializeField] public List<GameObject> buildingList;
-    [SerializeField] private GameObject test;
     private GameObject buildingLayout;
     private GameObject[] tiles;
+    private GameObject selectedBuilding;
     private void Start()
     {
         buildingLayout = GameObject.FindGameObjectsWithTag("BuildingLayout")[0];
@@ -19,51 +19,71 @@ public class BuildingManager : MonoBehaviour
     private void Update()
     {
         BuildingInputManager();
-        SelectedBuilding();
-
+        //SelectedBuilding();
     }
     /// <summary>
     /// Les inputs permettant de désactiver ou d'activer le mode de construction, ainsi que de choisir la tour voulue et de la placé
     /// </summary>
     private void BuildingInputManager()
     {
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             BuildingMode(false);
         }
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             BuildingMode(true);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectedBuilding = buildingList[0];
+            Debug.Log(selectedBuilding.name);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectedBuilding = buildingList[1];
+            Debug.Log(selectedBuilding.name);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            selectedBuilding = buildingList[2];
+            Debug.Log(selectedBuilding.name);
+
+        }
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            GetComponent<GridManager>().TileState(SelectedBuilding(), buildingLayout.transform);
+            GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform);
         }
     }
 
     private GameObject SelectedBuilding()
     {
-        GameObject selectedBuilding = buildingList[0];
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    //return buildingList[0];
+        //    selectedBuilding = buildingList[0];
+        //    Debug.Log(selectedBuilding.name);
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            selectedBuilding = buildingList[0];
-            Debug.Log(selectedBuilding.name);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    //return buildingList[1];
+        //    selectedBuilding = buildingList[1];
+        //    Debug.Log(selectedBuilding.name);
 
-            selectedBuilding = buildingList[1];
-            Debug.Log(selectedBuilding.name);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    //return buildingList[2];
 
-            selectedBuilding = buildingList[2];
-            Debug.Log(selectedBuilding.name);
-        }
+        //    selectedBuilding = buildingList[2];
+        //    Debug.Log(selectedBuilding.name);
 
-        return selectedBuilding;
+        //}
+        //return selectedBuilding;
+        return null;
     }
     /// <summary>
     /// permet de cacher ou non la grille et le "buildingLayout"

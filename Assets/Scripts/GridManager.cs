@@ -47,7 +47,7 @@ public class GridManager : MonoBehaviour
             Instantiate(newBuilding, tf.position, Quaternion.identity);
             Debug.Log(tileState[newBuilding.transform.position]);
 
-            tileState[newBuilding.transform.position] = false;
+            //tileState[newBuilding.transform.position] = false;
             Debug.Log(tileState[newBuilding.transform.position]);
         }
     }
