@@ -52,6 +52,8 @@ public class GridManager : MonoBehaviour
                     for (int x = 0; x < scaleDiff.x; x++)
                     {
                         tileState[(tf.position - Vector3.one) + new Vector3(x * step, 0, z * step)] = false;
+                        tileState[(tf.position - Vector3.one) - new Vector3(x * step, 0, z * step)] = false;
+
                     }
                 }
                 tileState[tf.position - Vector3.one] = false;
