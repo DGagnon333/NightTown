@@ -18,7 +18,6 @@ public class BuildingManager : MonoBehaviour
     {
         selectedBuilding = buildingList[0]; //on donne un object par défaut à selectedBuilding pour que ça nous ne
         //retourne pas un null reference si aucun bâtiment n'est sélectionné.
-        
     }
     private void Start()
     {
@@ -48,13 +47,16 @@ public class BuildingManager : MonoBehaviour
         }
         if (buildingModeState)
         {
+            //Ici, on met même la sélection de bâtiment désactivée si le mode de construction est désactivé pour laisser place à d'autres touches
+            //pour les attaques ou autre
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
             {
                 SelectedBuilding();
             }
+            //Si le mode de construction est désactvié, on ne veut pas que le jouer puisse pouvoir placé des bâtiments quand même
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform);
+                GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale);
             }
         }
             
@@ -78,6 +80,7 @@ public class BuildingManager : MonoBehaviour
         {
             selectedBuilding = buildingList[2];
         }
+        buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
         return selectedBuilding;
     }
 

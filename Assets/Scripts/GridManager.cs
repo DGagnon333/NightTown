@@ -39,12 +39,31 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    public void TileState(GameObject newBuilding, Transform tf)
+    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale)
     {
-        if (tileState[tf.position])
+        Vector3 scaleDiff = new Vector3(scale.x, 0, scale.z) - (new Vector3(1, 0, 1) * step);
+        if (scaleDiff != Vector3.zero)
         {
-            Instantiate(newBuilding, tf.position, Quaternion.identity);
-            tileState[tf.position] = false;
+            if (tileState[tf.position - Vector3.one])
+            {
+                Instantiate(newBuilding, tf.position, Quaternion.identity);
+                for (int z = 0; z < scaleDiff.z; z++)
+                {
+                    for (int x = 0; x < scaleDiff.x; x++)
+                    {
+                        tileState[(tf.position - Vector3.one) + new Vector3(x * step, 0, z * step)] = false;
+                    }
+                }
+                tileState[tf.position - Vector3.one] = false;
+            }
+        }
+        if (scaleDiff == Vector3.zero)
+        {
+            if (tileState[tf.position])
+            {
+                Instantiate(newBuilding, tf.position, Quaternion.identity);
+                tileState[tf.position] = false;
+            }
         }
     }
 

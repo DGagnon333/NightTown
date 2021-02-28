@@ -11,7 +11,7 @@ public class SnapToGrid : MonoBehaviour
     {
         Vector3 step = new Vector3(2, 2, 2);//la grandeur entre chaque position posible de l'objet
         Vector3 stepDiff;//la différence entre la taille de l'objet et le "step" (servira à repositioner l'objet correctement selon sa taille)
-        stepDiff = tf.localScale - step;
+        stepDiff = new Vector3(tf.localScale.x, 2, tf.localScale.z) - step;
 
         //la fonction SnapToGrid est inspirée de How to Snap Objects to a 
         //Custom Grid in 3 minutes - Unity Tutorial, par Saeed Prez, Youtube
