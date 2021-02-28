@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private GameObject[] buildingList;
     [SerializeField] private int gridSize = 50;
     public Vector3[,] array;
     private GameObject[] tiles;
@@ -32,7 +31,7 @@ public class GridManager : MonoBehaviour
         {
             for (int x = 0; x < gridSize; x++)
             {
-                array[z, x] = new Vector3(x * step, 0, z * step);
+                array[z, x] = (new Vector3(x * step, 0, z * step) + new Vector3(1, 0, 1) * (-gridSize));
                 tileState[array[z, x]] = true;
                 Instantiate(tiles[0], new Vector3(x * step, (float)(-0.08), z * step) + new Vector3(1, 0, 1) * (-gridSize), Quaternion.identity);
                 //ici on créer des tiles jusqu'à la grandeur de la grille voulue, à chaque bon du step et on diminue le vecteur par la taille 
@@ -42,13 +41,10 @@ public class GridManager : MonoBehaviour
     }
     public void TileState(GameObject newBuilding, Transform tf)
     {
-        if (tileState[newBuilding.transform.position])
+        if (tileState[tf.position])
         {
             Instantiate(newBuilding, tf.position, Quaternion.identity);
-            Debug.Log(tileState[newBuilding.transform.position]);
-
-            //tileState[newBuilding.transform.position] = false;
-            Debug.Log(tileState[newBuilding.transform.position]);
+            tileState[tf.position] = false;
         }
     }
 
