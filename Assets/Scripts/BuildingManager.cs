@@ -6,10 +6,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour
 {
     [SerializeField] public List<GameObject> buildingList;
+    [SerializeField] public List<Image> buildingListUI;
+    [SerializeField] private GameObject Canevas;
+    private int key = 0;
     private GameObject buildingLayout;
     private GameObject[] tiles;
     private GameObject selectedBuilding;
@@ -30,6 +34,7 @@ public class BuildingManager : MonoBehaviour
     private void Update()
     {
         BuildingInputManager();
+        
     }
 
     /// <summary>
@@ -53,13 +58,15 @@ public class BuildingManager : MonoBehaviour
             {
                 SelectedBuilding();
             }
+            if (Input.GetKeyUp($"{key + 1}"))
+                buildingListUI[key].color += new Color(50, 50, 50);
             //Si le mode de construction est désactvié, on ne veut pas que le jouer puisse pouvoir placé des bâtiments quand même
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale);
             }
         }
-            
+
     }
 
     /// <summary>
@@ -71,16 +78,24 @@ public class BuildingManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             selectedBuilding = buildingList[0];
+            key = 0;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             selectedBuilding = buildingList[1];
+            key = 1;
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             selectedBuilding = buildingList[2];
+            key = 2;
         }
         buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
+        if (selectedBuilding == buildingList[key])
+        {
+            buildingListUI[key].color += new Color(-50, -50, -50);
+        }
+        
         return selectedBuilding;
     }
 
@@ -98,5 +113,7 @@ public class BuildingManager : MonoBehaviour
         }
         buildingLayout.SetActive(state); // on active ou désactive le l'objet même puisqu'on a pas besoin de garder l'état de cet objet actif
         //et cela sauvera de la mémoire
+        Canevas.SetActive(state);
+        
     }
 }

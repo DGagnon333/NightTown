@@ -42,22 +42,28 @@ public class GridManager : MonoBehaviour
     public void TileState(GameObject newBuilding, Transform tf, Vector3 scale)
     {
         Vector3 scaleDiff = new Vector3(scale.x, 0, scale.z) - (new Vector3(1, 0, 1) * step);
+
         if (scaleDiff != Vector3.zero)
         {
-            if (tileState[tf.position - Vector3.one])
+            if (tileState[tf.position - Vector3.one] && tileState[tf.position - Vector3.one + new Vector3(scaleDiff.x, 0, 0)] && tileState[tf.position - Vector3.one + new Vector3(0, 0, scaleDiff.z)]
+                && tileState[tf.position - Vector3.one + new Vector3(scaleDiff.x, 0, scaleDiff.z)])
             {
-                Instantiate(newBuilding, tf.position, Quaternion.identity);
                 for (int z = 0; z < scaleDiff.z; z++)
                 {
                     for (int x = 0; x < scaleDiff.x; x++)
                     {
-                        tileState[(tf.position - Vector3.one) + new Vector3(x * step, 0, z * step)] = false;
-                        tileState[(tf.position - Vector3.one) - new Vector3(x * step, 0, z * step)] = false;
+                        Debug.Log("position" + (tf.position - Vector3.one + new Vector3(x * step, 0, z * step)) + " = " + tileState[tf.position - Vector3.one + new Vector3(x * step, 0, z * step)]);
+
+                        tileState[tf.position - Vector3.one + new Vector3(x * step, 0, z * step)] = false;
+                        Instantiate(newBuilding, tf.position, Quaternion.identity);
+                        Debug.Log("position" + (tf.position - Vector3.one + new Vector3(x * step, 0, z * step)) + " = " + tileState[tf.position - Vector3.one + new Vector3(x * step, 0, z * step)]);
+
+
 
                     }
                 }
-                tileState[tf.position - Vector3.one] = false;
             }
+            
         }
         if (scaleDiff == Vector3.zero)
         {
@@ -67,6 +73,7 @@ public class GridManager : MonoBehaviour
                 tileState[tf.position] = false;
             }
         }
-    }
 
+
+    }
 }
