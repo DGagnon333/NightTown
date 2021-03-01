@@ -1,4 +1,5 @@
-﻿//fait par Dérick
+﻿//Classe qui permet de modifier la position d'un objet pour qu'il se place à des endroits précis
+//fait par Dérick
 
 using System.Collections;
 using System.Collections.Generic;

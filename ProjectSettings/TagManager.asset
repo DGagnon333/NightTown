@@ -7,9 +7,8 @@ TagManager:
   - Ground
   - Enemy
   - Building
-  - Mouse
-  - BuildingLayout
   - Grid
+  - Mine
   layers:
   - Default
   - TransparentFX

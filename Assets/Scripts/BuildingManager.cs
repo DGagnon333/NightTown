@@ -10,14 +10,14 @@ using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour
 {
-    [SerializeField] public List<GameObject> buildingList;
-    [SerializeField] public List<Image> buildingListUI;
-    [SerializeField] private GameObject Canevas;
-    private int key = 0;
-    private GameObject buildingLayout;
-    private GameObject[] tiles;
-    private GameObject selectedBuilding;
-    public bool buildingModeState = false;
+    [SerializeField] public List<GameObject> buildingList; //liste des bâtiments
+    [SerializeField] public List<Image> buildingListUI; //liste des images pour chaque bâtiment dans le UI
+    [SerializeField] private GameObject Canevas; //le Canevas du UI qui sera afficher à l'écran
+    private int key = 0; //Cette clée permet de retenir la touche appuyée sur le clavier
+    [SerializeField] private  GameObject buildingLayout; //le "phantôme" du bâtiment sélectionné, qui retient sa positino et sa grosseur
+    private GameObject[] tiles; //utilisé pour pouvoir afficher ou non les tuiles
+    private GameObject selectedBuilding; //le bâtiment choisit
+    public bool buildingModeState = false; //l'état du mode de construction, activé ou désactivé
     private void Awake()
     {
         selectedBuilding = buildingList[0]; //on donne un object par défaut à selectedBuilding pour que ça nous ne
@@ -25,8 +25,6 @@ public class BuildingManager : MonoBehaviour
     }
     private void Start()
     {
-        buildingLayout = GameObject.FindGameObjectsWithTag("BuildingLayout")[0];//ici je préfère trouver un objet par son tag
-        //directement avec le script plutôt que d'avoir à faire un SerializeField et de placer des objets au Script dans Unity à chaque fois.
         tiles = GameObject.FindGameObjectsWithTag("Grid"); //On trouve tous les objets avec le tag Grid. On crée cette fonction
         //dans le start et non Awake pour que tous les autres cases de la grille est le temps d'être instanciées.
         BuildingMode(buildingModeState);
@@ -34,7 +32,6 @@ public class BuildingManager : MonoBehaviour
     private void Update()
     {
         BuildingInputManager();
-        
     }
 
     /// <summary>
@@ -50,17 +47,16 @@ public class BuildingManager : MonoBehaviour
         {
             BuildingMode(true);
         }
+
+        //Si le mode de construction est désactvié, on ne veut pas que le jouer puisse pouvoir placé des bâtiments quand même
         if (buildingModeState)
         {
-            //Ici, on met même la sélection de bâtiment désactivée si le mode de construction est désactivé pour laisser place à d'autres touches
-            //pour les attaques ou autre
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
             {
                 SelectedBuilding();
             }
             if (Input.GetKeyUp($"{key + 1}"))
                 buildingListUI[key].color += new Color(50, 50, 50);
-            //Si le mode de construction est désactvié, on ne veut pas que le jouer puisse pouvoir placé des bâtiments quand même
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale);
@@ -70,7 +66,8 @@ public class BuildingManager : MonoBehaviour
     }
 
     /// <summary>
-    /// permet de trouver quel bâtiment est sélectionner, avec numéros sur le clavier
+    /// permet de trouver quel bâtiment est sélectionner avec les numéros sur le clavier et de changer la couleur du UI
+    /// pour le bâtiment choisit.
     /// </summary>
     /// <returns></returns>
     private GameObject SelectedBuilding()
@@ -95,25 +92,21 @@ public class BuildingManager : MonoBehaviour
         {
             buildingListUI[key].color += new Color(-50, -50, -50);
         }
-        
         return selectedBuilding;
     }
 
     /// <summary>
-    /// permet de cacher ou non la grille et le "buildingLayout"
+    /// permet de cacher ou non la grille, le "phantôme" du bâtiment sélectioné, et le UI pour le mode de construction
     /// </summary>
     /// <param name="state">true - false</param>
     public void BuildingMode(bool state)
     {
         buildingModeState = state;
-        //car lors de la première recherche les nouvelles tiles n'étaient pas encore crées
         foreach (GameObject t in tiles)
         {
-            t.GetComponent<Renderer>().enabled = state; //on active ou désactive le Renderer puisqu'on a besoin de garder l'état de l'objet
+            t.GetComponent<Renderer>().enabled = state; 
         }
-        buildingLayout.SetActive(state); // on active ou désactive le l'objet même puisqu'on a pas besoin de garder l'état de cet objet actif
-        //et cela sauvera de la mémoire
+        buildingLayout.SetActive(state); 
         Canevas.SetActive(state);
-        
     }
 }
