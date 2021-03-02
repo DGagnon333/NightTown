@@ -4,8 +4,10 @@ using UnityEngine;
 
 // Ce script est fait par: Nassour Nassour
 
-// Ce qu'il manque: Ajouter des proprietes aux attributs (je veux get) pour les utiliser dans d'autres classes
-public class DayNightCycle : MonoBehaviour
+// isDay reparer
+
+
+public class DayNightCycle : MonoBehaviour // mettre ce script sur un DayNightManager (gameObject vide)
 {
     // Ceci est la partie 1: Création de la notion de temps:
 

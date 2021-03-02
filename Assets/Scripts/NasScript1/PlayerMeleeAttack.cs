@@ -16,6 +16,8 @@ public class PlayerMeleeAttack : MonoBehaviour
     [SerializeField()]
     Transform weaponEdge;
 
+    private float weaponSpeed = 0.01f;
+
     void Start()
     {
         weapon = Hand.GetComponentInChildren<MeleeWeaponComponent>();
@@ -26,6 +28,7 @@ public class PlayerMeleeAttack : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             CommitAttack();
+            FakeAnimation();
         }
     }
 
@@ -33,10 +36,10 @@ public class PlayerMeleeAttack : MonoBehaviour
     {
         RaycastHit hit;
 
-        Vector3 direction = Vector3.forward;
+        Vector3 direction = Hand.transform.forward;
 
         Ray ray = new Ray(weaponEdge.position, direction);
-        Debug.DrawRay(weaponEdge.position, direction);
+        Debug.DrawRay(weaponEdge.position, direction, Color.red);
 
         if(Physics.Raycast(ray, out hit, weapon.MeleeRange))
         {
@@ -46,5 +49,12 @@ public class PlayerMeleeAttack : MonoBehaviour
                 Debug.Log("Nas a 200iq");
             }
         }
+    }
+
+    public void FakeAnimation()
+    {
+        Vector3 pos = Hand.transform.position;
+        Hand.transform.Translate(Hand.transform.forward * Time.deltaTime);
+          
     }
 }
