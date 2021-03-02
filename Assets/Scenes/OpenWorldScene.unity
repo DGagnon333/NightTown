@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeDamage: 15
-  meleeRange: 70
+  meleeRange: 5
 --- !u!136 &18735842
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -341,7 +341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7345154449864d14f92a5063347ce371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 924791084}
   Hand: {fileID: 491999282}
   weaponEdge: {fileID: 1752460932}
 --- !u!1 &252839370
@@ -422,6 +421,7 @@ GameObject:
   - component: {fileID: 489476477}
   - component: {fileID: 489476476}
   - component: {fileID: 489476475}
+  - component: {fileID: 489476479}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Enemy
@@ -503,6 +503,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &489476479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489476474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0720e103a15b61b44991bc07a073ab00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 35
 --- !u!1 &491999282
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,12 +814,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivity: 1500
   Player: {fileID: 763743300}
---- !u!20 &924791084 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 501990355349731047, guid: ce404143768f6f448b6284035428e473,
-    type: 3}
-  m_PrefabInstance: {fileID: 501990356264794579}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1752460931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,7 +1082,7 @@ PrefabInstance:
     - target: {fileID: 501990356977481111, guid: ce404143768f6f448b6284035428e473,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 6.07
       objectReference: {fileID: 0}
     - target: {fileID: 501990356977481111, guid: ce404143768f6f448b6284035428e473,
         type: 3}

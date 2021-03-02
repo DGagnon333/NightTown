@@ -51,6 +51,16 @@ public class DayNightCycle : MonoBehaviour // mettre ce script sur un DayNightMa
     private void UpdateTime()
     {
         timeOfDay += Time.deltaTime * timeScale / SECONDS_IN_DAY; // Passage du temps
+        
+        if (timeOfDay <= 0.8)
+        {
+            isDay = true;
+        }
+        else
+        {
+            isDay = false; 
+        }
+
         if(timeOfDay > 1)
         {
             dayNumber++;

@@ -48,7 +48,7 @@ public class PlayerMeleeAttack : MonoBehaviour
     public void FakeAnimation()
     {
         Vector3 pos = Hand.transform.position;
-        Hand.transform.Translate(Hand.transform.forward * Time.deltaTime);
+        //Hand.transform.position = Mathf.PingPong()
           
     }
 }

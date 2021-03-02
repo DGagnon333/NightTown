@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealthComponent : MonoBehaviour
+public class EnemyHealthComponent : MonoBehaviour // Ce script va sur l'ennemi
 {
     [SerializeField()]
     float health = 35f;
