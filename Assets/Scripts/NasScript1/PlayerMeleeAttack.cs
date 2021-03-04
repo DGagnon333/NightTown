@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMeleeAttack : MonoBehaviour
+
+// Ce script est fait par Nassour Nassour.
+public class PlayerMeleeAttack : MonoBehaviour // Mettre sur le joueur
 {
     [SerializeField()]
     GameObject Hand; // la main qui tient l'arme
