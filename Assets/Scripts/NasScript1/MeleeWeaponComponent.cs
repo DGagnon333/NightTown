@@ -23,4 +23,10 @@ public class MeleeWeaponComponent : MonoBehaviour // Mettre ce script sur l'arme
         get => meleeRange;
     }
 
+    [SerializeField()]
+    private float meleeCooldown;
+    public float MeleeCooldown // Portée de l'arme
+    {
+        get => meleeCooldown;
+    }
 }
