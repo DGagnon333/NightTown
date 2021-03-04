@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleeDamage: 15
   meleeRange: 5
+  meleeCooldown: 3
 --- !u!136 &18735842
 CapsuleCollider:
   m_ObjectHideFlags: 0

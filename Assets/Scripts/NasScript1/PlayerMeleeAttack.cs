@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMeleeAttack : MonoBehaviour
+
+// Ce script est fait par Nassour Nassour.
+public class PlayerMeleeAttack : MonoBehaviour // Mettre sur le joueur
 {
     [SerializeField()]
     GameObject Hand; // la main qui tient l'arme
@@ -12,6 +14,8 @@ public class PlayerMeleeAttack : MonoBehaviour
     [SerializeField()]
     Transform weaponEdge; // le bout de l'arme
 
+    private float attackTimer = 0f;
+
     void Start()
     {
         weapon = Hand.GetComponentInChildren<MeleeWeaponComponent>();
@@ -19,10 +23,15 @@ public class PlayerMeleeAttack : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0)) // faire l'attaque lorsque le boutton gauche de la souris est appuyé.
+        attackTimer += Time.deltaTime;
+
+        if(Input.GetKeyDown(KeyCode.Mouse0) && attackTimer >= weapon.MeleeCooldown )
+            // faire l'attaque lorsque le boutton gauche de la souris est appuyé.
         {
+            
             CommitAttack();
-            FakeAnimation();
+            //FakeAnimation();
+            attackTimer = 0f;
         }
     }
 
@@ -45,10 +54,4 @@ public class PlayerMeleeAttack : MonoBehaviour
         }
     }
 
-    public void FakeAnimation()
-    {
-        Vector3 pos = Hand.transform.position;
-        //Hand.transform.position = Mathf.PingPong()
-          
-    }
 }

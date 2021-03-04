@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Ce script est fait par Nassour Nassour
 public class EnemyHealthComponent : MonoBehaviour // Ce script va sur l'ennemi
 {
     [SerializeField()]

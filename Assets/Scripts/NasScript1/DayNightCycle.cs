@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Ce script est fait par: Nassour Nassour
 
-// isDay reparer
+// Inspiré par: https://youtu.be/babgYCTyw3Y
 
 
 public class DayNightCycle : MonoBehaviour // mettre ce script sur un DayNightManager (gameObject vide)
