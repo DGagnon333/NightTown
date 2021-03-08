@@ -1,4 +1,7 @@
 ﻿// auteur: Guillaume Varin avec aide de Dérick Gagnon pour la logique du spawn loop
+
+// vidéo temps: 9min
+// help: https://youtu.be/q0SBfDFn2Bs
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,68 +9,112 @@ using UnityEngine.SocialPlatforms;
 
 public class EnemySpawnScript : MonoBehaviour
 {
-    float time = 1;
-    private const int DAY_SPAWN_RATE = 1;
-    private const int NIGHT_SPAWN_RATE = 2;
+    public enum WaveState { Inactive, Active, Attack, NbWaveStates };
 
+    // Guillaume: une mini classe qui définit une vague de zombie et qui est personnalisable à partir de Unity
+    [SerializeField]
+    public class EnemyWave
+    {
+        public string name;
+        public GameObject enemySpawn;
+        public int enemyCount;
+        public float spawnRate;
+    }
+    // Guillaume : Étant donné que l'opération FindGameObjectWithTag() est lourde et qu'on n'a pas besoin de savoir
+    //             à chaque frame si la vague est éliminée, on doit établir un interval plus long entre les vérifications.
+    [SerializeField]
+    private float searchEnemyCountdown = 5f;
     [SerializeField]
     private GameObject DayNightManager;
 
-    [SerializeField]
-    private GameObject spawnObject;
-
-    [SerializeField]
-    private int spawnTime = 3;
-
-    private bool waveActivated { get; set; }
-    private int waveNumber { get; set; }
-    private bool playerDead { get; set; }
-
-    private DayNightCycle dayNightCycle;
-
+    public EnemyWave[] waves;
+    private int nextWave = 0;
+    private WaveState currentWaveState = WaveState.Inactive;
+    public DayNightCycle dayNightCycle;
     private void Start()
     {
-        waveActivated = false;
-        waveNumber = 0;
         DayNightCycle dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
     }
     private void Update()
     {
         bool isDay = dayNightCycle.IsDay;
-        SpawnLoop(spawnObject, spawnTime);
-    }
-
-    private void SpawnLoop(GameObject spawnObject, int spawnTime)
-    {
-        if (!waveActivated)
+        if (currentWaveState == WaveState.Attack)
         {
-            time -= Time.deltaTime;
-            if (time <= 0)
+            if (!EnemyIsAlive())
             {
-
-                //Instantiate(spawnObject, new Vector3(Random.Range(-range, range) + transform.position.x,
-                //    Random.Range(0, 0) + transform.position.y, Random.Range(-range, range) + transform.position.z), Quaternion.identity);
-                //time += spawnTime;
+                currentWaveState = WaveState.Inactive;
+                // Manage a new day, eventually a new wave
+                Debug.Log("Wave Completed!");
+            }
+            else { return; } // Guillaume: Si des ennemies sont toujours vivant, on veut éviter de 
+                             //            vérifier les conditions pour démarrer une nouvelle vague
+        }
+        
+        if (!isDay && currentWaveState == WaveState.Inactive)
+        {
+            // Guillaume: pas certain du input pour l'activation d'une vague ennemi. 
+            //            --> hésite entre un bouton (UI) dans la base ou une key sur le clavier
+            KeyCode waveActivationKey = KeyCode.V; // Guillaume: Input temporaire pour l'activation d'une vague
+            if (!isDay && Input.GetKeyDown(waveActivationKey))
+            {
+                StartCoroutine(SpawnWave(waves[nextWave]));
+                nextWave++;
             }
         }
     }
-    private Vector3 DetermineSpawnPosition(GameObject spawnObject, bool isDay) { return Vector3.zero; }
-    //private int DetermineSpawnRate(bool isDay, bool isWave)
-    //{
-    //    int currentSpawnRate;
-    //    if (isDay && !isWave)
-    //        currentSpawnRate = spawnTime *
-
-    //}
-    // Guillaume: pas certain du input pour l'activation d'une vague ennemi. 
-    //            --> hésite entre un bouton (UI) dans la base ou une key sur le clavier
-    private void WaveActivation(bool isDay)
+    private bool EnemyIsAlive()
     {
-        KeyCode waveActivationKey = KeyCode.V; // Guillaume: Input temporaire pour l'activation d'une vague
-        if (!isDay && Input.GetKeyDown(waveActivationKey))
+        searchEnemyCountdown -= Time.deltaTime;
+        if (searchEnemyCountdown <= 0f)
         {
-            waveActivated = true;
-
+            searchEnemyCountdown = 5f; // Guillaume: je dois trouver une façon de ne pas décider la valeur à 2 lignes différentes
+            if (GameObject.FindGameObjectWithTag("Enemy") == null)
+            {
+                return false;
+            }
         }
+        return true;
+    }
+    private IEnumerator SpawnWave(EnemyWave currentWave)
+    {
+        Debug.Log("Spawning Wave: " + currentWave.name);
+        currentWaveState = WaveState.Active;
+
+        // Spawning
+        for(int i=0; i < currentWave.enemyCount; i++)
+        {
+            SpawnEnemy(currentWave.enemySpawn);
+            yield return new WaitForSeconds(1f / currentWave.spawnRate);
+        }
+
+        currentWaveState = WaveState.Attack;
+
+        yield break;
+    }
+    private void SpawnEnemy(GameObject enemy)
+    {
+        Debug.Log("Spawning Enemy: " + enemy.name);
+        Instantiate(enemy, transform.position, Quaternion.identity);
+    }
+    private void SpawnLoop(GameObject spawnObject, int spawnTime)
+    {
+        //if (!waveActivated)
+        //{
+        //    time -= Time.deltaTime;
+        //    if (time <= 0)
+        //    {
+
+        //        Instantiate(spawnObject, new Vector3(Random.Range(-range, range) + transform.position.x,
+        //            Random.Range(0, 0) + transform.position.y, Random.Range(-range, range) + transform.position.z), Quaternion.identity);
+        //        time += spawnTime;
+        //    }
+        //}
+    }
+    private Vector3 DetermineSpawnPosition(GameObject spawnObject, bool isDay) { return Vector3.zero; }
+    private void DetermineSpawnRate(bool isDay, bool isWave)
+    {
+        //int currentSpawnRate;
+        //if (isDay && !isWave)
+        //    currentSpawnRate = spawnTime *
     }
 }
