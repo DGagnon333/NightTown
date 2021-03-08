@@ -25,6 +25,10 @@ public class DayNightCycle : MonoBehaviour // mettre ce script sur un DayNightMa
     public bool Pause
     {
         get => pause;
+        set
+        {
+            pause = value;
+        }
     }
 
 
