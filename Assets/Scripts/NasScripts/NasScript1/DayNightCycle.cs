@@ -25,6 +25,10 @@ public class DayNightCycle : MonoBehaviour // mettre ce script sur un DayNightMa
     public bool Pause
     {
         get => pause;
+        set
+        {
+            pause = value;
+        }
     }
 
 
@@ -65,7 +69,7 @@ public class DayNightCycle : MonoBehaviour // mettre ce script sur un DayNightMa
         {
             dayNumber++;
             timeOfDay -= 1;
-            pause = false; // [Note pour Nas]: Quand le testage est fini,
+            pause = true; // [Note pour Nas]: Quand le testage est fini,
                            // remplace par true pour forcer le joueur a faire sa vague
         }
     }
@@ -75,9 +79,9 @@ public class DayNightCycle : MonoBehaviour // mettre ce script sur un DayNightMa
         timeScale = 24 / (targetDayLength / 60); 
     }
 
-    private void Update()
+    void Update()
     {
-        if(!pause)
+        if(pause == false)
         {            
             UpdateTime();
         }
