@@ -15,17 +15,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int gridSize = 100;
     private GameObject[] tiles;
     private int step = 2;
-    private bool[,] tileState;
-    //public Vector3[,] array;
-    //private Dictionary<Vector3, bool> tileState;
-    //private Dictionary<int, Tile> array2;
-
-
-
-
-
-    //avoir un tableau 2d de bool, dans le tableau se souvenir si il y a un cube ou non à l'indice ij. Besoin d'une fnction qui va
-    //prendre des float x et z et la convertir en indice ij     
+    private bool[,] tileState; 
 
 
     private void Awake()
@@ -40,10 +30,6 @@ public class GridManager : MonoBehaviour
     /// <returns></returns>
     private void ArrayCreation()
     {
-        //array = new Vector3[gridSize, gridSize];
-        //tileState = new Dictionary<Vector3, bool>(gridSize);
-        //int nb = 0;
-        //array2 = new Dictionary<int, Tile>(gridSize);
         tileState = new bool[gridSize, gridSize];
 
         for (int z = 0; z < gridSize; z++)
@@ -52,12 +38,6 @@ public class GridManager : MonoBehaviour
             for (int x = 0; x < gridSize; x++)
             {
                 tileState[x, z] = true;
-                //nb++;
-                //array2[nb] = new Tile(x * step - gridSize, z * step - gridSize);
-                //array2[nb].State = true;
-                //Instantiate(tiles[0], new Vector3(array2[nb].X, 0, array2[nb].Z), Quaternion.identity);
-                //array[x, z] = new Vector3(x * step - gridSize, 0, z * step - gridSize);
-                //tileState[new Vector3((int)array[x, z].x, 0, (int)array[x, z].z)] = true;
                 Instantiate(tiles[0], new Vector3(x * step - gridSize, 0, z * step - gridSize), Quaternion.identity);
             }
         }
@@ -174,38 +154,36 @@ public class GridManager : MonoBehaviour
         int posX = (int)(tf.position.x + gridSize) / 2;
         int posZ = (int)(tf.position.z + gridSize) / 2;
         int scaleDiffX = (int)(scale.x -2) / 2;
+        int scaleDiffZ = (int)(scale.z -2) / 2;
         int tileDispo = 0;
 
-        if (scaleDiffX != 0)
+        if (scaleDiffX != 0 && scaleDiffZ != 0)
         {
-            for (int z = 0; z < scaleDiffX; z++)
+            for (int z = 0; z <= scaleDiffZ; z++)
             {
-                for (int x = 0; x < scaleDiffX; x++)
+                for (int x = 0; x <= scaleDiffX; x++)
                 {
-                    if (!tileState[x + scaleDiffX, z + scaleDiffX])
+                    if (!tileState[posX + z, posZ + x])
                     {
-                        Debug.Log(x + scaleDiffX + ", " + z + scaleDiffX + " ... " + tileState[x + scaleDiffX, z + scaleDiffX]);
-
                         tileDispo++;
+                        Debug.Log(tileDispo);
                     }
                 }
             }
             if (tileDispo == 0)
             {
-                //Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize) + new Vector3(1, 1, 1), Quaternion.identity);
-                for (int z = 0; z < scaleDiffX; z++)
+                for (int z = 0; z <= scaleDiffZ; z++)
                 {
-                    for (int x = 0; x < scaleDiffX; x++)
+                    for (int x = 0; x <= scaleDiffX; x++)
                     {
-                        tileState[x + scaleDiffX, z + scaleDiffX] = false;
-                        Debug.Log(x + scaleDiffX + ", " + z + scaleDiffX + " ... " + tileState[x + scaleDiffX, z + scaleDiffX]);
-
+                        tileState[posX + x, posZ + z] = false;
                     }
                 }
+                Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize) + new Vector3(1,0,1), Quaternion.identity);
             }
         }
 
-        if (tileState[posX, posZ])
+        if (tileState[posX, posZ] && scaleDiffX == 0)
         {
             Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize), Quaternion.identity);
             tileState[posX, posZ] = false;
