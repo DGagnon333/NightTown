@@ -15,7 +15,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int gridSize = 100;
     private GameObject[] tiles;
     private int step = 2;
-    private bool[,] tileState; 
+    private bool[,] tileState;
+    [SerializeField] private GameObject ground;
+    [SerializeField] private int baseSize = 50;
 
 
     private void Awake()
@@ -32,15 +34,23 @@ public class GridManager : MonoBehaviour
     {
         tileState = new bool[gridSize, gridSize];
 
+        for (int z = 0; z < baseSize; z++)
+        {
+
+            for (int x = 0; x < baseSize; x++)
+            {
+                Instantiate(tiles[0], new Vector3(x * step - baseSize, 0, z * step - baseSize) + ground.transform.position, Quaternion.identity);
+            }
+        }
         for (int z = 0; z < gridSize; z++)
         {
 
             for (int x = 0; x < gridSize; x++)
             {
                 tileState[x, z] = true;
-                Instantiate(tiles[0], new Vector3(x * step - gridSize, 0, z * step - gridSize), Quaternion.identity);
             }
         }
+
     }
 
     /// <summary>
@@ -151,12 +161,12 @@ public class GridManager : MonoBehaviour
     //}
     public void TileState(GameObject newBuilding, Transform tf, Vector3 scale)
     {
-        int posX = (int)(tf.position.x + gridSize) / 2;
-        int posZ = (int)(tf.position.z + gridSize) / 2;
+        int posX = (int)(tf.position.x + gridSize - (int)ground.transform.position.x) / 2 ;
+        int posZ = (int)(tf.position.z + gridSize - (int)ground.transform.position.z) / 2;
         int scaleDiffX = (int)(scale.x -2) / 2;
         int scaleDiffZ = (int)(scale.z -2) / 2;
         int tileDispo = 0;
-
+        Debug.Log((int)(tf.position.x + gridSize) / 2); Debug.Log((int)ground.transform.position.x); Debug.Log(posX);
         if (scaleDiffX != 0 && scaleDiffZ != 0)
         {
             for (int z = 0; z <= scaleDiffZ; z++)
@@ -179,13 +189,13 @@ public class GridManager : MonoBehaviour
                         tileState[posX + x, posZ + z] = false;
                     }
                 }
-                Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize) + new Vector3(1,0,1), Quaternion.identity);
+                Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize) + new Vector3(1,0,1) + ground.transform.position, Quaternion.identity);
             }
         }
 
         if (tileState[posX, posZ] && scaleDiffX == 0)
         {
-            Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize), Quaternion.identity);
+            Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize) + ground.transform.position, Quaternion.identity);
             tileState[posX, posZ] = false;
         }
     }

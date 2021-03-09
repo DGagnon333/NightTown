@@ -34,7 +34,7 @@ public class SnapToGrid : MonoBehaviour
 
         if (stepDiff != Vector3.zero)
         {
-            tf.position += Vector3.one;
+            tf.position += new Vector3(1,0,1);
         }
         //ici le step sert à savoir si la taille de l'objet est la même taille que les cases de la matrice.
         //Si elle n'est pas de la même taille et qu'elle est plus grosse, l'objet se retrouve entre deux tuiles.
