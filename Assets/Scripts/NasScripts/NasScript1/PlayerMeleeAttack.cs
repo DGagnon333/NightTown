@@ -48,7 +48,7 @@ public class PlayerMeleeAttack : MonoBehaviour // Mettre sur le joueur
         {
             if(hit.collider.CompareTag("Enemy")) // si l'objet touché est un ennemi
             {
-                EnemyHealthComponent enemyHealth = hit.collider.GetComponent<EnemyHealthComponent>();
+                HealthComponent enemyHealth = hit.collider.GetComponent<HealthComponent>();
                 enemyHealth.TakeDamage(weapon.MeleeDamage); // L'ennemi perds de la vie egal au dommage de l'arme
             }
         }
