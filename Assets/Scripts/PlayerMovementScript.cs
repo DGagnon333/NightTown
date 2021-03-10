@@ -5,17 +5,18 @@ using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
+    //Script fait par Mykael et avec une aide de Dérick Gagnon 
     [SerializeField] Rigidbody rb;
     [SerializeField] float walkSpeed = 150f;
-    [SerializeField] float runSpeed =200f;
+    [SerializeField] float runSpeed = 200f;
     public bool playerIsOnGround = true;
 
     private void Update()
     {
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
-        float moveSpeed; 
-        if (Input.GetKey (KeyCode.L))
+        float moveSpeed;
+        if (Input.GetKey(KeyCode.L))
         {
             moveSpeed = runSpeed;
         }
@@ -33,6 +34,8 @@ public class PlayerMovementScript : MonoBehaviour
             rb.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
             playerIsOnGround = false;
         }
+        rb.constraints = RigidbodyConstraints.FreezeRotationX;
+        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void OnCollisionEnter(Collision collision)
