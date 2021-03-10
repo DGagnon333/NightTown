@@ -18,6 +18,10 @@ public class BuildingManager : MonoBehaviour
     private GameObject[] tiles; //utilisé pour pouvoir afficher ou non les tuiles
     private GameObject selectedBuilding; //le bâtiment choisit
     public bool buildingModeState = false; //l'état du mode de construction, activé ou désactivé
+    [SerializeField] private Material gridTexture;
+    [SerializeField] private Material greenTexture;
+    [SerializeField] private Renderer gridRenderer;
+
     private void Awake()
     {
         selectedBuilding = buildingList[0]; //on donne un object par défaut à selectedBuilding pour que ça nous ne
@@ -108,5 +112,10 @@ public class BuildingManager : MonoBehaviour
         }
         buildingLayout.SetActive(state); 
         Canevas.SetActive(state);
+        if(state)
+            gridRenderer.material = gridTexture;
+        if (!state)
+            gridRenderer.material = greenTexture;
+
     }
 }
