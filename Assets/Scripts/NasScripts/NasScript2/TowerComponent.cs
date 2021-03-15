@@ -9,19 +9,25 @@ public class TowerComponent : MonoBehaviour
     public float range;
 
 
-    // Start is called before the first frame update
+   
     void Start()
     {
-        
+        InvokeRepeating("SearchTarget", 0f, 0.5f); // cherche un ennemi chaque demi-seconde.
     }
 
-    // Update is called once per frame
+    void SearchTarget()
+    {
+
+    }
+
+  
+
     void Update()
     {
         
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos() // Montre la portée de la tour dans sceneview
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
