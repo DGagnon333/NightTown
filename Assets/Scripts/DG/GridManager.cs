@@ -12,11 +12,12 @@ using UnityEditorInternal;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private int gridSize = 100;
+    [SerializeField] private int gridSize = 30;
     private int step = 2;
     private bool[,] tileState;
     [SerializeField] private GameObject ground;
     [SerializeField] private int baseSize = 50;
+    [SerializeField] private Transform oldBuilding;
     
 
     private void Awake()
@@ -57,6 +58,9 @@ public class GridManager : MonoBehaviour
         int scaleDiffX = (int)(scale.x -2) / 2;
         int scaleDiffZ = (int)(scale.z -2) / 2;
         int tileDispo = 0;
+        Electricity electric = new Electricity();
+        electric.ElectrictyState(gridSize, tileState, tf, oldBuilding, (int)ground.transform.position.x, (int)ground.transform.position.z);
+
         if (scaleDiffX != 0 && scaleDiffZ != 0)
         {
             for (int z = 0; z <= scaleDiffZ; z++)
