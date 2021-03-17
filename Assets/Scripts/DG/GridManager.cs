@@ -9,6 +9,7 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using System;
 using UnityEditorInternal;
+using System.Linq;
 
 public class GridManager : MonoBehaviour
 {
@@ -17,8 +18,8 @@ public class GridManager : MonoBehaviour
     private bool[,] tileState;
     [SerializeField] private GameObject ground;
     [SerializeField] private int baseSize = 50;
-    [SerializeField] private Transform oldBuilding;
-    
+    List<Vector3> wireQueue = new List<Vector3>();
+
 
     private void Awake()
     {
@@ -51,15 +52,17 @@ public class GridManager : MonoBehaviour
     /// <param name = "newBuilding" > le bâtiment choisi</param>
     /// <param name = "tf" > la position du "phantôme" de l'objet sélectionné</param>
     /// <param name = "scale" > la taille de l'objet sélectionné</param>
-    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale)
+    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, int key)
     {
-        int posX = (int)(tf.position.x + gridSize - (int)ground.transform.position.x) / 2 ;
+        int posX = (int)(tf.position.x + gridSize - (int)ground.transform.position.x) / 2;
         int posZ = (int)(tf.position.z + gridSize - (int)ground.transform.position.z) / 2;
-        int scaleDiffX = (int)(scale.x -2) / 2;
-        int scaleDiffZ = (int)(scale.z -2) / 2;
+        int scaleDiffX = (int)(scale.x - 2) / 2;
+        int scaleDiffZ = (int)(scale.z - 2) / 2;
         int tileDispo = 0;
-        Electricity electric = new Electricity();
-        electric.ElectrictyState(gridSize, tileState, tf, oldBuilding, (int)ground.transform.position.x, (int)ground.transform.position.z);
+        Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
+        //Electricity electric = GetComponent<Electricity>();
+
+
 
         if (scaleDiffX != 0 && scaleDiffZ != 0)
         {
@@ -82,14 +85,30 @@ public class GridManager : MonoBehaviour
                         tileState[posX + x, posZ + z] = false;
                     }
                 }
-                Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize) + new Vector3(1,0,1) + ground.transform.position, Quaternion.identity);
+                Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
             }
         }
 
         if (tileState[posX, posZ] && scaleDiffX == 0)
         {
-            Instantiate(newBuilding, new Vector3(posX * step - gridSize, 0, posZ * step - gridSize) + ground.transform.position, Quaternion.identity);
+            Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
             tileState[posX, posZ] = false;
         }
+        Electricity electric = new Electricity();
+        if (key == 3)
+        {
+            if (wireQueue.Count != 0)
+            {
+                int posXOld = (int)(wireQueue[wireQueue.Count - 1].x + gridSize - (int)ground.transform.position.x) / 2;
+                int posZOld = (int)(wireQueue[wireQueue.Count - 1].z + gridSize - (int)ground.transform.position.z) / 2;
+                electric.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding);
+                wireQueue.Add(position);
+            }
+
+            else
+                wireQueue.Add(position);
+        }
+        if (key != 3)
+            wireQueue.Clear();
     }
 }
