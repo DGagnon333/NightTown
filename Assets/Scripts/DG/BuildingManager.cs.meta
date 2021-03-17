@@ -3,7 +3,12 @@ guid: 08e9e48325efcef4a87fef4a44177573
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Canevas: {instanceID: 0}
+  - buildingLayout: {instanceID: 0}
+  - gridTexture: {instanceID: 0}
+  - greenTexture: {instanceID: 0}
+  - gridRenderer: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

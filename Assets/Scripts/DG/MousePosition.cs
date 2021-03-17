@@ -15,7 +15,7 @@ public class MousePosition : MonoBehaviour
     float mouseY; //la position de la souris en y
     void Start()
     {
-        snap = new SnapToGrid();
+        snap = GetComponent<SnapToGrid>();
         cam = Camera.main;
     }
     void Update()

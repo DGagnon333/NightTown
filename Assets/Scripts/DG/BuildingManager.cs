@@ -21,6 +21,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Material gridTexture;
     [SerializeField] private Material greenTexture;
     [SerializeField] private Renderer gridRenderer;
+    
 
     private void Awake()
     {
@@ -55,7 +56,7 @@ public class BuildingManager : MonoBehaviour
         //Si le mode de construction est désactvié, on ne veut pas que le jouer puisse pouvoir placé des bâtiments quand même
         if (buildingModeState)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4))
             {
                 SelectedBuilding();
             }
@@ -63,7 +64,7 @@ public class BuildingManager : MonoBehaviour
                 buildingListUI[key].color += new Color(50, 50, 50);
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale);
+                    GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, key);
             }
         }
 
@@ -91,6 +92,11 @@ public class BuildingManager : MonoBehaviour
             selectedBuilding = buildingList[2];
             key = 2;
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            selectedBuilding = buildingList[3];
+            key = 3;
+        }
         buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
         if (selectedBuilding == buildingList[key])
         {
@@ -112,8 +118,10 @@ public class BuildingManager : MonoBehaviour
         }
         buildingLayout.SetActive(state); 
         Canevas.SetActive(state);
-        if(state)
+        if (state)
+        {
             gridRenderer.material = gridTexture;
+        }
         if (!state)
             gridRenderer.material = greenTexture;
 

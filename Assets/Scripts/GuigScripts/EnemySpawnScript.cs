@@ -1,6 +1,4 @@
 ﻿// auteur: Guillaume Varin avec aide de Dérick Gagnon pour la logique du spawn loop
-
-// vidéo temps: 9min
 // help: https://youtu.be/q0SBfDFn2Bs
 using System.Collections;
 using System.Collections.Generic;
