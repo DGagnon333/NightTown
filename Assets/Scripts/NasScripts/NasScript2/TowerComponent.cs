@@ -6,10 +6,12 @@ public class TowerComponent : MonoBehaviour
 {
     public Transform target;
 
-    public float range;
+    public float range; // utile??
+
+    List<GameObject> enemy = null;
 
 
-   
+
     void Start()
     {
         InvokeRepeating("SearchTarget", 0f, 0.5f); // cherche un ennemi chaque demi-seconde.
@@ -17,19 +19,59 @@ public class TowerComponent : MonoBehaviour
 
     void SearchTarget()
     {
+        if(enemy!=null)
+        {
+            float shortestDistance = Mathf.Infinity;
+            GameObject nearestEnemy = null;
 
-    }
+            foreach (GameObject i in enemy)
+            {
+                float distance = Vector3.Distance(transform.position, i.transform.position);
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    nearestEnemy = i;
+                }
+            }
 
-  
-
-    void Update()
-    {
+            if (nearestEnemy != null)
+            {
+                target = nearestEnemy.transform;
+            }
+            else
+            {
+                target = null;
+            }
+        }
         
     }
 
-    private void OnDrawGizmos() // Montre la portée de la tour dans sceneview
+
+
+    void Update()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, range);
+        if (target == null)
+            return;
+    }
+
+    //private void OnDrawGizmosSelected() // Montre la portée de la tour dans sceneview
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, range);
+    //}
+
+
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            enemy.Add(other.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        enemy.Remove(other.gameObject);
     }
 }
