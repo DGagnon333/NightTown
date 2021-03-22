@@ -10,7 +10,7 @@ public class EnemySpawnScript : MonoBehaviour
     public enum WaveState { Inactive, Active, Attack, AllCompleted, NbWaveStates };
 
     // Guillaume: une mini classe qui définit une vague de zombie et qui est personnalisable à partir de Unity
-    [SerializeField]
+    [System.Serializable]
     public class EnemyWave
     {
         public string name;
@@ -23,21 +23,22 @@ public class EnemySpawnScript : MonoBehaviour
     [SerializeField]
     private float searchEnemyCountdown = 5f;
     [SerializeField]
-    private GameObject DayNightManager;
-    [SerializeField]
-    private GameObject BuildingManager;
+    private DayNightCycle DayNightManager;
+    //[SerializeField]
+    //private GameObject Grid;
 
     public EnemyWave[] waves;
     private int nextWave = 0;
     private WaveState currentWaveState = WaveState.Inactive;
-    public DayNightCycle dayNightCycle;
+    //public DayNightCycle dayNightCycle;
     private void Start()
     {
-        dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
+        //dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
+        //grid = Grid.GetComponentInChildren<GridManager>();
     }
     private void Update()
     {
-        bool isDay = dayNightCycle.IsDay;
+        bool isDay = DayNightManager.IsDay;
         if (currentWaveState == WaveState.Attack)
         {
             if (!EnemyIsAlive())
@@ -47,9 +48,6 @@ public class EnemySpawnScript : MonoBehaviour
             else { return; } // Guillaume: Si des ennemies sont toujours vivant, on veut éviter de 
                              //            vérifier les conditions pour démarrer une nouvelle vague
         }
-        //Guillaume : un test!!! faut enlever!!!!
-        if (!isDay)
-            Debug.Log("C'est la nuit");
         
         if (!isDay && currentWaveState == WaveState.Inactive)
         {
