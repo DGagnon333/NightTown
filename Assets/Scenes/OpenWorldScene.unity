@@ -997,7 +997,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &821560653
 GameObject:
@@ -1550,13 +1550,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   searchEnemyCountdown: 5
   DayNightManager: {fileID: 901846835}
+  Grid: {fileID: 0}
   waves:
   - name: Monke attack
-    enemySpawn: {fileID: 585476721}
+    enemySpawn: {fileID: 489476474}
     enemyCount: 3
     spawnRate: 2
   - name: Harambe's revenge
-    enemySpawn: {fileID: 585476721}
+    enemySpawn: {fileID: 1113262332}
     enemyCount: 5
     spawnRate: 3
 --- !u!4 &1955930042
@@ -1571,7 +1572,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1965286154
 GameObject:
