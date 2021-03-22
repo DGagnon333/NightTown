@@ -22,12 +22,14 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Material gridTexture;
     [SerializeField] private Material greenTexture;
     [SerializeField] private Renderer gridRenderer;
-    
+    Color baseColor;
+
 
     private void Awake()
     {
         selectedBuilding = buildingList[0]; //on donne un object par défaut à selectedBuilding pour que ça nous ne
         //retourne pas un null reference si aucun bâtiment n'est sélectionné.
+        baseColor = buildingLayout.GetComponent<Renderer>().material.color;
     }
     private void Start()
     {
@@ -109,12 +111,16 @@ public class BuildingManager : MonoBehaviour
             key = 4;
             selectedBuilding = buildingList[key];
         }
-        buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
         for (int i = 0; i < buildingList.Count; i++)
         {
             if (i != key)
                 buildingListUI[i].color = Color.white;
         }
+        buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
+        if (selectedBuilding.CompareTag("Eraser"))
+            buildingLayout.GetComponent<Renderer>().material.color = Color.red;
+        else
+            buildingLayout.GetComponent<Renderer>().material.color = baseColor;
         return selectedBuilding;
     }
 

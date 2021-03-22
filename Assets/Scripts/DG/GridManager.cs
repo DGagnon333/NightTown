@@ -18,7 +18,7 @@ public class GridManager : MonoBehaviour
     private bool[,] tileState;
     [SerializeField] private GameObject ground;
     List<Vector3> wireQueue = new List<Vector3>();
-
+    public bool[,] electrictyMap;
 
     private void Awake()
     {
@@ -32,12 +32,14 @@ public class GridManager : MonoBehaviour
     private void ArrayCreation()
     {
         tileState = new bool[gridSize, gridSize];
+        electrictyMap = new bool[gridSize, gridSize];
         for (int z = 0; z < gridSize; z++)
         {
 
             for (int x = 0; x < gridSize; x++)
             {
                 tileState[x, z] = true;
+                electrictyMap[x, z] = false;
             }
         }
 
@@ -106,7 +108,7 @@ public class GridManager : MonoBehaviour
             {
                 int posXOld = (int)(wireQueue[wireQueue.Count - 1].x + gridSize - (int)ground.transform.position.x) / 2;
                 int posZOld = (int)(wireQueue[wireQueue.Count - 1].z + gridSize - (int)ground.transform.position.z) / 2;
-                electricity.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding);
+                electricity.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding, electrictyMap);
                 wireQueue.Add(position);
             }
 

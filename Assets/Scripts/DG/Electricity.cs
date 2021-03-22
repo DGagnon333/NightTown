@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 
 public class Electricity : MonoBehaviour
 {
-    public void ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire)
+    public void ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire, bool[,] electrictyMap)
     {
         //toutes les variables
         Point2D PositionSource = new Point2D(posX, posZ);
@@ -25,7 +25,6 @@ public class Electricity : MonoBehaviour
         Point2D next;
 
         //la création des carte
-        bool[,] electrictyMap = CreateElectricityMap(gridSize);
         bool[,] newMap = CreateNewMap(tileState, gridSize);
 
         frontier.Enqueue(current);
@@ -33,6 +32,7 @@ public class Electricity : MonoBehaviour
 
         while (frontier != null)
         {
+            
             current = frontier.Dequeue();
             //Sud
             if (((current.Z - 1) >= 0) && newMap[current.Z - 1, current.X])
@@ -111,18 +111,7 @@ public class Electricity : MonoBehaviour
         }
         return newMap;
     }
-    public bool[,] CreateElectricityMap(int gridSize)
-    {
-        bool[,] electricityMap = new bool[gridSize, gridSize];
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int z = 0; z < gridSize; z++)
-            {
-                electricityMap[x, z] = false;
-            }
-        }
-        return electricityMap;
-    }
+    
     public class Point2D
     {
         public int X { get; private set; }

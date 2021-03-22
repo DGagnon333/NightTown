@@ -390,7 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66adb5864851dc642b5f3f03e1c73ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 200
+  gridSize: 50
   ground: {fileID: 1990809615}
 --- !u!4 &343585103
 Transform:
