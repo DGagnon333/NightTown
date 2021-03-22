@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,17 +18,14 @@ public class Electricity : MonoBehaviour
         List<Point2D> path = new List<Point2D>();
         Point2D first = new Point2D(1, 1);
         Point2D next;
-
-
-        bool[,] electrictyMap = CreateElectricityMap(tileState, gridSize);
-        bool[,] newMap = CreateNewMap(tileState, gridSize);
         frontier.Enqueue(current);
+        bool[,] electrictyMap = CreateElectricityMap(gridSize);
+        bool[,] newMap = CreateNewMap(tileState, gridSize);
         cameFrom.Add(PositionSource, PositionSource);
-
         while (frontier != null)
         {
             current = frontier.Dequeue();
-            //Nord
+            //Sud
             if (((current.Z - 1) >= 0) && newMap[current.Z - 1, current.X])
             {
                 voisin.Add(new Point2D(current.X, current.Z - 1));
@@ -41,7 +39,7 @@ public class Electricity : MonoBehaviour
                 newMap[current.Z, current.X + 1] = false;
             }
 
-            // Sud
+            // Nord
             if (((current.Z + 1) < gridSize) && newMap[current.Z + 1, current.X])
             {
                 voisin.Add(new Point2D(current.X, current.Z + 1));
@@ -55,10 +53,6 @@ public class Electricity : MonoBehaviour
                 newMap[current.Z, current.X - 1] = false;
             }
 
-            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
-            {
-                break;
-            }
             foreach (Point2D i in voisin)
             {
                 if (!cameFrom.ContainsValue(i) || (i == PositionSource))
@@ -66,6 +60,10 @@ public class Electricity : MonoBehaviour
                     frontier.Enqueue(i);
                     cameFrom[i] = current;
                 }
+            }
+            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
+            {
+                break;
             }
             voisin.Clear();
         }
@@ -104,7 +102,7 @@ public class Electricity : MonoBehaviour
         }
         return newMap;
     }
-    public bool[,] CreateElectricityMap(bool[,] tileState, int gridSize)
+    public bool[,] CreateElectricityMap(int gridSize)
     {
         bool[,] electricityMap = new bool[gridSize, gridSize];
         for (int x = 0; x < gridSize; x++)

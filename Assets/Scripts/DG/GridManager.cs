@@ -60,9 +60,7 @@ public class GridManager : MonoBehaviour
         int scaleDiffZ = (int)(scale.z - 2) / 2;
         int tileDispo = 0;
         Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
-        //Electricity electric = GetComponent<Electricity>();
-
-
+        Electricity electricity = new Electricity();
 
         if (scaleDiffX != 0 && scaleDiffZ != 0)
         {
@@ -94,14 +92,13 @@ public class GridManager : MonoBehaviour
             Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
             tileState[posX, posZ] = false;
         }
-        Electricity electric = new Electricity();
         if (key == 3)
         {
             if (wireQueue.Count != 0)
             {
                 int posXOld = (int)(wireQueue[wireQueue.Count - 1].x + gridSize - (int)ground.transform.position.x) / 2;
                 int posZOld = (int)(wireQueue[wireQueue.Count - 1].z + gridSize - (int)ground.transform.position.z) / 2;
-                electric.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding);
+                electricity.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding);
                 wireQueue.Add(position);
             }
 

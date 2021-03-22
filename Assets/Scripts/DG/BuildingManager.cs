@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class BuildingManager : MonoBehaviour
 {
     [SerializeField] public List<GameObject> buildingList; //liste des bâtiments
@@ -79,23 +80,28 @@ public class BuildingManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectedBuilding = buildingList[0];
             key = 0;
+            selectedBuilding = buildingList[key];
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectedBuilding = buildingList[1];
             key = 1;
+            selectedBuilding = buildingList[key];
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            selectedBuilding = buildingList[2];
             key = 2;
+            selectedBuilding = buildingList[key];
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            selectedBuilding = buildingList[3];
             key = 3;
+            selectedBuilding = buildingList[key];
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            key = 4;
+            selectedBuilding = buildingList[key];
         }
         buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
         if (selectedBuilding == buildingList[key])
