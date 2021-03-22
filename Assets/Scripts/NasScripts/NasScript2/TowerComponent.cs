@@ -5,7 +5,7 @@ using UnityEngine;
 public class TowerComponent : MonoBehaviour
 {
     private Transform target; // Le transform de l'ennemi à tuer
-    private List<GameObject> enemy; // Une liste de tous les ennemis dans la zone d'attaque de cette tour
+    private List<GameObject> enemy; // Une liste de tous les ennemis dans la zone d'attaque de cette tour (mettre pruvate)
     private float fireCountdown; // Compteur de tir
 
     [Header("Settings")]
@@ -19,12 +19,13 @@ public class TowerComponent : MonoBehaviour
     private Transform shootPoint;
 
 
+
     [Header("Attributes")]
     [SerializeField]
     private float headRotationSpeed = 5f; // Vitesse de rotation de la tête de la tour lors d'une transition
 
     [SerializeField]
-    private float fireRate = 1f; // Vitesse de tir ( Combien de tirs par seconde )
+    private float shotsPerSecond = 1f; // Vitesse de tir ( Combien de tirs par seconde )
 
     
     
@@ -88,7 +89,7 @@ public class TowerComponent : MonoBehaviour
         if(fireCountdown <= 0)
         {
             Shoot();
-            fireCountdown = 1f / fireRate;
+            fireCountdown = 1f / shotsPerSecond;
 
         }
         fireCountdown -= Time.deltaTime;
@@ -96,8 +97,14 @@ public class TowerComponent : MonoBehaviour
 
     void Shoot()
     {
-        Debug.Log("Shoot" + target.name);
-        Instantiate(projectile, shootPoint.position, shootPoint.rotation);
+        Debug.Log("Shoot " + target.name);
+        GameObject bullet = Instantiate(projectile, shootPoint.position, shootPoint.rotation);
+        TowerProjectileComponent towerProjectile = bullet.GetComponent<TowerProjectileComponent>();
+
+        if(towerProjectile != null)
+        {
+            towerProjectile.Chase(target);
+        }
     }
 
     //private void OnDrawGizmosSelected() // Montre la portée de la tour dans sceneview
@@ -115,6 +122,14 @@ public class TowerComponent : MonoBehaviour
             enemy.Add(other.gameObject);
         }
     }
+
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if(other.gameObject == null)
+    //    {
+    //        enemy.Remove(other.gameObject);
+    //    }
+    //}
 
     private void OnTriggerExit(Collider other) // Lorsqu'il quitte la zone, il est enlevé.
     {
