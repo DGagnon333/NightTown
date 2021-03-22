@@ -1,5 +1,10 @@
-﻿using System;
+﻿//Ce script a été inspiré par ma tp3 dans la session 3 avec Nassour Nassour, travail qui portait sur le pathfinding.
+// Cette classe permet d'instancié des objets d'une source jusqu'à une destination, et créer un tableau de bool
+// qui retient l'emplacement de chacun de ces objets
+
+using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -8,6 +13,7 @@ public class Electricity : MonoBehaviour
 {
     public void ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire)
     {
+        //toutes les variables
         Point2D PositionSource = new Point2D(posX, posZ);
         Point2D PositionDestination = new Point2D(posXOld, posZOld);
         Point2D current = new Point2D(posX, posZ);
@@ -18,16 +24,17 @@ public class Electricity : MonoBehaviour
         Point2D first = new Point2D(1, 1);
         Point2D next;
 
-
-        bool[,] electrictyMap = CreateElectricityMap(tileState, gridSize);
+        //la création des carte
+        bool[,] electrictyMap = CreateElectricityMap(gridSize);
         bool[,] newMap = CreateNewMap(tileState, gridSize);
+
         frontier.Enqueue(current);
         cameFrom.Add(PositionSource, PositionSource);
 
         while (frontier != null)
         {
             current = frontier.Dequeue();
-            //Nord
+            //Sud
             if (((current.Z - 1) >= 0) && newMap[current.Z - 1, current.X])
             {
                 voisin.Add(new Point2D(current.X, current.Z - 1));
@@ -41,7 +48,7 @@ public class Electricity : MonoBehaviour
                 newMap[current.Z, current.X + 1] = false;
             }
 
-            // Sud
+            // Nord
             if (((current.Z + 1) < gridSize) && newMap[current.Z + 1, current.X])
             {
                 voisin.Add(new Point2D(current.X, current.Z + 1));
@@ -55,10 +62,6 @@ public class Electricity : MonoBehaviour
                 newMap[current.Z, current.X - 1] = false;
             }
 
-            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
-            {
-                break;
-            }
             foreach (Point2D i in voisin)
             {
                 if (!cameFrom.ContainsValue(i) || (i == PositionSource))
@@ -67,10 +70,13 @@ public class Electricity : MonoBehaviour
                     cameFrom[i] = current;
                 }
             }
+            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
+            {
+                break;
+            }
             voisin.Clear();
         }
 
-        
         foreach (var i in cameFrom)
         {
             if (i.Key.X == PositionDestination.X && i.Key.Z == PositionDestination.Z)
@@ -87,9 +93,10 @@ public class Electricity : MonoBehaviour
             path.Add(next);
             if (tileState[next.X, next.Z])
                 Instantiate(wire, new Vector3(next.X* 2 - gridSize, 0, next.Z *2-gridSize), Quaternion.identity);
-            tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible
-            electrictyMap[next.X, next.Z] = true; //ici on RETIENT la position des fils électriques disponibles
             pt++;
+
+            tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible
+            electrictyMap[next.X, next.Z] = true; //ici on RETIENT la position des fils électriques
         }
     }
     private bool[,] CreateNewMap(bool[,] tileState, int gridSize)
@@ -104,7 +111,7 @@ public class Electricity : MonoBehaviour
         }
         return newMap;
     }
-    public bool[,] CreateElectricityMap(bool[,] tileState, int gridSize)
+    public bool[,] CreateElectricityMap(int gridSize)
     {
         bool[,] electricityMap = new bool[gridSize, gridSize];
         for (int x = 0; x < gridSize; x++)

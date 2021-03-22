@@ -10,34 +10,34 @@ public class EnemySpawnScript : MonoBehaviour
     public enum WaveState { Inactive, Active, Attack, AllCompleted, NbWaveStates };
 
     // Guillaume: une mini classe qui définit une vague de zombie et qui est personnalisable à partir de Unity
-    [SerializeField]
+    [System.Serializable]
     public class EnemyWave
     {
-        public string name;
-        public GameObject enemySpawn;
-        public int enemyCount;
-        public float spawnRate;
+        public string waveName;
+        public GameObject waveEnemySpawn;
+        public int waveEnemyCount;
+        public float waveSpawnRate;
     }
     // Guillaume: Étant donné que l'opération FindGameObjectWithTag() est lourde et qu'on n'a pas besoin de savoir
     //            à chaque frame si la vague est éliminée, on doit établir un interval plus long entre les vérifications.
     [SerializeField]
+    private GameObject enemySpawn;
+    [SerializeField]
+    private float spawnCountdown = 10f;
+    [SerializeField]
     private float searchEnemyCountdown = 5f;
     [SerializeField]
-    private GameObject DayNightManager;
+    private DayNightCycle DayNightManager;
     [SerializeField]
-    private GameObject BuildingManager;
+    private GridManager Grid;
 
     public EnemyWave[] waves;
     private int nextWave = 0;
     private WaveState currentWaveState = WaveState.Inactive;
-    public DayNightCycle dayNightCycle;
-    private void Start()
-    {
-        dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
-    }
+    private bool besoinVerifIsDay = true; // Guillaume: TEMPORAIRE!!!!
     private void Update()
     {
-        bool isDay = dayNightCycle.IsDay;
+        bool isDay = DayNightManager.IsDay;
         if (currentWaveState == WaveState.Attack)
         {
             if (!EnemyIsAlive())
@@ -47,10 +47,13 @@ public class EnemySpawnScript : MonoBehaviour
             else { return; } // Guillaume: Si des ennemies sont toujours vivant, on veut éviter de 
                              //            vérifier les conditions pour démarrer une nouvelle vague
         }
-        //Guillaume : un test!!! faut enlever!!!!
-        if (!isDay)
-            Debug.Log("C'est la nuit");
-        
+        if (isDay)
+            SpawnLoop();
+        if (!isDay && besoinVerifIsDay)
+        {
+            besoinVerifIsDay = false;
+            Debug.Log("C'est la nuit!");
+        }
         if (!isDay && currentWaveState == WaveState.Inactive)
         {
             // Guillaume: pas certain du input pour l'activation d'une vague ennemi. 
@@ -90,45 +93,36 @@ public class EnemySpawnScript : MonoBehaviour
     }
     private IEnumerator SpawnWave(EnemyWave currentWave)
     {
-        Debug.Log("Spawning Wave: " + currentWave.name);
+        Debug.Log("Spawning Wave: " + currentWave.waveName);
         currentWaveState = WaveState.Active;
 
         // Spawning
-        for(int i=0; i < currentWave.enemyCount; i++)
+        for(int i=0; i < currentWave.waveEnemyCount; i++)
         {
-            SpawnEnemy(currentWave.enemySpawn);
-            yield return new WaitForSeconds(1f / currentWave.spawnRate);
+            SpawnEnemy(currentWave.waveEnemySpawn);
+            yield return new WaitForSeconds(5f/currentWave.waveSpawnRate); // Guillaume: nécessite une division pour que plus le rate est haut plus c'est rapide
         }
 
         currentWaveState = WaveState.Attack;
 
         yield break;
     }
+    private void SpawnLoop()
+    {
+        spawnCountdown -= Time.deltaTime;
+        if (spawnCountdown <= 0f)
+        {
+            Debug.Log("Regular Spawn Time");
+            SpawnEnemy(enemySpawn);
+            spawnCountdown = 10f;
+        }
+    }
     private void SpawnEnemy(GameObject enemy)
     {
+        Vector3 spawnPoint = Vector3.zero; // Guillaume: temporaire, nous devons utiliser DetermineSpawnPosition
         //Vector3 spawnPoint = DetermineSpawnPosition();
-        //Debug.Log("Spawning Enemy: " + enemy.name);
-        //Instantiate(enemy, spawnPoint, Quaternion.identity);
+        Debug.Log("Spawning Enemy: " + enemy.name);
+        Instantiate(enemy, spawnPoint, Quaternion.identity);
     }
-    private Vector3 DetermineSpawnPosition(GameObject spawnObject, bool isDay) { return Vector3.zero; }
-    private void SpawnLoop(GameObject spawnObject, int spawnTime)
-    {
-        //if (!waveActivated)
-        //{
-        //    time -= Time.deltaTime;
-        //    if (time <= 0)
-        //    {
-
-        //        Instantiate(spawnObject, new Vector3(Random.Range(-range, range) + transform.position.x,
-        //            Random.Range(0, 0) + transform.position.y, Random.Range(-range, range) + transform.position.z), Quaternion.identity);
-        //        time += spawnTime;
-        //    }
-        //}
-    }
-    private void DetermineSpawnRate(bool isDay, bool isWave)
-    {
-        //int currentSpawnRate;
-        //if (isDay && !isWave)
-        //    currentSpawnRate = spawnTime *
-    }
+    private Vector3 DetermineSpawnPosition(GameObject spawnObject) { return Vector3.zero; }
 }

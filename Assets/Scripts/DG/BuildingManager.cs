@@ -8,12 +8,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class BuildingManager : MonoBehaviour
 {
     [SerializeField] public List<GameObject> buildingList; //liste des bâtiments
     [SerializeField] public List<Image> buildingListUI; //liste des images pour chaque bâtiment dans le UI
     [SerializeField] private GameObject Canevas; //le Canevas du UI qui sera afficher à l'écran
-    private int key = 0; //Cette clée permet de retenir la touche appuyée sur le clavier
+    private int key; //Cette clée permet de retenir la touche appuyée sur le clavier
     [SerializeField] private  GameObject buildingLayout; //le "phantôme" du bâtiment sélectionné, qui retient sa positino et sa grosseur
     private GameObject[] tiles; //utilisé pour pouvoir afficher ou non les tuiles
     private GameObject selectedBuilding; //le bâtiment choisit
@@ -37,6 +38,7 @@ public class BuildingManager : MonoBehaviour
     private void Update()
     {
         BuildingInputManager();
+
     }
 
     /// <summary>
@@ -56,10 +58,15 @@ public class BuildingManager : MonoBehaviour
         //Si le mode de construction est désactvié, on ne veut pas que le jouer puisse pouvoir placé des bâtiments quand même
         if (buildingModeState)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Alpha4))
+
+            if (Input.anyKeyDown)
             {
                 SelectedBuilding();
             }
+
+            //cette ligne a été inspirée par Color.Lerp, Unity Documentation, [URL]: https://docs.unity3d.com/ScriptReference/Color.Lerp.html (consulté le 22 mars 2021)
+            buildingListUI[key].color = Color.Lerp(Color.gray, Color.black, Mathf.PingPong(Time.time, (float)0.5));
+
             if (Input.GetKeyUp($"{key + 1}"))
                 buildingListUI[key].color += new Color(50, 50, 50);
             if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -79,28 +86,34 @@ public class BuildingManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectedBuilding = buildingList[0];
             key = 0;
+            selectedBuilding = buildingList[key];
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectedBuilding = buildingList[1];
             key = 1;
+            selectedBuilding = buildingList[key];
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            selectedBuilding = buildingList[2];
             key = 2;
+            selectedBuilding = buildingList[key];
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            selectedBuilding = buildingList[3];
             key = 3;
+            selectedBuilding = buildingList[key];
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            key = 4;
+            selectedBuilding = buildingList[key];
         }
         buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
-        if (selectedBuilding == buildingList[key])
+        for (int i = 0; i < buildingList.Count; i++)
         {
-            buildingListUI[key].color += new Color(-50, -50, -50);
+            if (i != key)
+                buildingListUI[i].color = Color.white;
         }
         return selectedBuilding;
     }
