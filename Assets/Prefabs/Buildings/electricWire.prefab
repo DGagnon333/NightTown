@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3806889881015071963}
   m_Layer: 0
   m_Name: electricWire
-  m_TagString: Building
+  m_TagString: Wire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
