@@ -17,7 +17,6 @@ public class GridManager : MonoBehaviour
     private int step = 2;
     private bool[,] tileState;
     [SerializeField] private GameObject ground;
-    [SerializeField] private int baseSize = 50;
     List<Vector3> wireQueue = new List<Vector3>();
 
 
@@ -54,14 +53,20 @@ public class GridManager : MonoBehaviour
     /// <param name = "scale" > la taille de l'objet sélectionné</param>
     public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, int key)
     {
+        int tileDispo = 0;
+        Electricity electricity = new Electricity();
+
+        //on change la position et la taille du transform pour que ce soit proportionel à la grille
         int posX = (int)(tf.position.x + gridSize - (int)ground.transform.position.x) / 2;
         int posZ = (int)(tf.position.z + gridSize - (int)ground.transform.position.z) / 2;
         int scaleDiffX = (int)(scale.x - 2) / 2;
         int scaleDiffZ = (int)(scale.z - 2) / 2;
-        int tileDispo = 0;
         Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
-        Electricity electricity = new Electricity();
+        //if (newBuilding.CompareTag("Eraser"))
+        //{
 
+        //}
+        //pour un bâtiment qui mesure plus qu'une case
         if (scaleDiffX != 0 && scaleDiffZ != 0)
         {
             for (int z = 0; z <= scaleDiffZ; z++)
@@ -87,12 +92,15 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        //pour un bâtiment qui mesure une case
         if (tileState[posX, posZ] && scaleDiffX == 0)
         {
             Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
             tileState[posX, posZ] = false;
         }
-        if (key == 3)
+
+        //si le bâtiment est un "wire"
+        if (newBuilding.CompareTag("Wire"))
         {
             if (wireQueue.Count != 0)
             {
@@ -105,7 +113,10 @@ public class GridManager : MonoBehaviour
             else
                 wireQueue.Add(position);
         }
-        if (key != 3)
+
+        if (!newBuilding.CompareTag("Wire"))
             wireQueue.Clear();
+
+        
     }
 }
