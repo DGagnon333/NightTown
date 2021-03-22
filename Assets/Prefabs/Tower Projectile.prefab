@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 526194782670398921}
   - component: {fileID: 8549175354740548979}
   - component: {fileID: 7002569755165545494}
+  - component: {fileID: 3187372698755883384}
   m_Layer: 0
   m_Name: Tower Projectile
   m_TagString: Untagged
@@ -93,3 +94,16 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3187372698755883384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236046049278404669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 763c5367933282b46a2e0571a3281c69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 50

@@ -13,7 +13,12 @@ public class HealthComponent : MonoBehaviour
         health -= damageTaken;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            if(gameObject.CompareTag("Enemy"))
+            {
+                gameObject.transform.position = new Vector3(0, 1000, 0);
+                //Destroy(gameObject);
+            }    
+            
         }
     }
 }
