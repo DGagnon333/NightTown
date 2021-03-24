@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Ce script est fait par Nassour Nassour.
+// Inspiré par: 
 public class TowerComponent : MonoBehaviour
 {
     private Transform target; // Le transform de l'ennemi à tuer
     private List<GameObject> enemy; // Une liste de tous les ennemis dans la zone d'attaque de cette tour (mettre pruvate)
     private float fireCountdown; // Compteur de tir
+    private HealthComponent health;
 
     [Header("Settings")]
     [SerializeField]
@@ -27,12 +31,16 @@ public class TowerComponent : MonoBehaviour
     [SerializeField]
     private float shotsPerSecond = 1f; // Vitesse de tir ( Combien de tirs par seconde )
 
+    [SerializeField]
+    private float maxHealth = 100f;
+
     
     
 
     void Awake()
     {
         enemy = new List<GameObject>(); // On initialise la liste
+        health = GetComponent<HealthComponent>();
     }
 
     void Start()
@@ -88,6 +96,7 @@ public class TowerComponent : MonoBehaviour
 
         if(fireCountdown <= 0)
         {
+            Debug.Log("Shoot");
             Shoot();
             fireCountdown = 1f / shotsPerSecond;
 
@@ -97,7 +106,6 @@ public class TowerComponent : MonoBehaviour
 
     void Shoot()
     {
-        Debug.Log("Shoot " + target.name);
         GameObject bullet = Instantiate(projectile, shootPoint.position, shootPoint.rotation);
         TowerProjectileComponent towerProjectile = bullet.GetComponent<TowerProjectileComponent>();
 
@@ -105,6 +113,11 @@ public class TowerComponent : MonoBehaviour
         {
             towerProjectile.Chase(target);
         }
+    }
+
+    public void Repair(float amountRepaired)
+    {
+        health.Heal(amountRepaired, maxHealth);
     }
 
     //private void OnDrawGizmosSelected() // Montre la portée de la tour dans sceneview
