@@ -10,6 +10,7 @@ public class TowerComponent : MonoBehaviour
     private Transform target; // Le transform de l'ennemi à tuer
     private List<GameObject> enemy; // Une liste de tous les ennemis dans la zone d'attaque de cette tour (mettre pruvate)
     private float fireCountdown; // Compteur de tir
+    private HealthComponent health;
 
     [Header("Settings")]
     [SerializeField]
@@ -30,12 +31,16 @@ public class TowerComponent : MonoBehaviour
     [SerializeField]
     private float shotsPerSecond = 1f; // Vitesse de tir ( Combien de tirs par seconde )
 
+    [SerializeField]
+    private float maxHealth = 100f;
+
     
     
 
     void Awake()
     {
         enemy = new List<GameObject>(); // On initialise la liste
+        health = GetComponent<HealthComponent>();
     }
 
     void Start()
@@ -110,6 +115,11 @@ public class TowerComponent : MonoBehaviour
         }
     }
 
+    public void Repair(float amountRepaired)
+    {
+        health.Heal(amountRepaired, maxHealth);
+    }
+
     //private void OnDrawGizmosSelected() // Montre la portée de la tour dans sceneview
     //{
     //    Gizmos.color = Color.red;
@@ -136,9 +146,6 @@ public class TowerComponent : MonoBehaviour
 
     private void OnTriggerExit(Collider other) // Lorsqu'il quitte la zone, il est enlevé.
     {
-        Debug.Log("Removed " + other.gameObject.name);
         enemy.Remove(other.gameObject);
-
-
     }
 }

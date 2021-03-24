@@ -24,4 +24,16 @@ public class HealthComponent : MonoBehaviour
             }
         }
     }
+
+    public void Heal(float amountHealed, float maxHealth)
+    {
+        if(amountHealed + health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health += amountHealed;
+        }
+    }
 }
