@@ -15,10 +15,13 @@ public class HealthComponent : MonoBehaviour
         {
             if(gameObject.CompareTag("Enemy"))
             {
-                gameObject.transform.position = new Vector3(0, 1000, 0);
-                //Destroy(gameObject);
+                gameObject.transform.position = new Vector3(0, -1000, 0); // Pour faire appel au OnTriggerExit
+                Destroy(gameObject, 1);         
             }    
-            
+            else if (gameObject.CompareTag("Base"))
+            {
+                Destroy(transform.parent.gameObject);
+            }
         }
     }
 }

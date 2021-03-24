@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Ce script est fait par Nassour Nassour.
+// Inspiré par: 
 public class TowerComponent : MonoBehaviour
 {
     private Transform target; // Le transform de l'ennemi à tuer
@@ -88,6 +91,7 @@ public class TowerComponent : MonoBehaviour
 
         if(fireCountdown <= 0)
         {
+            Debug.Log("Shoot");
             Shoot();
             fireCountdown = 1f / shotsPerSecond;
 
@@ -97,7 +101,6 @@ public class TowerComponent : MonoBehaviour
 
     void Shoot()
     {
-        Debug.Log("Shoot " + target.name);
         GameObject bullet = Instantiate(projectile, shootPoint.position, shootPoint.rotation);
         TowerProjectileComponent towerProjectile = bullet.GetComponent<TowerProjectileComponent>();
 
@@ -133,6 +136,9 @@ public class TowerComponent : MonoBehaviour
 
     private void OnTriggerExit(Collider other) // Lorsqu'il quitte la zone, il est enlevé.
     {
+        Debug.Log("Removed " + other.gameObject.name);
         enemy.Remove(other.gameObject);
+
+
     }
 }
