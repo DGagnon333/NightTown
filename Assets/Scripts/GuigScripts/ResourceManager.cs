@@ -23,6 +23,8 @@ public class ResourceManager : MonoBehaviour
     public enum WeaponType { Spear, Axe, Sword, ArrowBow, NbWeaponType}
     // Guillaume: pour tous les set, je devrai m'assurer que l'item n'existe pas déjà. le cas échéant, je devrai lancer un
     //            exception et le plus rapidement possible gérer cette exception ou empêcher la création de cette item
+    public int[,] WeaponCosts = new int[(int)WeaponType.NbWeaponType + 1, (int)ResourceType.NbResourceType - 2] 
+    { { 1, 1, 0 }, { 4, 2, 0 }, { 2, 4, 0 }, { 4, 4, 0 }, { 0, 4, 2 } };
     public class PlayerItem : MonoBehaviour
     {
         private int iD;
@@ -62,50 +64,50 @@ public class ResourceManager : MonoBehaviour
             }
         }
     }
-    public class Resource
-    {
-        private int resourceID;
-        public int ResourceID
-        {
-            get
-            {
-                return resourceID;
-            }
-            private set
-            {
-                resourceID = value;
-            }
-        }
-        // Guillaume : la description de la ressource permettra de décrire les différentes utilités de la ressource.
-        private string resourceDescription;
-        public string ResourceDescription
-        {
-            get
-            {
-                return resourceDescription;
-            }
-            private set
-            {
-                resourceDescription = value;
-            }
-        }
-        private Sprite resourceIcon;
-        public Sprite ResourceIcon
-        {
-            get
-            {
-                return resourceIcon;
-            }
-            private set
-            {
-                resourceIcon = value;
-            }
-        }
-        public Resource()
-        {
+    //public class Resource
+    //{
+    //    private int resourceID;
+    //    public int ResourceID
+    //    {
+    //        get
+    //        {
+    //            return resourceID;
+    //        }
+    //        private set
+    //        {
+    //            resourceID = value;
+    //        }
+    //    }
+    //    // Guillaume : la description de la ressource permettra de décrire les différentes utilités de la ressource.
+    //    private string resourceDescription;
+    //    public string ResourceDescription
+    //    {
+    //        get
+    //        {
+    //            return resourceDescription;
+    //        }
+    //        private set
+    //        {
+    //            resourceDescription = value;
+    //        }
+    //    }
+    //    private Sprite resourceIcon;
+    //    public Sprite ResourceIcon
+    //    {
+    //        get
+    //        {
+    //            return resourceIcon;
+    //        }
+    //        private set
+    //        {
+    //            resourceIcon = value;
+    //        }
+    //    }
+    //    public Resource()
+    //    {
 
-        }
-    }
+    //    }
+    //}
     public class BaseResourceInventory
     {
         const int INITIAL_RESOURCE_COUNT = 0;
@@ -182,7 +184,8 @@ public class ResourceManager : MonoBehaviour
             StoneCount = INITIAL_RESOURCE_COUNT;
             EnergyRateCapacity = INITIAL_RESOURCE_COUNT;
             EnergyRateCost = INITIAL_RESOURCE_COUNT;
-            ResourceCount = new int[(int)ResourceType.NbResourceType] { GoldCount, WoodCount, StoneCount, EnergyRateCapacity, EnergyRateCost };
+            // Guillaume: le tableau à l'air inutile...
+            //ResourceCount = new int[(int)ResourceType.NbResourceType] { GoldCount, WoodCount, StoneCount, EnergyRateCapacity, EnergyRateCost };
         }
         // Guillaume: devra éventuellement être afficher de façon interactive sur le GameScreen (avec icône et information claire)
         public override string ToString()
@@ -194,6 +197,10 @@ public class ResourceManager : MonoBehaviour
                                                   "Energy Capacity: " + EnergyRateCapacity.ToString() +
                                                   "Energy Cost: " + EnergyRateCost.ToString();
             return message;
+        }
+        static void ManageTowerCost(int level)
+        {
+            
         }
     }
     public class PlayerInventory
