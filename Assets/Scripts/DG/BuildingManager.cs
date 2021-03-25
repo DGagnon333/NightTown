@@ -22,6 +22,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Material gridTexture;
     [SerializeField] private Material greenTexture;
     [SerializeField] private Renderer gridRenderer;
+    private Dictionary<Point2D, GameObject> buildingTiles;
     Color baseColor;
 
 
@@ -30,6 +31,7 @@ public class BuildingManager : MonoBehaviour
         selectedBuilding = buildingList[0]; //on donne un object par défaut à selectedBuilding pour que ça nous ne
         //retourne pas un null reference si aucun bâtiment n'est sélectionné.
         baseColor = buildingLayout.GetComponent<Renderer>().material.color;
+        buildingTiles = new Dictionary<Point2D, GameObject>();
     }
     private void Start()
     {
@@ -73,8 +75,11 @@ public class BuildingManager : MonoBehaviour
                 buildingListUI[key].color += new Color(50, 50, 50);
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                    GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, key);
+                    GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles);
             }
+            //on peut déselectioner le placement des fils au besoin avec un click droit de la souris
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+                GetComponent<GridManager>().wireQueue.Clear();
         }
 
     }

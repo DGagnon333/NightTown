@@ -11,7 +11,8 @@ using UnityEngine.UIElements;
 
 public class Electricity : MonoBehaviour
 {
-    public void ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire, bool[,] electrictyMap)
+    public int wireLenght = 0;
+    public int ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire, bool[,] electrictyMap, Dictionary<Point2D, GameObject> buildingTiles)
     {
         //toutes les variables
         Point2D PositionSource = new Point2D(posX, posZ);
@@ -32,7 +33,7 @@ public class Electricity : MonoBehaviour
 
         while (frontier != null)
         {
-            
+            //Debug.Log(frontier.Count);
             current = frontier.Dequeue();
             //Sud
             if (((current.Z - 1) >= 0) && newMap[current.Z - 1, current.X])
@@ -62,6 +63,11 @@ public class Electricity : MonoBehaviour
                 newMap[current.Z, current.X - 1] = false;
             }
 
+            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
+            {
+                voisin.Clear();
+                break;
+            }
             foreach (Point2D i in voisin)
             {
                 if (!cameFrom.ContainsValue(i) || (i == PositionSource))
@@ -70,34 +76,31 @@ public class Electricity : MonoBehaviour
                     cameFrom[i] = current;
                 }
             }
-            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
-            {
-                break;
-            }
             voisin.Clear();
         }
 
         foreach (var i in cameFrom)
         {
+            //Instantiate(wire, new Vector3(i.Key.X * 2 - gridSize, 0, i.Key.Z * 2 - gridSize), Quaternion.identity);
             if (i.Key.X == PositionDestination.X && i.Key.Z == PositionDestination.Z)
             {
-                first = cameFrom[i.Key];
+                first = i.Key;
             }
         }
         path.Add(first);
 
-        int pt = 0;
-        while (!(path[pt].X == PositionSource.X && path[pt].Z == PositionSource.Z)) 
+        while (!(path[wireLenght].X == PositionSource.X && path[wireLenght].Z == PositionSource.Z)) 
         {
-            next = cameFrom[path[pt]];
+            next = cameFrom[path[wireLenght]];
             path.Add(next);
             if (tileState[next.X, next.Z])
-                Instantiate(wire, new Vector3(next.X* 2 - gridSize, 0, next.Z *2-gridSize), Quaternion.identity);
-            pt++;
+                buildingTiles.Add(new Point2D(posX, posZ), Instantiate(wire, new Vector3(next.X* 2 - gridSize, 0, next.Z *2-gridSize), Quaternion.identity));
+            wireLenght++;
 
             tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible
             electrictyMap[next.X, next.Z] = true; //ici on RETIENT la position des fils électriques
         }
+        return wireLenght + 1;
     }
     private bool[,] CreateNewMap(bool[,] tileState, int gridSize)
     {
@@ -110,16 +113,5 @@ public class Electricity : MonoBehaviour
             }
         }
         return newMap;
-    }
-    
-    public class Point2D
-    {
-        public int X { get; private set; }
-        public int Z { get; private set; }
-        public Point2D(int x, int z)
-        {
-            X = x;
-            Z = z;
-        }
     }
 }

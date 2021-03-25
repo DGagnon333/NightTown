@@ -17,8 +17,9 @@ public class GridManager : MonoBehaviour
     private int step = 2;
     private bool[,] tileState;
     [SerializeField] private GameObject ground;
-    List<Vector3> wireQueue = new List<Vector3>();
+    public List<Vector3> wireQueue = new List<Vector3>();
     public bool[,] electrictyMap;
+    public int wireLenght;
 
     private void Awake()
     {
@@ -53,7 +54,7 @@ public class GridManager : MonoBehaviour
     /// <param name = "newBuilding" > le bâtiment choisi</param>
     /// <param name = "tf" > la position du "phantôme" de l'objet sélectionné</param>
     /// <param name = "scale" > la taille de l'objet sélectionné</param>
-    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, int key)
+    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles)
     {
         int tileDispo = 0;
         Electricity electricity = new Electricity();
@@ -64,12 +65,17 @@ public class GridManager : MonoBehaviour
         int scaleDiffX = (int)(scale.x - 2) / 2;
         int scaleDiffZ = (int)(scale.z - 2) / 2;
         Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
-        //if (newBuilding.CompareTag("Eraser"))
-        //{
+        bool isEraser = false;
+        GameObject buildingClone = newBuilding; //simplement pour l'instancier
+        bool isDestroyed = false;
 
-        //}
+        if (newBuilding.CompareTag("Eraser"))
+        {
+            isEraser = true;
+        }
+
         //pour un bâtiment qui mesure plus qu'une case
-        if (scaleDiffX != 0 && scaleDiffZ != 0)
+        if (scaleDiffX != 0 && scaleDiffZ != 0 || isEraser)
         {
             for (int z = 0; z <= scaleDiffZ; z++)
             {
@@ -77,48 +83,92 @@ public class GridManager : MonoBehaviour
                 {
                     if (!tileState[posX + z, posZ + x])
                     {
-                        tileDispo++;
+                        if (isEraser)
+                        {
+                            isDestroyed = Eraser(newBuilding, buildingTiles, posX, posZ, x, z);
+                        }
+                        else
+                        {
+                            tileDispo++;
+                        }
                     }
                 }
             }
             if (tileDispo == 0)
             {
+                if (!isEraser)
+                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
                 for (int z = 0; z <= scaleDiffZ; z++)
                 {
                     for (int x = 0; x <= scaleDiffX; x++)
                     {
-                        tileState[posX + x, posZ + z] = false;
+                        buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
+                        if (isDestroyed)
+                            tileState[posX + x, posZ + z] = false;
+                        else
+                            tileState[posX + x, posZ + z] = false;
                     }
                 }
-                Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
             }
-        }
 
-        //pour un bâtiment qui mesure une case
-        if (tileState[posX, posZ] && scaleDiffX == 0)
-        {
-            Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
-            tileState[posX, posZ] = false;
         }
-
-        //si le bâtiment est un "wire"
-        if (newBuilding.CompareTag("Wire"))
-        {
-            if (wireQueue.Count != 0)
+            //pour un bâtiment qui mesure une cased
+            if (tileState[posX, posZ] && scaleDiffX == 0)
             {
-                int posXOld = (int)(wireQueue[wireQueue.Count - 1].x + gridSize - (int)ground.transform.position.x) / 2;
-                int posZOld = (int)(wireQueue[wireQueue.Count - 1].z + gridSize - (int)ground.transform.position.z) / 2;
-                electricity.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding, electrictyMap);
-                wireQueue.Add(position);
+                if (!isEraser)
+                {
+                    Debug.Log("allo");
+                    buildingTiles.Add(new Point2D(posX, posZ), Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity));
+                    tileState[posX, posZ] = false;
+                }
+                if (isEraser)
+                {
+                    isDestroyed = Eraser(newBuilding, buildingTiles, posX, posZ, 0, 0);
+                }
+                if(isDestroyed)
+                    tileState[posX, posZ] = true;
             }
 
-            else
-                wireQueue.Add(position);
+            //si le bâtiment est un "wire"
+            if (newBuilding.CompareTag("Wire"))
+            {
+                Wire(electricity, posX, posZ, newBuilding, position, buildingTiles);
+            }
+
+            if (!newBuilding.CompareTag("Wire"))
+                wireQueue.Clear();
+        
+    }
+    private bool Eraser(GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, int posX, int posZ, int addX, int addZ)
+    {
+        int keyX;
+        int keyZ;
+        bool isDestroyed = false;
+        foreach (var i in buildingTiles)
+        {
+            keyX = i.Key.X + addX;
+            keyZ = i.Key.Z + addZ;
+            Debug.Log((i.Key.X + addX) + ", " + (i.Key.Z + addZ));
+            if (posX == keyX && posZ == keyZ)
+            {
+                Debug.Log(posX + ", " + posZ);
+                Destroy(i.Value);
+                isDestroyed = true;
+            }
+        }
+        return isDestroyed;
+    }
+    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Vector3 position, Dictionary<Point2D, GameObject> buildingTiles)
+    {
+        if (wireQueue.Count != 0)
+        {
+            int posXOld = (int)(wireQueue[wireQueue.Count - 1].x + gridSize - (int)ground.transform.position.x) / 2;
+            int posZOld = (int)(wireQueue[wireQueue.Count - 1].z + gridSize - (int)ground.transform.position.z) / 2;
+            wireLenght = electricity.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding, electrictyMap, buildingTiles);
+            wireQueue.Add(position);
         }
 
-        if (!newBuilding.CompareTag("Wire"))
-            wireQueue.Clear();
-
-        
+        else
+            wireQueue.Add(position);
     }
 }
