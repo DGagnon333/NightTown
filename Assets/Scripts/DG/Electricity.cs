@@ -33,7 +33,6 @@ public class Electricity : MonoBehaviour
 
         while (frontier != null)
         {
-            //Debug.Log(frontier.Count);
             current = frontier.Dequeue();
             //Sud
             if (((current.Z - 1) >= 0) && newMap[current.Z - 1, current.X])
@@ -81,20 +80,18 @@ public class Electricity : MonoBehaviour
 
         foreach (var i in cameFrom)
         {
-            //Instantiate(wire, new Vector3(i.Key.X * 2 - gridSize, 0, i.Key.Z * 2 - gridSize), Quaternion.identity);
             if (i.Key.X == PositionDestination.X && i.Key.Z == PositionDestination.Z)
             {
                 first = i.Key;
             }
         }
         path.Add(first);
-
         while (!(path[wireLenght].X == PositionSource.X && path[wireLenght].Z == PositionSource.Z)) 
         {
             next = cameFrom[path[wireLenght]];
             path.Add(next);
             if (tileState[next.X, next.Z])
-                buildingTiles.Add(new Point2D(posX, posZ), Instantiate(wire, new Vector3(next.X* 2 - gridSize, 0, next.Z *2-gridSize), Quaternion.identity));
+                buildingTiles.Add(new Point2D(next.X, next.Z), Instantiate(wire, new Vector3(next.X * 2 - gridSize, 0, next.Z * 2 - gridSize), Quaternion.identity));
             wireLenght++;
 
             tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible

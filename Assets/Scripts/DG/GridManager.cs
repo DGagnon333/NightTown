@@ -67,96 +67,112 @@ public class GridManager : MonoBehaviour
         Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
         bool isEraser = false;
         GameObject buildingClone = newBuilding; //simplement pour l'instancier
-        bool isDestroyed = false;
 
         if (newBuilding.CompareTag("Eraser"))
         {
-            isEraser = true;
+            Eraser(buildingTiles, posX, posZ);
         }
-
-        //pour un bâtiment qui mesure plus qu'une case
-        if (scaleDiffX != 0 && scaleDiffZ != 0 || isEraser)
+        else
         {
-            for (int z = 0; z <= scaleDiffZ; z++)
+
+            //pour un bâtiment qui mesure plus qu'une case
+            if (scaleDiffX != 0 && scaleDiffZ != 0 || isEraser)
             {
-                for (int x = 0; x <= scaleDiffX; x++)
+                for (int z = 0; z <= scaleDiffZ; z++)
                 {
-                    if (!tileState[posX + z, posZ + x])
+                    for (int x = 0; x <= scaleDiffX; x++)
                     {
-                        if (isEraser)
-                        {
-                            isDestroyed = Eraser(newBuilding, buildingTiles, posX, posZ, x, z);
-                        }
-                        else
+                        if (!tileState[posX + z, posZ + x])
                         {
                             tileDispo++;
                         }
                     }
                 }
-            }
-            if (tileDispo == 0)
-            {
-                if (!isEraser)
-                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
-                for (int z = 0; z <= scaleDiffZ; z++)
+                if (tileDispo == 0)
                 {
-                    for (int x = 0; x <= scaleDiffX; x++)
+                    if (!isEraser)
+                        buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
+                    for (int z = 0; z <= scaleDiffZ; z++)
                     {
-                        buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
-                        if (isDestroyed)
+                        for (int x = 0; x <= scaleDiffX; x++)
+                        {
+                            buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
                             tileState[posX + x, posZ + z] = false;
-                        else
-                            tileState[posX + x, posZ + z] = false;
+                        }
                     }
                 }
-            }
 
-        }
+            }
             //pour un bâtiment qui mesure une cased
             if (tileState[posX, posZ] && scaleDiffX == 0)
             {
-                if (!isEraser)
-                {
-                    Debug.Log("allo");
-                    buildingTiles.Add(new Point2D(posX, posZ), Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity));
-                    tileState[posX, posZ] = false;
-                }
-                if (isEraser)
-                {
-                    isDestroyed = Eraser(newBuilding, buildingTiles, posX, posZ, 0, 0);
-                }
-                if(isDestroyed)
-                    tileState[posX, posZ] = true;
-            }
+                buildingTiles.Add(new Point2D(posX, posZ), Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity));
 
-            //si le bâtiment est un "wire"
-            if (newBuilding.CompareTag("Wire"))
-            {
-                Wire(electricity, posX, posZ, newBuilding, position, buildingTiles);
+                tileState[posX, posZ] = false;
             }
+        }
 
-            if (!newBuilding.CompareTag("Wire"))
-                wireQueue.Clear();
-        
+        //si le bâtiment est un "wire"
+        if (newBuilding.CompareTag("Wire"))
+        {
+            Wire(electricity, posX, posZ, newBuilding, position, buildingTiles);
+        }
+
+        if (!newBuilding.CompareTag("Wire"))
+            wireQueue.Clear();
+
     }
-    private bool Eraser(GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, int posX, int posZ, int addX, int addZ)
+    private void Eraser(Dictionary<Point2D, GameObject> buildingTiles, int posX, int posZ)
     {
         int keyX;
         int keyZ;
         bool isDestroyed = false;
+        int scaleDiffX;
+        int scaleDiffZ;
+        GameObject destroyedObject = new GameObject();
+        Dictionary<Point2D, GameObject> buildingTiles2 = new Dictionary<Point2D, GameObject>();
         foreach (var i in buildingTiles)
         {
-            keyX = i.Key.X + addX;
-            keyZ = i.Key.Z + addZ;
-            Debug.Log((i.Key.X + addX) + ", " + (i.Key.Z + addZ));
-            if (posX == keyX && posZ == keyZ)
+                scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
+                scaleDiffZ = (int)(i.Value.transform.localScale.z - 2) / 2;
+
+                for (int z = 0; z <= scaleDiffZ; z++)
+                {
+                    for (int x = 0; x <= scaleDiffX; x++)
+                    {
+                        keyX = i.Key.X + x;
+                        keyZ = i.Key.Z + z;
+                        if (posX == keyX && posZ == keyZ)
+                        {
+                            isDestroyed = true;
+                            destroyedObject = i.Value;
+                            break;
+                        }
+                    }
+                }
+        }
+        foreach (var i in buildingTiles)
+        {
+            buildingTiles2.Add(i.Key, i.Value);
+        }
+        if (isDestroyed)
+        {
+            foreach (var i in buildingTiles2)
             {
-                Debug.Log(posX + ", " + posZ);
-                Destroy(i.Value);
-                isDestroyed = true;
+                if (i.Value == destroyedObject)
+                {
+                    tileState[i.Key.X, i.Key.Z] = true;
+                    buildingTiles.Remove(i.Key);
+                }
+            }
+            foreach (var i in buildingTiles2)
+            {
+                if(i.Key.X == posX && i.Key.Z == posZ)
+                {
+                    Destroy(i.Value);
+                }
             }
         }
-        return isDestroyed;
     }
     private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Vector3 position, Dictionary<Point2D, GameObject> buildingTiles)
     {
