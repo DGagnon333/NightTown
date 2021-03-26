@@ -142,6 +142,8 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
     }
     private Vector3 DetermineSpawnPosition(GameObject spawnObject) { return Vector3.zero; }
 
+
+    // Fait par Myk : 
     public float MaxRange { get { return maxRange; } }
     public GameObject textForWave;
     private float maxRange = 100f;
