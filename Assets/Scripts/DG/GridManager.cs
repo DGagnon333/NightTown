@@ -15,7 +15,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] private int gridSize = 30;
     private int step = 2;
-    private bool[,] tileState;
+    public bool[,] tileState;
     [SerializeField] private GameObject ground;
     public List<Vector3> wireQueue = new List<Vector3>();
     public bool[,] electrictyMap;
@@ -43,7 +43,7 @@ public class GridManager : MonoBehaviour
                 electrictyMap[x, z] = false;
             }
         }
-
+        Obstacles();
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class GridManager : MonoBehaviour
             wireQueue.Clear();
 
     }
-    private void Eraser(Dictionary<Point2D, GameObject> buildingTiles, int posX, int posZ)
+    public void Eraser(Dictionary<Point2D, GameObject> buildingTiles, int posX, int posZ)
     {
         int keyX;
         int keyZ;
@@ -133,23 +133,23 @@ public class GridManager : MonoBehaviour
         Dictionary<Point2D, GameObject> buildingTiles2 = new Dictionary<Point2D, GameObject>();
         foreach (var i in buildingTiles)
         {
-                scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
-                scaleDiffZ = (int)(i.Value.transform.localScale.z - 2) / 2;
+            scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
+            scaleDiffZ = (int)(i.Value.transform.localScale.z - 2) / 2;
 
-                for (int z = 0; z <= scaleDiffZ; z++)
+            for (int z = 0; z <= scaleDiffZ; z++)
+            {
+                for (int x = 0; x <= scaleDiffX; x++)
                 {
-                    for (int x = 0; x <= scaleDiffX; x++)
+                    keyX = i.Key.X + x;
+                    keyZ = i.Key.Z + z;
+                    if (posX == keyX && posZ == keyZ)
                     {
-                        keyX = i.Key.X + x;
-                        keyZ = i.Key.Z + z;
-                        if (posX == keyX && posZ == keyZ)
-                        {
-                            isDestroyed = true;
-                            destroyedObject = i.Value;
-                            break;
-                        }
+                        isDestroyed = true;
+                        destroyedObject = i.Value;
+                        break;
                     }
                 }
+            }
         }
         foreach (var i in buildingTiles)
         {
@@ -167,7 +167,7 @@ public class GridManager : MonoBehaviour
             }
             foreach (var i in buildingTiles2)
             {
-                if(i.Key.X == posX && i.Key.Z == posZ)
+                if (i.Key.X == posX && i.Key.Z == posZ)
                 {
                     Destroy(i.Value);
                 }
@@ -186,5 +186,23 @@ public class GridManager : MonoBehaviour
 
         else
             wireQueue.Add(position);
+    }
+    private void Obstacles()
+    {
+        foreach (GameObject i in GameObject.FindGameObjectsWithTag("Obstacle"))
+        {
+            int obstacleScaleX = (int)Math.Ceiling((i.transform.localScale.x - 2) / 2);
+            int obstacleScaleZ = (int)Math.Ceiling((i.transform.localScale.z - 2) / 2);
+            for (int z = 0; z <= obstacleScaleZ; z++)
+            {
+                for (int x = 0; x <= obstacleScaleX; x++)
+                {
+                    Debug.Log("allo");
+                    int posX = (int)(i.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
+                    int posZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
+                    tileState[(int)Math.Floor((float)posX) + x, (int)Math.Floor((float)posZ) + z] = false;
+                }
+            }
+        }
     }
 }
