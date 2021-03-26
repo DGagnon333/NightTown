@@ -9,6 +9,9 @@ TagManager:
   - Building
   - Grid
   - Mine
+  - Wire
+  - Eraser
+  - Obstacle
   layers:
   - Default
   - TransparentFX

@@ -80,6 +80,9 @@ public class Electricity : MonoBehaviour
 
         foreach (var i in cameFrom)
         {
+            //permet de voir toutes les position cherchées--
+            //Instantiate(wire, new Vector3(i.Key.X * 2 - gridSize, 0, i.Key.Z * 2 - gridSize), Quaternion.identity);
+            //----------------------------------------------
             if (i.Key.X == PositionDestination.X && i.Key.Z == PositionDestination.Z)
             {
                 first = i.Key;

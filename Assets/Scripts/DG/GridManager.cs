@@ -197,7 +197,6 @@ public class GridManager : MonoBehaviour
             {
                 for (int x = 0; x <= obstacleScaleX; x++)
                 {
-                    Debug.Log("allo");
                     int posX = (int)(i.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
                     int posZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
                     tileState[(int)Math.Floor((float)posX) + x, (int)Math.Floor((float)posZ) + z] = false;
