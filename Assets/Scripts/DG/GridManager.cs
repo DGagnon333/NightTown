@@ -199,7 +199,7 @@ public class GridManager : MonoBehaviour
                 {
                     int posX = (int)(i.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
                     int posZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
-                    tileState[(int)Math.Floor((float)posX) + x, (int)Math.Floor((float)posZ) + z] = false;
+                    //tileState[(int)Math.Floor((float)posX) + x, (int)Math.Floor((float)posZ) + z] = false;
                 }
             }
         }

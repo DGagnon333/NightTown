@@ -24,15 +24,20 @@ public class Electricity : MonoBehaviour
         List<Point2D> path = new List<Point2D>();
         Point2D first = new Point2D(1, 1);
         Point2D next;
-
+        bool isEmpty = false;
         //la création des carte
         bool[,] newMap = CreateNewMap(tileState, gridSize);
 
         frontier.Enqueue(current);
         cameFrom.Add(PositionSource, PositionSource);
 
-        while (frontier != null)
+        while (frontier.Count != 0)
         {
+            if (frontier.Count == 0)
+            {
+                isEmpty = true;
+                break;
+            }
             current = frontier.Dequeue();
             //Sud
             if (((current.Z - 1) >= 0) && newMap[current.Z - 1, current.X])
@@ -69,15 +74,18 @@ public class Electricity : MonoBehaviour
             }
             foreach (Point2D i in voisin)
             {
-                if (!cameFrom.ContainsValue(i) || (i == PositionSource))
+                if (!cameFrom.ContainsValue(i) || i == PositionSource)
                 {
                     frontier.Enqueue(i);
-                    cameFrom[i] = current;
+                    cameFrom.Add(i, current);
                 }
             }
             voisin.Clear();
         }
-
+        if(isEmpty == true)
+        {
+            return  0;
+        }
         foreach (var i in cameFrom)
         {
             //permet de voir toutes les position cherchées--
@@ -105,11 +113,12 @@ public class Electricity : MonoBehaviour
     private bool[,] CreateNewMap(bool[,] tileState, int gridSize)
     {
         bool[,] newMap = new bool[gridSize, gridSize];
-        for (int x = 0; x < gridSize; x++)
+        for (int z = 0; z < gridSize; z++)
         {
-            for (int z = 0; z < gridSize; z++)
+            for (int x = 0; x < gridSize; x++)
             {
-                newMap[x, z] = tileState[x, z];
+                //newMap[z, x] = tileState[z, x];
+                newMap[x, z] = true;
             }
         }
         return newMap;
