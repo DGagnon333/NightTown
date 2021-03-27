@@ -12,6 +12,7 @@ public class ShootTheArrow : MonoBehaviour
     private bool hasHitObject = false;
     private float chronometer;
     private float timeForDestruction = 5f;
+    private float damageByTheArrow = 100f;
     void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
@@ -54,8 +55,8 @@ public class ShootTheArrow : MonoBehaviour
 
         if (collision.collider.CompareTag("Enemy"))
         {
-            // Health of enemy reduced (check avec un debuglog)
-            Debug.Log("Myk a 200iq");
+            HealthComponent enemyHealth = collision.collider.GetComponent<HealthComponent>();
+            enemyHealth.TakeDamage(damageByTheArrow); // L'ennemi perds de la vie egal au dommage de l'arme
         }
     }
 

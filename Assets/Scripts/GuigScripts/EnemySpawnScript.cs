@@ -4,9 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
 
-public class EnemySpawnScript : MonoBehaviour
+
+public class EnemySpawnScript : MonoBehaviour, IInteractable
 {
+    
     public enum WaveState { Inactive, Active, Attack, AllCompleted, NbWaveStates };
 
     // Guillaume: une mini classe qui définit une vague de zombie et qui est personnalisable à partir de Unity
@@ -34,7 +37,16 @@ public class EnemySpawnScript : MonoBehaviour
     public EnemyWave[] waves;
     private int nextWave = 0;
     private WaveState currentWaveState = WaveState.Inactive;
+
     private bool besoinVerifIsDay = true; // Guillaume: TEMPORAIRE!!!!
+
+    public DayNightCycle dayNightCycle;
+    private void Start()
+    {
+        dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
+        textForWave.SetActive(false); // Myk 
+    }
+
     private void Update()
     {
         bool isDay = DayNightManager.IsDay;
@@ -47,6 +59,7 @@ public class EnemySpawnScript : MonoBehaviour
             else { return; } // Guillaume: Si des ennemies sont toujours vivant, on veut éviter de 
                              //            vérifier les conditions pour démarrer une nouvelle vague
         }
+
         if (isDay)
             SpawnLoop();
         if (!isDay && besoinVerifIsDay)
@@ -54,6 +67,11 @@ public class EnemySpawnScript : MonoBehaviour
             besoinVerifIsDay = false;
             Debug.Log("C'est la nuit!");
         }
+
+        //Guillaume : un test!!! faut enlever!!!!
+        if (!isDay)
+            Debug.Log("C'est la nuit");
+        /*
         if (!isDay && currentWaveState == WaveState.Inactive)
         {
             // Guillaume: pas certain du input pour l'activation d'une vague ennemi. 
@@ -61,7 +79,7 @@ public class EnemySpawnScript : MonoBehaviour
             KeyCode waveActivationKey = KeyCode.V; // Guillaume: Input temporaire pour l'activation d'une vague
             if (!isDay && Input.GetKeyDown(waveActivationKey))
                 StartCoroutine(SpawnWave(waves[nextWave]));
-        }
+        }*/
     }
     private void ManageEndOfWave()
     {
@@ -125,4 +143,27 @@ public class EnemySpawnScript : MonoBehaviour
         Instantiate(enemy, spawnPoint, Quaternion.identity);
     }
     private Vector3 DetermineSpawnPosition(GameObject spawnObject) { return Vector3.zero; }
+
+
+    // Fait par Myk : 
+    public float MaxRange { get { return maxRange; } }
+    public GameObject textForWave;
+    private float maxRange = 100f;
+    public void OnStartHover()
+    {
+        textForWave.SetActive(true);
+    }
+    public void OnInteract()
+    {
+        bool isDay = dayNightCycle.IsDay;
+        if (!isDay && currentWaveState == WaveState.Inactive)
+        {
+            StartCoroutine(SpawnWave(waves[nextWave]));
+        }
+    }
+    public void OnEndHover()
+    {
+        textForWave.SetActive(false);
+    }
+
 }
