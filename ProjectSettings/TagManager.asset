@@ -9,6 +9,8 @@ TagManager:
   - Building
   - Grid
   - Mine
+  - Base
+  - Eraser
   layers:
   - Default
   - TransparentFX
