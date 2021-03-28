@@ -9,8 +9,14 @@ TagManager:
   - Building
   - Grid
   - Mine
+<<<<<<< HEAD
   - Base
   - Eraser
+=======
+  - Wire
+  - Eraser
+  - Obstacle
+>>>>>>> 3fe2595b9adcb783fad0c9e02ca67d3cfbdcfcac
   layers:
   - Default
   - TransparentFX

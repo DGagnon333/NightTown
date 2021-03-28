@@ -11,7 +11,8 @@ using UnityEngine.UIElements;
 
 public class Electricity : MonoBehaviour
 {
-    public void ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire, bool[,] electrictyMap)
+    public int wireLenght = 0;
+    public int ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire, bool[,] electrictyMap, Dictionary<Point2D, GameObject> buildingTiles)
     {
         //toutes les variables
         Point2D PositionSource = new Point2D(posX, posZ);
@@ -23,16 +24,20 @@ public class Electricity : MonoBehaviour
         List<Point2D> path = new List<Point2D>();
         Point2D first = new Point2D(1, 1);
         Point2D next;
-
+        bool isEmpty = false;
         //la création des carte
         bool[,] newMap = CreateNewMap(tileState, gridSize);
 
         frontier.Enqueue(current);
         cameFrom.Add(PositionSource, PositionSource);
 
-        while (frontier != null)
+        while (frontier.Count != 0)
         {
-            
+            if (frontier.Count == 0)
+            {
+                isEmpty = true;
+                break;
+            }
             current = frontier.Dequeue();
             //Sud
             if (((current.Z - 1) >= 0) && newMap[current.Z - 1, current.X])
@@ -62,64 +67,60 @@ public class Electricity : MonoBehaviour
                 newMap[current.Z, current.X - 1] = false;
             }
 
-            foreach (Point2D i in voisin)
-            {
-                if (!cameFrom.ContainsValue(i) || (i == PositionSource))
-                {
-                    frontier.Enqueue(i);
-                    cameFrom[i] = current;
-                }
-            }
             if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
             {
+                voisin.Clear();
                 break;
+            }
+            foreach (Point2D i in voisin)
+            {
+                if (!cameFrom.ContainsValue(i) || i == PositionSource)
+                {
+                    frontier.Enqueue(i);
+                    cameFrom.Add(i, current);
+                }
             }
             voisin.Clear();
         }
-
+        if(isEmpty == true)
+        {
+            return  0;
+        }
         foreach (var i in cameFrom)
         {
+            //permet de voir toutes les position cherchées--
+            //Instantiate(wire, new Vector3(i.Key.X * 2 - gridSize, 0, i.Key.Z * 2 - gridSize), Quaternion.identity);
+            //----------------------------------------------
             if (i.Key.X == PositionDestination.X && i.Key.Z == PositionDestination.Z)
             {
-                first = cameFrom[i.Key];
+                first = i.Key;
             }
         }
         path.Add(first);
-
-        int pt = 0;
-        while (!(path[pt].X == PositionSource.X && path[pt].Z == PositionSource.Z)) 
+        while (!(path[wireLenght].X == PositionSource.X && path[wireLenght].Z == PositionSource.Z)) 
         {
-            next = cameFrom[path[pt]];
+            next = cameFrom[path[wireLenght]];
             path.Add(next);
             if (tileState[next.X, next.Z])
-                Instantiate(wire, new Vector3(next.X* 2 - gridSize, 0, next.Z *2-gridSize), Quaternion.identity);
-            pt++;
+                buildingTiles.Add(new Point2D(next.X, next.Z), Instantiate(wire, new Vector3(next.X * 2 - gridSize, 0, next.Z * 2 - gridSize), Quaternion.identity));
+            wireLenght++;
 
             tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible
             electrictyMap[next.X, next.Z] = true; //ici on RETIENT la position des fils électriques
         }
+        return wireLenght + 1;
     }
     private bool[,] CreateNewMap(bool[,] tileState, int gridSize)
     {
         bool[,] newMap = new bool[gridSize, gridSize];
-        for (int x = 0; x < gridSize; x++)
+        for (int z = 0; z < gridSize; z++)
         {
-            for (int z = 0; z < gridSize; z++)
+            for (int x = 0; x < gridSize; x++)
             {
-                newMap[x, z] = tileState[x, z];
+                //newMap[z, x] = tileState[z, x];
+                newMap[x, z] = true;
             }
         }
         return newMap;
-    }
-    
-    public class Point2D
-    {
-        public int X { get; private set; }
-        public int Z { get; private set; }
-        public Point2D(int x, int z)
-        {
-            X = x;
-            Z = z;
-        }
     }
 }
