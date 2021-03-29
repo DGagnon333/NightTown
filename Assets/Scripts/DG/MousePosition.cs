@@ -22,7 +22,7 @@ public class MousePosition : MonoBehaviour
     {
         mouseX = Input.mousePosition.x;
         mouseY = Input.mousePosition.y;
-        buildingLayout.transform.position = cam.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cam.focalLength / 2));
+        buildingLayout.transform.position = cam.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cam.focalLength * (float)0.75));
         //On utilise le focal length, car plus le curseur sera éloigné du champ de vision, plus il
         //accélérera. il a été divisé par deux pour que le facteur d'accélération ne soit pas trop grand.
 

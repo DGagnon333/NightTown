@@ -22,7 +22,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Material gridTexture;
     [SerializeField] private Material greenTexture;
     [SerializeField] private Renderer gridRenderer;
-    private Dictionary<Point2D, GameObject> buildingTiles;
+    public Dictionary<Point2D, GameObject> buildingTiles;
     Color baseColor;
 
 

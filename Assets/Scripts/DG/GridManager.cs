@@ -16,7 +16,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int gridSize = 30;
     private int step = 2;
     public bool[,] tileState;
-    [SerializeField] private GameObject ground;
+    [SerializeField] public GameObject ground;
     public List<Vector3> wireQueue = new List<Vector3>();
     public bool[,] electrictyMap;
     public int wireLenght;
@@ -67,10 +67,11 @@ public class GridManager : MonoBehaviour
         Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
         bool isEraser = false;
         GameObject buildingClone = newBuilding; //simplement pour l'instancier
+        newBuilding.transform.position = tf.position;
 
         if (newBuilding.CompareTag("Eraser"))
         {
-            Eraser(buildingTiles, posX, posZ);
+            Eraser(newBuilding);
         }
         else
         {
@@ -122,15 +123,24 @@ public class GridManager : MonoBehaviour
             wireQueue.Clear();
 
     }
-    public void Eraser(Dictionary<Point2D, GameObject> buildingTiles, int posX, int posZ)
+    public void Eraser(GameObject newBuilding)
     {
+        //j'utilise une propriété GetComponent même pour les propriétés de la même classe pour que les autres scripts n'aient pas à le faire aussi.
+        //donc la fonction a seulement besoin d'avoir un GameObject en intrants et tout le reste est fait.
+        int posX = (int)(newBuilding.transform.position.x + gridSize - (int)GetComponent<GridManager>().ground.transform.position.x) / 2;
+        int posZ = (int)(newBuilding.transform.position.z + gridSize - (int)GetComponent<GridManager>().ground.transform.position.z) / 2;
         int keyX;
         int keyZ;
         bool isDestroyed = false;
         int scaleDiffX;
         int scaleDiffZ;
         GameObject destroyedObject = new GameObject();
-        Dictionary<Point2D, GameObject> buildingTiles2 = new Dictionary<Point2D, GameObject>();
+        Dictionary<Point2D, GameObject> buildingTiles = GetComponent<BuildingManager>().buildingTiles;
+        Dictionary<Point2D, GameObject> buildingTilesCopy = new Dictionary<Point2D, GameObject>();
+        foreach (var i in buildingTiles)
+        {
+            buildingTilesCopy.Add(i.Key, i.Value);
+        }
         foreach (var i in buildingTiles)
         {
             scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
@@ -151,13 +161,10 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        foreach (var i in buildingTiles)
-        {
-            buildingTiles2.Add(i.Key, i.Value);
-        }
+        
         if (isDestroyed)
         {
-            foreach (var i in buildingTiles2)
+            foreach (var i in buildingTilesCopy)
             {
                 if (i.Value == destroyedObject)
                 {
@@ -165,7 +172,7 @@ public class GridManager : MonoBehaviour
                     buildingTiles.Remove(i.Key);
                 }
             }
-            foreach (var i in buildingTiles2)
+            foreach (var i in buildingTilesCopy)
             {
                 if (i.Key.X == posX && i.Key.Z == posZ)
                 {
@@ -199,7 +206,7 @@ public class GridManager : MonoBehaviour
                 {
                     int posX = (int)(i.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
                     int posZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
-                    //tileState[(int)Math.Floor((float)posX) + x, (int)Math.Floor((float)posZ) + z] = false;
+                    tileState[(int)Math.Floor((float)posX) + x, (int)Math.Floor((float)posZ) + z] = false;
                 }
             }
         }
