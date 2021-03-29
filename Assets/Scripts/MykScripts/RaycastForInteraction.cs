@@ -45,7 +45,7 @@ public class RaycastForInteraction : MonoBehaviour
                     {
                         return;
                     }
-                    else if (currentTarget != null) //Si le Raycast avait capté un objet dans le dernier objet et qu'ensuite il en capte un autre alors nous rendons cet objet capté comme étant l'objet capté présentement jusqu'à ce qu'un autre soit peut-être capt au prochain "Update".                    
+                    else if (currentTarget != null) //Si le Raycast avait capté un objet dans le dernier objet et qu'ensuite il en capte un autre alors nous rendons cet objet capté comme étant l'objet capté présentement jusqu'à ce qu'un autre soit peut-être capté au prochain "Update".                    
                     {
                         currentTarget.OnEndHover();
                         currentTarget = interactable;

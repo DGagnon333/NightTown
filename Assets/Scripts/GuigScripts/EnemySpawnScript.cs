@@ -41,7 +41,9 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
     private void Start()
     {
         dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
-        textForWave.SetActive(false); // Myk 
+        textToStartWave.SetActive(false); //Myk
+        textAlreadyInDay.SetActive(false); // Myk
+        textAlreadyInWave.SetActive(false); // Myk 
     }
 
     private void Update()
@@ -134,11 +136,25 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
 
     // Fait par Myk : 
     public float MaxRange { get { return maxRange; } }
-    public GameObject textForWave;
+    public GameObject textToStartWave;
+    public GameObject textAlreadyInDay;
+    public GameObject textAlreadyInWave;
     private float maxRange = 100f;
     public void OnStartHover()
     {
-        textForWave.SetActive(true);
+        bool isDay = dayNightCycle.IsDay;
+        if (isDay)
+        {
+            textAlreadyInDay.SetActive(true);
+        }
+        else if (currentWaveState == WaveState.Active)
+        {
+            textAlreadyInWave.SetActive(true);
+        }
+        else if (!isDay && currentWaveState == WaveState.Inactive)
+        {
+            textToStartWave.SetActive(true);
+        }
     }
     public void OnInteract()
     {
@@ -150,7 +166,9 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
     }
     public void OnEndHover()
     {
-        textForWave.SetActive(false);
+        textToStartWave.SetActive(false);
+        textAlreadyInDay.SetActive(false);
+        textAlreadyInWave.SetActive(false);
     }
 
 }
