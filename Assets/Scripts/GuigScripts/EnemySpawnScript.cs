@@ -9,7 +9,6 @@ using UnityEngine.UI;
 
 public class EnemySpawnScript : MonoBehaviour, IInteractable
 {
-    
     public enum WaveState { Inactive, Active, Attack, AllCompleted, NbWaveStates };
 
     // Guillaume: une mini classe qui définit une vague de zombie et qui est personnalisable à partir de Unity
@@ -38,8 +37,6 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
     private int nextWave = 0;
     private WaveState currentWaveState = WaveState.Inactive;
 
-    private bool besoinVerifIsDay = true; // Guillaume: TEMPORAIRE!!!!
-
     public DayNightCycle dayNightCycle;
     private void Start()
     {
@@ -62,20 +59,10 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
 
         if (isDay)
             SpawnLoop();
-        if (!isDay && besoinVerifIsDay)
-        {
-            besoinVerifIsDay = false;
-            Debug.Log("C'est la nuit!");
-        }
 
-        //Guillaume : un test!!! faut enlever!!!!
-        if (!isDay)
-            Debug.Log("C'est la nuit");
         /*
         if (!isDay && currentWaveState == WaveState.Inactive)
         {
-            // Guillaume: pas certain du input pour l'activation d'une vague ennemi. 
-            //            --> hésite entre un bouton (UI) dans la base ou une key sur le clavier
             KeyCode waveActivationKey = KeyCode.V; // Guillaume: Input temporaire pour l'activation d'une vague
             if (!isDay && Input.GetKeyDown(waveActivationKey))
                 StartCoroutine(SpawnWave(waves[nextWave]));
