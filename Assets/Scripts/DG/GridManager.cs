@@ -13,7 +13,7 @@ using System.Linq;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private int gridSize = 30;
+    [SerializeField] public int gridSize = 30;
     private int step = 2;
     public bool[,] tileState;
     [SerializeField] public GameObject ground;
@@ -58,7 +58,6 @@ public class GridManager : MonoBehaviour
     {
         int tileDispo = 0;
         Electricity electricity = new Electricity();
-
         //on change la position et la taille du transform pour que ce soit proportionel à la grille
         int posX = (int)(tf.position.x + gridSize - (int)ground.transform.position.x) / 2;
         int posZ = (int)(tf.position.z + gridSize - (int)ground.transform.position.z) / 2;
@@ -92,12 +91,13 @@ public class GridManager : MonoBehaviour
                 if (tileDispo == 0)
                 {
                     if (!isEraser)
-                        buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
+                        buildingClone = Instantiate(newBuilding, position + new Vector3 (1,0,1) + ground.transform.position, Quaternion.identity);
                     for (int z = 0; z <= scaleDiffZ; z++)
                     {
                         for (int x = 0; x <= scaleDiffX; x++)
                         {
                             buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
+                            Debug.Log(buildingTiles.Count() + "posX : " +( posX + x )+ "posZ : " + (posZ+z));
                             tileState[posX + x, posZ + z] = false;
                         }
                     }
@@ -108,7 +108,6 @@ public class GridManager : MonoBehaviour
             if (tileState[posX, posZ] && scaleDiffX == 0)
             {
                 buildingTiles.Add(new Point2D(posX, posZ), Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity));
-
                 tileState[posX, posZ] = false;
             }
         }
@@ -146,9 +145,9 @@ public class GridManager : MonoBehaviour
             scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
             scaleDiffZ = (int)(i.Value.transform.localScale.z - 2) / 2;
 
-            for (int z = 0; z <= scaleDiffZ; z++)
+            for (int z = 0; z < scaleDiffZ; z++)
             {
-                for (int x = 0; x <= scaleDiffX; x++)
+                for (int x = 0; x < scaleDiffX; x++)
                 {
                     keyX = i.Key.X + x;
                     keyZ = i.Key.Z + z;
@@ -161,7 +160,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        
+
         if (isDestroyed)
         {
             foreach (var i in buildingTilesCopy)
@@ -185,9 +184,11 @@ public class GridManager : MonoBehaviour
     {
         if (wireQueue.Count != 0)
         {
+            Point2D PositionSource = new Point2D(posX, posZ);
             int posXOld = (int)(wireQueue[wireQueue.Count - 1].x + gridSize - (int)ground.transform.position.x) / 2;
             int posZOld = (int)(wireQueue[wireQueue.Count - 1].z + gridSize - (int)ground.transform.position.z) / 2;
-            wireLenght = electricity.ElectrictyState(gridSize, tileState, posX, posZ, posXOld, posZOld, newBuilding, electrictyMap, buildingTiles);
+            Point2D PositionDestination = new Point2D(posXOld, posZOld);
+            wireLenght = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles);
             wireQueue.Add(position);
         }
 

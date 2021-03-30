@@ -6,18 +6,26 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class Electricity : MonoBehaviour
 {
     public int wireLenght = 0;
-    public int ElectrictyState(int gridSize, bool[,] tileState, int posX, int posZ, int posXOld, int posZOld, GameObject wire, bool[,] electrictyMap, Dictionary<Point2D, GameObject> buildingTiles)
+    //-----------------------------------------------------------------------
+    //[SerializeField] GameObject baseCopy;
+    //List<GameObject> allo = new List<GameObject>();
+    //Dictionary<List<GameObject>, bool> wireDictionary = new Dictionary<List<GameObject>, bool>();
+    //private void Start()
+    //{
+    //    allo.Add(baseCopy);
+    //    wireDictionary.Add(allo, true);
+    //}
+    //-----------------------------------------------------------------------
+    public int ElectrictyState(int gridSize, bool[,] tileState, Point2D PositionSource, Point2D PositionDestination, GameObject wire, bool[,] electrictyMap, Dictionary<Point2D, GameObject> buildingTiles)
     {
-        //toutes les variables
-        Point2D PositionSource = new Point2D(posX, posZ);
-        Point2D PositionDestination = new Point2D(posXOld, posZOld);
-        Point2D current = new Point2D(posX, posZ);
+        Point2D current = new Point2D(PositionSource.X, PositionSource.Z);
         Queue<Point2D> frontier = new Queue<Point2D>();
         Dictionary<Point2D, Point2D> cameFrom = new Dictionary<Point2D, Point2D>();
         List<Point2D> voisin = new List<Point2D>();
@@ -25,9 +33,8 @@ public class Electricity : MonoBehaviour
         Point2D first = new Point2D(1, 1);
         Point2D next;
         bool isEmpty = false;
-        //la création des carte
-        bool[,] newMap = CreateNewMap(tileState, gridSize);
 
+        bool[,] newMap = CreateNewMap(tileState, gridSize);
         frontier.Enqueue(current);
         cameFrom.Add(PositionSource, PositionSource);
 
@@ -67,7 +74,7 @@ public class Electricity : MonoBehaviour
                 newMap[current.Z, current.X - 1] = false;
             }
 
-            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z) 
+            if (PositionDestination.X == current.X && PositionDestination.Z == current.Z)
             {
                 voisin.Clear();
                 break;
@@ -82,9 +89,9 @@ public class Electricity : MonoBehaviour
             }
             voisin.Clear();
         }
-        if(isEmpty == true)
+        if (isEmpty == true)
         {
-            return  0;
+            return 0;
         }
         foreach (var i in cameFrom)
         {
@@ -97,12 +104,19 @@ public class Electricity : MonoBehaviour
             }
         }
         path.Add(first);
-        while (!(path[wireLenght].X == PositionSource.X && path[wireLenght].Z == PositionSource.Z)) 
+        while (!(path[wireLenght].X == PositionSource.X && path[wireLenght].Z == PositionSource.Z))
         {
             next = cameFrom[path[wireLenght]];
             path.Add(next);
             if (tileState[next.X, next.Z])
-                buildingTiles.Add(new Point2D(next.X, next.Z), Instantiate(wire, new Vector3(next.X * 2 - gridSize, 0, next.Z * 2 - gridSize), Quaternion.identity));
+            {
+                Debug.Log("allo");
+                GameObject newWire = Instantiate(wire, new Vector3(next.X * 2 - gridSize, 0, next.Z * 2 - gridSize), Quaternion.identity);
+                buildingTiles.Add(new Point2D(next.X, next.Z), newWire);
+                //-----------------------------------------------------------------------------
+                //WireList(newWire, electrictyMap);
+                //-----------------------------------------------------------------------------
+            }
             wireLenght++;
 
             tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible
@@ -110,6 +124,41 @@ public class Electricity : MonoBehaviour
         }
         return wireLenght + 1;
     }
+    //-----------------------------------------------------------------------------
+
+    //private void WireList(GameObject wire, bool[,] electrictyMap)
+    //{
+    //    List<GameObject> allo2 = new List<GameObject>();
+    //    bool conection = false;
+    //    allo2.Add(wire);
+    //    foreach (GameObject i in allo2)
+    //    {
+    //        conection = IsConnected(i, electrictyMap);
+    //        if (conection)
+    //            break;
+
+    //    }
+    //    wireDictionary.Add(allo2, conection);
+    //    foreach (var i in wireDictionary)
+    //    {
+    //        Debug.Log(i.Key[0].name + ", " + conection);
+    //    }
+    //}
+    //public bool IsConnected(GameObject wireList, bool[,] electrictyMap)
+    //{
+    //    bool connected = false;
+    //    int posX = (int)(wireList.transform.position.x + 200) / 2;
+    //    int posZ = (int)(wireList.transform.position.z + 200) / 2;
+
+    //    if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
+    //    {
+    //        connected = true;
+    //    }
+
+    //    return connected;
+    //}
+    //-----------------------------------------------------------------------------
+
     private bool[,] CreateNewMap(bool[,] tileState, int gridSize)
     {
         bool[,] newMap = new bool[gridSize, gridSize];

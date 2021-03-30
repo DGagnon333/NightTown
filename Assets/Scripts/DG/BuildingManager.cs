@@ -35,8 +35,6 @@ public class BuildingManager : MonoBehaviour
     }
     private void Start()
     {
-        tiles = GameObject.FindGameObjectsWithTag("Grid"); //On trouve tous les objets avec le tag Grid. On crée cette fonction
-        //dans le start et non Awake pour que tous les autres cases de la grille est le temps d'être instanciées.
         BuildingMode(buildingModeState);
     }
     private void Update()
@@ -71,11 +69,15 @@ public class BuildingManager : MonoBehaviour
             //cette ligne a été inspirée par Color.Lerp, Unity Documentation, [URL]: https://docs.unity3d.com/ScriptReference/Color.Lerp.html (consulté le 22 mars 2021)
             buildingListUI[key].color = Color.Lerp(Color.gray, Color.black, Mathf.PingPong(Time.time, (float)0.5));
 
-            if (Input.GetKeyUp($"{key + 1}"))
+            if (Input.GetKeyUp($"{key + 1}") && key!= 4)
                 buildingListUI[key].color += new Color(50, 50, 50);
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                     GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles);
+            }
+            if (Input.GetKey(KeyCode.Mouse0) && Input.GetKey(KeyCode.LeftShift) && key==4)
+            {
+                GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles);
             }
             //on peut déselectioner le placement des fils au besoin avec un click droit de la souris
             if (Input.GetKeyDown(KeyCode.Mouse1))
@@ -121,7 +123,7 @@ public class BuildingManager : MonoBehaviour
             if (i != key)
                 buildingListUI[i].color = Color.white;
         }
-        buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
+        buildingLayout.transform.localScale  = selectedBuilding.transform.localScale;
         if (selectedBuilding.CompareTag("Eraser"))
             buildingLayout.GetComponent<Renderer>().material.color = Color.red;
         else
@@ -136,10 +138,6 @@ public class BuildingManager : MonoBehaviour
     public void BuildingMode(bool state)
     {
         buildingModeState = state;
-        foreach (GameObject t in tiles)
-        {
-            t.GetComponent<Renderer>().enabled = state; 
-        }
         buildingLayout.SetActive(state); 
         Canevas.SetActive(state);
         if (state)
