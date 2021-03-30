@@ -1351,8 +1351,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetDayLength: 0.5
-  timeOfDay: 1
-  pause: 1
+  timeOfDay: 0
+  pause: 0
   dailyRotation: {fileID: 1245428114}
   sun: {fileID: 2063248515}
 --- !u!4 &901846836
@@ -1784,8 +1784,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   consumable: 0
-  maxRange: 0
+  maxRange: 100
   minRange: 0.4
+  dayNight: {fileID: 901846835}
 --- !u!1 &1948465069
 GameObject:
   m_ObjectHideFlags: 0
@@ -2516,6 +2517,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch
       objectReference: {fileID: 0}
+    - target: {fileID: 8923766739160994980, guid: ce75208634d66b64bbc2fc03174b3919,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce75208634d66b64bbc2fc03174b3919, type: 3}
 --- !u!1001 &3864571833072719545
@@ -2599,6 +2605,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1225637103010544794, guid: a52fd41866225c840803e3d23bca009d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4700409174288656721, guid: a52fd41866225c840803e3d23bca009d,
         type: 3}
       propertyPath: m_RootOrder
@@ -2653,6 +2664,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7813849870061123540, guid: a52fd41866225c840803e3d23bca009d,
+        type: 3}
+      propertyPath: consumable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a52fd41866225c840803e3d23bca009d, type: 3}

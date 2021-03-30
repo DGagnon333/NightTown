@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Ce script est écrit par Nassour Nassour 
+// (Même inspiration que TowerComponent)
 public class TowerProjectileComponent : MonoBehaviour
 {
     private Transform targetEnemy;

@@ -4,7 +4,9 @@ using UnityEngine;
 
 
 // Ce script est fait par Nassour Nassour.
-// Inspiré par: 
+// Inspiré par: https://youtu.be/QKhn2kl9_8I
+// et par https://youtu.be/oqidgRQAMB8
+// (Brackeys)
 public class TowerComponent : MonoBehaviour
 {
     private Transform target; // Le transform de l'ennemi à tuer

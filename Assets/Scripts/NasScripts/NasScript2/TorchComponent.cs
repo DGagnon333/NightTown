@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Ce script est écrit par Nassour Nassour
 public class TorchComponent : MonoBehaviour
 {
     [SerializeField]
@@ -12,6 +14,9 @@ public class TorchComponent : MonoBehaviour
 
     [SerializeField]
     private float minRange = 0.4f; // [0,1] pour le pourcentage d'efficacité selon la portée maximale
+
+    [SerializeField]
+    DayNightCycle dayNight;
 
     private Light torch;
 
@@ -35,7 +40,7 @@ public class TorchComponent : MonoBehaviour
 
     private void ReduceLightRange()
     {
-        if(torch.range > maxRange * minRange)
+        if(torch.range > maxRange * (1-minRange))
         {
             torch.range -= 2;
         } 
@@ -43,13 +48,15 @@ public class TorchComponent : MonoBehaviour
 
     private void LightOnNight()
     {
-        if(GetComponent<DayNightCycle>().IsDay)
+        if(dayNight.IsDay)
         {
             torch.enabled = false;
+            Debug.Log("lights off");
         }
         else
         {
             torch.enabled = true;
+            Debug.Log("lights on");
         }
     }
 }
