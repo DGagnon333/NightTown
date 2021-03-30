@@ -8,7 +8,6 @@ class ResourceCountInvalidException : Exception { }
 /// <summary>
 /// Le ResourceManager a comme objectif de gérer les différentes ressources dans le jeu. 
 /// Cela comprend: - la quantité des ressources de chaque type dans la base (l'or, le bois, la pierre et l'énergie électrique)
-///                - la quantité des outils de chaque type dans l'inventaire du joueur ( les armes, les munitions et les accessoires)
 ///                - la valeur d'achat de nouveaux outils selon l'offre et la demande
 /// </summary>
 /// <returns></returns>
