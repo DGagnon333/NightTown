@@ -4,7 +4,9 @@ using UnityEngine;
 
 
 // Ce script est fait par Nassour Nassour.
-// Inspiré par: 
+// Inspiré par: https://youtu.be/QKhn2kl9_8I
+// et par https://youtu.be/oqidgRQAMB8
+// (Brackeys)
 public class TowerComponent : MonoBehaviour
 {
     private Transform target; // Le transform de l'ennemi à tuer
@@ -136,13 +138,13 @@ public class TowerComponent : MonoBehaviour
         }
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if(other.gameObject == null)
-    //    {
-    //        enemy.Remove(other.gameObject);
-    //    }
-    //}
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject == null)
+        {
+            enemy.Remove(other.gameObject);
+        }
+    }
 
     private void OnTriggerExit(Collider other) // Lorsqu'il quitte la zone, il est enlevé.
     {

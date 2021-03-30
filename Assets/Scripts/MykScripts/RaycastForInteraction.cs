@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿//Fait par Mykaël
+//Vidéo ayant permis de comprendre le fondtionnement d'un système d'intéraction : https://www.youtube.com/watch?v=saM9D1V6uNg
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,17 +35,17 @@ public class RaycastForInteraction : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition); // Le rayon qui se fait à partir de la caméra principale. 
         if (Physics.Raycast(ray, out objectHit, range)) //Si le rayon touche quelque chose.
         {
-            IInteractable interactable = objectHit.collider.GetComponent<IInteractable>();
+            IInteractable interactable = objectHit.collider.GetComponent<IInteractable>(); //Si l'objet touché par le Raycast n'est pas intéractif (n'utilise pas l'interface IInteractable), alors "interactable" sera "null".
 
-            if (interactable != null) 
+            if (interactable != null) //Si le Raycast a trouvé un objet interactif.
             {
-                if (objectHit.distance <= interactable.MaxRange) //Regarder si l'objet est plus loin que la distance maximale pour l'objet intéractible.
+                if (objectHit.distance <= interactable.MaxRange) //Regarder si l'objet est plus loin que la distance maximale pour l'objet interactif.
                 {
                     if (interactable == currentTarget) //Si l'objet capté par le Raycast est le même objet que le dernier objet capté.
                     {
                         return;
                     }
-                    else if (currentTarget != null) //Si le Raycast avait capté un objet dans le dernier objet et qu'ensuite il en capte un autre alors nous rendons cet objet capté comme étant l'objet capté présentement jusqu'à ce qu'un autre soit peut-être capt au prochain "Update".                    
+                    else if (currentTarget != null) //Si le Raycast avait capté un objet dans le dernier objet et qu'ensuite il en capte un autre alors nous rendons cet objet capté comme étant l'objet capté présentement jusqu'à ce qu'un autre soit peut-être capté au prochain "Update".                    
                     {
                         currentTarget.OnEndHover();
                         currentTarget = interactable;
@@ -56,7 +59,7 @@ public class RaycastForInteraction : MonoBehaviour
                         return;
                     }
                 }
-                else //Si l'objet touché par le RayCast est plus loin que la distance maximale, alors nous ne pouvons pas intéragir avec un objet.
+                else //Si l'objet touché par le RayCast est plus loin que la distance maximale, alors nous ne pouvons pas interagir avec un objet.
                 {
                     if (currentTarget != null)
                     {
@@ -66,7 +69,7 @@ public class RaycastForInteraction : MonoBehaviour
                     }
                 }
             }
-            else //S'il n'y a pas d'objet qui est intéractible, alors nous ne pouvons pas intéragir avec un objet. 
+            else //S'il n'y a pas d'objet qui est intéractif, alors nous ne pouvons pas intéragir avec un objet. 
             {
                 if (currentTarget != null)
                 {

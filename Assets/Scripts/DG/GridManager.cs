@@ -97,7 +97,6 @@ public class GridManager : MonoBehaviour
                         for (int x = 0; x <= scaleDiffX; x++)
                         {
                             buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
-                            Debug.Log(buildingTiles.Count() + "posX : " +( posX + x )+ "posZ : " + (posZ+z));
                             tileState[posX + x, posZ + z] = false;
                         }
                     }
@@ -144,6 +143,23 @@ public class GridManager : MonoBehaviour
         {
             scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
             scaleDiffZ = (int)(i.Value.transform.localScale.z - 2) / 2;
+            if (scaleDiffX == 0 && scaleDiffZ == 0)
+            {
+                for (int z = 0; z <= scaleDiffZ; z++)
+                {
+                    for (int x = 0; x <= scaleDiffX; x++)
+                    {
+                        keyX = i.Key.X + x;
+                        keyZ = i.Key.Z + z;
+                        if (posX == keyX && posZ == keyZ)
+                        {
+                            isDestroyed = true;
+                            destroyedObject = i.Value;
+                            break;
+                        }
+                    }
+                }
+            }
 
             for (int z = 0; z < scaleDiffZ; z++)
             {
