@@ -17,13 +17,24 @@ public class GridManager : MonoBehaviour
     private int step = 2;
     public bool[,] tileState;
     [SerializeField] public GameObject ground;
-    public List<Vector3> wireQueue = new List<Vector3>();
     public bool[,] electrictyMap;
     public int wireLenght;
 
+    //----------------------------------------------------------------------------------------------------------------------------------------
+    [SerializeField] public GameObject baseCopy;
+    //List<GameObject> wireTestList = new List<GameObject>();
+    Dictionary<List<GameObject>, bool> wireDictionary = new Dictionary<List<GameObject>, bool>();
+    
     private void Awake()
     {
         ArrayCreation();
+        int posBaseX = (int)(baseCopy.transform.position.x + 200) / 2;
+        int posBaseZ = (int)(baseCopy.transform.position.z + 200) / 2;
+        Debug.Log(posBaseX + ", " + posBaseZ + " : base");
+        //wireTestList.Add(baseCopy);
+        //wireDictionary.Add(wireTestList, true);
+        //-------------------------------------------------------------------------------------------------------------------------------------
+        electrictyMap[posBaseX, posBaseZ] = true;
     }
     /// <summary>
     /// Créer une des cases visibles lorsque le mode de construction est activé
@@ -54,7 +65,7 @@ public class GridManager : MonoBehaviour
     /// <param name = "newBuilding" > le bâtiment choisi</param>
     /// <param name = "tf" > la position du "phantôme" de l'objet sélectionné</param>
     /// <param name = "scale" > la taille de l'objet sélectionné</param>
-    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles)
+    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue)
     {
         int tileDispo = 0;
         Electricity electricity = new Electricity();
@@ -114,7 +125,7 @@ public class GridManager : MonoBehaviour
         //si le bâtiment est un "wire"
         if (newBuilding.CompareTag("Wire"))
         {
-            Wire(electricity, posX, posZ, newBuilding, position, buildingTiles);
+            Wire(electricity, posX, posZ, newBuilding, position, buildingTiles, wireQueue);
         }
 
         if (!newBuilding.CompareTag("Wire"))
@@ -196,16 +207,22 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Vector3 position, Dictionary<Point2D, GameObject> buildingTiles)
+    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Vector3 position, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue)
     {
         if (wireQueue.Count != 0)
         {
             Point2D PositionSource = new Point2D(posX, posZ);
-            int posXOld = (int)(wireQueue[wireQueue.Count - 1].x + gridSize - (int)ground.transform.position.x) / 2;
-            int posZOld = (int)(wireQueue[wireQueue.Count - 1].z + gridSize - (int)ground.transform.position.z) / 2;
-            Point2D PositionDestination = new Point2D(posXOld, posZOld);
-            wireLenght = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles);
             wireQueue.Add(position);
+            int posXOld = (int)(wireQueue[wireQueue.Count - 2].x + gridSize - (int)ground.transform.position.x) / 2;
+            int posZOld = (int)(wireQueue[wireQueue.Count - 2].z + gridSize - (int)ground.transform.position.z) / 2;
+            //Debug.Log(wireQueue.Count - 1);
+            //Debug.Log("posX : " + ((position.x + gridSize - (int)ground.transform.position.x) / 2));
+            //Debug.Log("posZ : " + ((position.z + gridSize - (int)ground.transform.position.x) / 2));
+            //Debug.Log(posXOld + " oldX");
+            //Debug.Log(posZOld + " oldZ");
+            Point2D PositionDestination = new Point2D(posXOld, posZOld);
+
+            wireLenght = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles);
         }
 
         else

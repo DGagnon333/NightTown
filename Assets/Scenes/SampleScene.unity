@@ -2792,8 +2792,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: 200
   ground: {fileID: 1990809615}
-  wireQueue: []
   wireLenght: 0
+  baseCopy: {fileID: 1646061865}
 --- !u!4 &343585103
 Transform:
   m_ObjectHideFlags: 0
@@ -2838,6 +2838,7 @@ MonoBehaviour:
   gridTexture: {fileID: 2100000, guid: f8bf9033cffec4a4c8ba1908372d8094, type: 2}
   greenTexture: {fileID: 2100000, guid: b4335c2781c0a3f4c848224331494d0a, type: 2}
   gridRenderer: {fileID: 1990809617}
+  wireQueue: []
 --- !u!114 &343585105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15685,6 +15686,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6034279025414782632, guid: 523d668912c8d894e8950cfb486913cc,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6034279025414782634, guid: 523d668912c8d894e8950cfb486913cc,
         type: 3}
       propertyPath: m_Name
@@ -19257,6 +19263,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -13.6
       objectReference: {fileID: 0}
+    - target: {fileID: 501990356977481105, guid: ce404143768f6f448b6284035428e473,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 501990356977481111, guid: ce404143768f6f448b6284035428e473,
         type: 3}
       propertyPath: m_RootOrder

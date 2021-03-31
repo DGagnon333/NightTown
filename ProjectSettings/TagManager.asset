@@ -3,17 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-<<<<<<< HEAD
-  tags:
-  - Ground
-  - Building
-  - Wire
-  - Eraser
-  - Obstacle
-  - Base
-=======
   tags: []
->>>>>>> 2eda3f77c2835fe8793ce01a2a158be4b2e55bc4
   layers:
   - Default
   - TransparentFX
