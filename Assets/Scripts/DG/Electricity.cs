@@ -14,10 +14,9 @@ public class Electricity : MonoBehaviour
 {
     public int wireLenght = 0;
     
-    public int ElectrictyState(int gridSize, bool[,] tileState, Point2D PositionSource, Point2D PositionDestination, GameObject wire, bool[,] electrictyMap, Dictionary<Point2D, GameObject> buildingTiles)
+    public int ElectrictyState(int gridSize, bool[,] tileState, Point2D PositionSource, Point2D PositionDestination, GameObject wire, bool[,] electricityMap,
+        Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList)
     {
-        
-    Debug.Log(PositionSource.X + ", " + PositionSource.Z);
         Point2D current = new Point2D(PositionSource.X, PositionSource.Z);
         Queue<Point2D> frontier = new Queue<Point2D>();
         Dictionary<Point2D, Point2D> cameFrom = new Dictionary<Point2D, Point2D>();
@@ -27,12 +26,17 @@ public class Electricity : MonoBehaviour
         Point2D next;
         bool isEmpty = false;
 
+
+
+
         bool[,] newMap = CreateNewMap(tileState, gridSize);
         frontier.Enqueue(current);
         cameFrom.Add(PositionSource, PositionSource);
 
+
         while (frontier.Count != 0)
         {
+
             if (frontier.Count == 0)
             {
                 isEmpty = true;
@@ -103,10 +107,12 @@ public class Electricity : MonoBehaviour
             path.Add(next);
             if (tileState[next.X, next.Z])
             {
+
                 GameObject newWire = Instantiate(wire, new Vector3(next.X * 2 - gridSize, 0, next.Z * 2 - gridSize), Quaternion.identity);
                 buildingTiles.Add(next, newWire);
                 //-----------------------------------------------------------------------------
-                WireList(next, newWire, electrictyMap);
+
+                WireList(next, newWire, electricityMap, wireList);
                 //-----------------------------------------------------------------------------
                 tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible
             }
@@ -118,25 +124,26 @@ public class Electricity : MonoBehaviour
     }
     //-----------------------------------------------------------------------------
 
-    private void WireList(Point2D next, GameObject wire, bool[,] electrictyMap)
+    private void WireList(Point2D next, GameObject wire, bool[,] electrictyMap, List<GameObject> wireList)
     {
-        List<GameObject> newWireList = new List<GameObject>();
+
         bool conection = false;
-        newWireList.Add(wire);
-        foreach (GameObject i in newWireList)
+        wireList.Add(wire);
+        foreach (GameObject i in wireList)
         {
             conection = IsConnected(next, i, electrictyMap);
 
             if (conection)
             {
-                Debug.Log(i.name + ", " + conection);
-                wire.GetComponent<Renderer>().material.color = Color.green;
                 break;
             }
         }
-        foreach (GameObject i in newWireList)
+        foreach (GameObject i in wireList)
         {
             electrictyMap[next.X, next.Z] = conection;
+            if(conection)
+                i.GetComponent<Renderer>().material.color = Color.green;
+
         }
         //wireDictionary.Add(newWireList, conection);
         //foreach (var i in wireDictionary)

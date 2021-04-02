@@ -65,7 +65,7 @@ public class GridManager : MonoBehaviour
     /// <param name = "newBuilding" > le bâtiment choisi</param>
     /// <param name = "tf" > la position du "phantôme" de l'objet sélectionné</param>
     /// <param name = "scale" > la taille de l'objet sélectionné</param>
-    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue)
+    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue, List<GameObject> wireList)
     {
         int tileDispo = 0;
         Electricity electricity = new Electricity();
@@ -117,7 +117,8 @@ public class GridManager : MonoBehaviour
             //pour un bâtiment qui mesure une cased
             if (tileState[posX, posZ] && scaleDiffX == 0)
             {
-                buildingTiles.Add(new Point2D(posX, posZ), Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity));
+                buildingClone = Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
+                buildingTiles.Add(new Point2D(posX, posZ), buildingClone);
                 tileState[posX, posZ] = false;
             }
         }
@@ -125,7 +126,8 @@ public class GridManager : MonoBehaviour
         //si le bâtiment est un "wire"
         if (newBuilding.CompareTag("Wire"))
         {
-            Wire(electricity, posX, posZ, newBuilding, position, buildingTiles, wireQueue);
+            Wire(electricity, posX, posZ, buildingClone, position, buildingTiles, wireQueue, wireList);
+
         }
 
         if (!newBuilding.CompareTag("Wire"))
@@ -207,26 +209,27 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Vector3 position, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue)
+    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Vector3 position, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue, List<GameObject> wireList)
     {
+        Debug.Log(wireQueue.Count);
         if (wireQueue.Count != 0)
         {
+
             Point2D PositionSource = new Point2D(posX, posZ);
             wireQueue.Add(position);
+            wireList.Add(newBuilding);
             int posXOld = (int)(wireQueue[wireQueue.Count - 2].x + gridSize - (int)ground.transform.position.x) / 2;
             int posZOld = (int)(wireQueue[wireQueue.Count - 2].z + gridSize - (int)ground.transform.position.z) / 2;
-            //Debug.Log(wireQueue.Count - 1);
-            //Debug.Log("posX : " + ((position.x + gridSize - (int)ground.transform.position.x) / 2));
-            //Debug.Log("posZ : " + ((position.z + gridSize - (int)ground.transform.position.x) / 2));
-            //Debug.Log(posXOld + " oldX");
-            //Debug.Log(posZOld + " oldZ");
             Point2D PositionDestination = new Point2D(posXOld, posZOld);
 
-            wireLenght = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles);
+            wireLenght = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles, wireList);
         }
 
         else
+        {
             wireQueue.Add(position);
+            wireList.Add(newBuilding);
+        }
     }
     private void Obstacles()
     {

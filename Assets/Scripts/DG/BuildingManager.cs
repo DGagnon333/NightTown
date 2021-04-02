@@ -24,6 +24,7 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private Renderer gridRenderer;
     public Dictionary<Point2D, GameObject> buildingTiles;
     public List<Vector3> wireQueue = new List<Vector3>();
+    public List<GameObject> wireList = new List<GameObject>();
     Color baseColor;
 
 
@@ -74,15 +75,19 @@ public class BuildingManager : MonoBehaviour
                 buildingListUI[key].color += new Color(50, 50, 50);
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                    GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles, wireQueue);
+                    GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles, wireQueue, wireList);
             }
             if (Input.GetKey(KeyCode.Mouse0) && Input.GetKey(KeyCode.LeftShift) && key==4)
             {
-                GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles, wireQueue);
+                GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles, wireQueue, wireList);
             }
             //on peut déselectioner le placement des fils au besoin avec un click droit de la souris
+            //if (Input.GetKeyDown(KeyCode.Mouse1) || !Input.GetKeyDown(KeyCode.Mouse0))
             if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
                 wireQueue.Clear();
+                wireList.Clear();
+            }
         }
 
     }
