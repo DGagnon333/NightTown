@@ -4,7 +4,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using System;
@@ -65,7 +64,7 @@ public class GridManager : MonoBehaviour
     /// <param name = "newBuilding" > le bâtiment choisi</param>
     /// <param name = "tf" > la position du "phantôme" de l'objet sélectionné</param>
     /// <param name = "scale" > la taille de l'objet sélectionné</param>
-    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue, List<GameObject> wireList)
+    public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList)
     {
         int tileDispo = 0;
         Electricity electricity = new Electricity();
@@ -85,7 +84,6 @@ public class GridManager : MonoBehaviour
         }
         else
         {
-
             //pour un bâtiment qui mesure plus qu'une case
             if (scaleDiffX != 0 && scaleDiffZ != 0 || isEraser)
             {
@@ -126,12 +124,12 @@ public class GridManager : MonoBehaviour
         //si le bâtiment est un "wire"
         if (newBuilding.CompareTag("Wire"))
         {
-            Wire(electricity, posX, posZ, buildingClone, position, buildingTiles, wireQueue, wireList);
+            Wire(electricity, posX, posZ, buildingClone, buildingTiles, wireList);
 
         }
 
         if (!newBuilding.CompareTag("Wire"))
-            wireQueue.Clear();
+            wireList.Clear();
 
     }
     public void Eraser(GameObject newBuilding)
@@ -197,6 +195,7 @@ public class GridManager : MonoBehaviour
                 if (i.Value == destroyedObject)
                 {
                     tileState[i.Key.X, i.Key.Z] = true;
+                    electrictyMap[i.Key.X, i.Key.Z] = false;
                     buildingTiles.Remove(i.Key);
                 }
             }
@@ -209,26 +208,47 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Vector3 position, Dictionary<Point2D, GameObject> buildingTiles, List<Vector3> wireQueue, List<GameObject> wireList)
+    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList)
     {
-        Debug.Log(wireQueue.Count);
-        if (wireQueue.Count != 0)
+        if (wireList.Count != 0)
         {
-
-            Point2D PositionSource = new Point2D(posX, posZ);
-            wireQueue.Add(position);
             wireList.Add(newBuilding);
-            int posXOld = (int)(wireQueue[wireQueue.Count - 2].x + gridSize - (int)ground.transform.position.x) / 2;
-            int posZOld = (int)(wireQueue[wireQueue.Count - 2].z + gridSize - (int)ground.transform.position.z) / 2;
+            int posXOld = (int)(wireList[wireList.Count - 2].transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
+            int posZOld = (int)(wireList[wireList.Count - 2].transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
+            Point2D PositionSource = new Point2D(posX, posZ);
             Point2D PositionDestination = new Point2D(posXOld, posZOld);
 
-            wireLenght = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles, wireList);
+            wireList = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles, wireList);
+            WireList(electrictyMap, wireList);
+
         }
 
         else
         {
-            wireQueue.Add(position);
             wireList.Add(newBuilding);
+        }
+    }
+    private void WireList(bool[,] electrictyMap, List<GameObject> wireList)
+    {
+        bool conection = false;
+        foreach (GameObject i in wireList)
+        {
+            int nextX = (int)(i.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
+            int nextZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
+            if (electrictyMap[nextX + 1, nextZ] || electrictyMap[nextX - 1, nextZ] || electrictyMap[nextX, nextZ + 1] || electrictyMap[nextX, nextZ - 1])
+            {
+                conection = true;
+                break;
+            }
+        }
+        foreach (GameObject i in wireList)
+        {
+            Debug.Log(i.transform.position.x);
+            int nextX = (int)(i.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
+            int nextZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
+            electrictyMap[nextX, nextZ] = conection;
+            if (conection)
+                i.GetComponent<Renderer>().material.color = Color.green;
         }
     }
     private void Obstacles()
