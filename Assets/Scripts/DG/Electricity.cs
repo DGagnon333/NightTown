@@ -107,24 +107,15 @@ public class Electricity : MonoBehaviour
             path.Add(next);
             if (tileState[next.X, next.Z])
             {
-
                 GameObject newWire = Instantiate(wire, new Vector3(next.X * 2 - gridSize, 0, next.Z * 2 - gridSize), Quaternion.identity);
                 buildingTiles.Add(next, newWire);
-                //-----------------------------------------------------------------------------
                 wireList.Add(newWire);
-                //-----------------------------------------------------------------------------
                 tileState[next.X, next.Z] = false; //on REND la position de chaque fils électriques non disponible
             }
             wireLenght++;
-
-
         }
         return wireList;
     }
-    //-----------------------------------------------------------------------------
-
-
-    //-----------------------------------------------------------------------------
 
     private bool[,] CreateNewMap(bool[,] tileState, int gridSize)
     {
