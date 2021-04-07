@@ -2838,7 +2838,7 @@ MonoBehaviour:
   gridTexture: {fileID: 2100000, guid: f8bf9033cffec4a4c8ba1908372d8094, type: 2}
   greenTexture: {fileID: 2100000, guid: b4335c2781c0a3f4c848224331494d0a, type: 2}
   gridRenderer: {fileID: 1990809617}
-  wireQueue: []
+  wireList: []
 --- !u!114 &343585105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16427,8 +16427,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1646061865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 18}
-  m_LocalScale: {x: 2, y: 4, z: 2}
+  m_LocalPosition: {x: 4, y: 0, z: 18}
+  m_LocalScale: {x: 6, y: 4, z: 6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8

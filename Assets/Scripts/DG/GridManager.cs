@@ -18,21 +18,14 @@ public class GridManager : MonoBehaviour
     [SerializeField] public GameObject ground;
     public bool[,] electrictyMap;
     public int wireLenght;
-
-    //----------------------------------------------------------------------------------------------------------------------------------------
+    int posBaseX = 0;
+    int posBaseZ = 0;
     [SerializeField] public GameObject baseCopy;
-    //List<GameObject> wireTestList = new List<GameObject>();
-    Dictionary<List<GameObject>, bool> wireDictionary = new Dictionary<List<GameObject>, bool>();
-    
+
     private void Awake()
     {
         ArrayCreation();
-        int posBaseX = (int)(baseCopy.transform.position.x + 200) / 2;
-        int posBaseZ = (int)(baseCopy.transform.position.z + 200) / 2;
-        //wireTestList.Add(baseCopy);
-        //wireDictionary.Add(wireTestList, true);
-        //-------------------------------------------------------------------------------------------------------------------------------------
-        electrictyMap[posBaseX, posBaseZ] = true;
+        BaseCreation();
     }
     /// <summary>
     /// Créer une des cases visibles lorsque le mode de construction est activé
@@ -55,6 +48,23 @@ public class GridManager : MonoBehaviour
         Obstacles();
     }
 
+    private void BaseCreation()
+    {
+        posBaseX = (int)(baseCopy.transform.position.x - 1 + gridSize - (int)GetComponent<GridManager>().ground.transform.position.x) / 2;
+        posBaseZ = (int)(baseCopy.transform.position.z - 1 + gridSize - (int)GetComponent<GridManager>().ground.transform.position.z) / 2;
+        int scaleDiffX = (int)(baseCopy.transform.localScale.x - 2) / 2;
+        int scaleDiffZ = (int)(baseCopy.transform.localScale.z - 2) / 2;
+        for (int z = 0; z <= scaleDiffZ; z++)
+        {
+            for (int x = 0; x <= scaleDiffX; x++)
+            {
+                tileState[posBaseX + x, posBaseZ + z] = false;
+                electrictyMap[posBaseX + x, posBaseZ + z] = true;
+            }
+        }
+
+    }
+
     /// <summary>
     /// Cette fonction permet de vérifier si une case est disponible ou non.Si elle l'est, 
     /// un objet est placé à l'endroit souhaité et les tuiles utilisé par cet objet seront
@@ -73,18 +83,18 @@ public class GridManager : MonoBehaviour
         int scaleDiffX = (int)(scale.x - 2) / 2;
         int scaleDiffZ = (int)(scale.z - 2) / 2;
         Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
-        bool isEraser = false;
+        bool isAvailable = false;
         GameObject buildingClone = newBuilding; //simplement pour l'instancier
         newBuilding.transform.position = tf.position;
 
         if (newBuilding.CompareTag("Eraser"))
         {
-            Eraser(newBuilding);
+            Eraser(newBuilding, wireDictionary);
         }
         else
         {
             //pour un bâtiment qui mesure plus qu'une case
-            if (scaleDiffX != 0 && scaleDiffZ != 0 || isEraser)
+            if (scaleDiffX != 0 && scaleDiffZ != 0)
             {
                 for (int z = 0; z <= scaleDiffZ; z++)
                 {
@@ -98,8 +108,7 @@ public class GridManager : MonoBehaviour
                 }
                 if (tileDispo == 0)
                 {
-                    if (!isEraser)
-                        buildingClone = Instantiate(newBuilding, position + new Vector3 (1,0,1) + ground.transform.position, Quaternion.identity);
+                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
                     for (int z = 0; z <= scaleDiffZ; z++)
                     {
                         for (int x = 0; x <= scaleDiffX; x++)
@@ -112,26 +121,28 @@ public class GridManager : MonoBehaviour
 
             }
             //pour un bâtiment qui mesure une cased
-            if (tileState[posX, posZ] && scaleDiffX == 0)
+            if (tileState[posX, posZ] && scaleDiffX == 0 && scaleDiffZ == 0)
             {
                 buildingClone = Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
                 buildingTiles.Add(new Point2D(posX, posZ), buildingClone);
+                isAvailable = true;
                 tileState[posX, posZ] = false;
             }
         }
 
         //si le bâtiment est un "wire"
-        if (newBuilding.CompareTag("Wire"))
+        if (newBuilding.CompareTag("Wire") && isAvailable)
         {
-            Wire(electricity, posX, posZ, buildingClone, buildingTiles, wireList);
-
+            Wire(electricity, posX, posZ, buildingClone, buildingTiles, wireList, wireDictionary);
         }
 
         if (!newBuilding.CompareTag("Wire"))
+        {
             wireList.Clear();
+        }
 
     }
-    public void Eraser(GameObject newBuilding)
+    public void Eraser(GameObject newBuilding, Dictionary<List<GameObject>, bool> wireDictionary)
     {
         //j'utilise une propriété GetComponent même pour les propriétés de la même classe pour que les autres scripts n'aient pas à le faire aussi.
         //donc la fonction a seulement besoin d'avoir un GameObject en intrants et tout le reste est fait.
@@ -185,7 +196,7 @@ public class GridManager : MonoBehaviour
                     }
                 }
             }
-            
+
         }
 
         if (isDestroyed)
@@ -216,9 +227,9 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList)
+    private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList, Dictionary<List<GameObject>, bool> wireDictionary)
     {
-        
+
         if (wireList.Count != 0)
         {
             wireList.Add(newBuilding);
@@ -228,20 +239,21 @@ public class GridManager : MonoBehaviour
             Point2D PositionDestination = new Point2D(posXOld, posZOld);
 
             wireList = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles, wireList);
-            
+
             wireDictionary.Add(wireList, WireList(electrictyMap, wireList));
 
         }
 
-        else
+        if (wireList.Count == 0)
         {
             wireList.Add(newBuilding);
         }
     }
     private bool WireList(bool[,] electrictyMap, List<GameObject> wireList)
     {
-        Debug.Log("allo");
         bool conection = false;
+        //int nextX = (gridSize - (int)ground.transform.position.x) / 2;
+        //int nextZ = (gridSize - (int)ground.transform.position.x) / 2;
         int nextX = 0;
         int nextZ = 0;
         foreach (GameObject i in wireList)
@@ -293,5 +305,6 @@ public class GridManager : MonoBehaviour
                 map[x, z] = false;
             }
         }
+        BaseCreation();
     }
 }
