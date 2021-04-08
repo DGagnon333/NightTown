@@ -2794,6 +2794,8 @@ MonoBehaviour:
   ground: {fileID: 1990809615}
   wireLenght: 0
   baseCopy: {fileID: 1646061865}
+  electricMat: {fileID: 2100000, guid: 02758698f6605d345a67239c79c069b6, type: 2}
+  noElectricity: {fileID: 2100000, guid: e80bf5945c9e01b4a8180c7fa7860a0f, type: 2}
 --- !u!4 &343585103
 Transform:
   m_ObjectHideFlags: 0
@@ -16627,7 +16629,7 @@ GameObject:
   m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!65 &1646061866
 BoxCollider:
@@ -16660,7 +16662,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4e8d36538f8aab444b7f624e9d40517d, type: 2}
+  - {fileID: 2100000, guid: 02758698f6605d345a67239c79c069b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16668,7 +16670,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
+  m_ReceiveGI: 2
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

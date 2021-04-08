@@ -21,6 +21,8 @@ public class GridManager : MonoBehaviour
     int posBaseX = 0;
     int posBaseZ = 0;
     [SerializeField] public GameObject baseCopy;
+    [SerializeField] private Material electricMat;
+    [SerializeField] private Material noElectricity;
 
     private void Awake()
     {
@@ -246,14 +248,19 @@ public class GridManager : MonoBehaviour
 
         if (wireList.Count == 0)
         {
+            if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
+            {
+                newBuilding.GetComponent<Renderer>().material = electricMat;
+            }
+            else
+                newBuilding.GetComponent<Renderer>().material = noElectricity;
+
             wireList.Add(newBuilding);
         }
     }
     private bool WireList(bool[,] electrictyMap, List<GameObject> wireList)
     {
         bool conection = false;
-        //int nextX = (gridSize - (int)ground.transform.position.x) / 2;
-        //int nextZ = (gridSize - (int)ground.transform.position.x) / 2;
         int nextX = 0;
         int nextZ = 0;
         foreach (GameObject i in wireList)
@@ -272,9 +279,12 @@ public class GridManager : MonoBehaviour
             nextZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
             electrictyMap[nextX, nextZ] = conection;
             if (conection)
-                i.GetComponent<Renderer>().material.color = Color.green;
+            {
+
+                i.GetComponent<Renderer>().material = electricMat;
+            }
             else
-                i.GetComponent<Renderer>().material.color = Color.grey;
+                i.GetComponent<Renderer>().material = noElectricity;
         }
         return conection;
     }
