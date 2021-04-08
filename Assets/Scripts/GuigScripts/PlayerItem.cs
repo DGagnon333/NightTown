@@ -57,21 +57,21 @@ public class PlayerItem
             case PlayerItemType.Bow:         return BOW_DESCRIPTION;
         }
     }
-    public Sprite GetSprite()
-    {
-        switch (playerItemType)
-        {
-            default:
-            case PlayerItemType.Backpack:    return GameAssets BackpackIcon;
-            case PlayerItemType.HandTorch:   return HANDTORCH_DESCRIPTION;
-            case PlayerItemType.QuestObject: return QUESTOBJECT_DESCRIPTION;
-            case PlayerItemType.Spear:       return SPEAR_DESCRIPTION;
-            case PlayerItemType.Axe:         return AXE_DESCRIPTION;
-            case PlayerItemType.Sword:       return SWORD_DESCRIPTION;
-            case PlayerItemType.Arrow:       return ARROW_DESCRIPTION;
-            case PlayerItemType.Bow:         return BOW_DESCRIPTION;
-        }
-    }
+    //public Sprite GetSprite()
+    //{
+    //    switch (playerItemType)
+    //    {
+    //        default:
+    //        case PlayerItemType.Backpack:    return GameAssets BackpackIcon;
+    //        case PlayerItemType.HandTorch:   return HANDTORCH_DESCRIPTION;
+    //        case PlayerItemType.QuestObject: return QUESTOBJECT_DESCRIPTION;
+    //        case PlayerItemType.Spear:       return SPEAR_DESCRIPTION;
+    //        case PlayerItemType.Axe:         return AXE_DESCRIPTION;
+    //        case PlayerItemType.Sword:       return SWORD_DESCRIPTION;
+    //        case PlayerItemType.Arrow:       return ARROW_DESCRIPTION;
+    //        case PlayerItemType.Bow:         return BOW_DESCRIPTION;
+    //    }
+    //}
     // Guillaume: Afin de changer le coût d'un item, simplement changer la valeur associée
     //            à la ressource voulue dans les 3 fonctions ci-dessous.
     public int GetWoodCost()
