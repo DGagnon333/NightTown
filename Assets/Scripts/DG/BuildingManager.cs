@@ -27,6 +27,10 @@ public class BuildingManager : MonoBehaviour
     public Dictionary<List<GameObject>, bool> wireDictionary = new Dictionary<List<GameObject>, bool>();
     Color baseColor;
 
+    //--Audio
+    [SerializeField] SFX audio;
+    //-------
+
 
     private void Awake()
     {
@@ -75,7 +79,8 @@ public class BuildingManager : MonoBehaviour
                 buildingListUI[key].color += new Color(50, 50, 50);
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                    GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles, wireList, wireDictionary);
+                audio.PlayClick();
+                GetComponent<GridManager>().TileState(selectedBuilding, buildingLayout.transform, selectedBuilding.transform.localScale, buildingTiles, wireList, wireDictionary);
             }
             if (Input.GetKey(KeyCode.Mouse0) && Input.GetKey(KeyCode.LeftShift) && key==4)
             {

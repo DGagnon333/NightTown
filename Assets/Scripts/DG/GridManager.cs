@@ -21,6 +21,8 @@ public class GridManager : MonoBehaviour
     int posBaseX = 0;
     int posBaseZ = 0;
     [SerializeField] public GameObject baseCopy;
+    [SerializeField] private Material electricMat;
+    [SerializeField] private Material noElectricity;
 
     private void Awake()
     {
@@ -220,16 +222,76 @@ public class GridManager : MonoBehaviour
         }
         if (destroyedObject.CompareTag("Wire"))
         {
-            foreach (var i in wireDictionary)
-            {
-                ClearMap(electrictyMap);
-                WireList(electrictyMap, i.Key);
-            }
+            WireListArangment(posX, posZ, wireDictionary, buildingTiles);
         }
     }
+
+    private void WireListArangment(int posX, int posZ, Dictionary<List<GameObject>, bool> wireDictionary, Dictionary<Point2D, GameObject> buildingTiles)
+    {
+        ClearMap(electrictyMap);
+        List<GameObject> listFound = new List<GameObject>();
+        int nextX = 0;
+        int nextZ = 0;
+        Dictionary<Point2D, GameObject> buildingTilesCopy = new Dictionary<Point2D, GameObject>();
+        int nbList = 0;
+        foreach (var i in buildingTiles)
+        {
+            buildingTilesCopy.Add(i.Key, i.Value);
+        }
+
+        foreach (var i in wireDictionary)
+        {
+            ///////////////////////////////////////////////////////////////////L'erreur est ici, vient du fait que le dictionaire prend en compte que la dernière liste et pas les autres d'avant...
+            ///////////////////////////////////////////////////////////////////peut-etre vient du fait que quand je fait mouse1 â efface la liste donc l'efface dans le dictionaire aussi
+            Debug.Log(i.Key.Count);
+            foreach (var wire in i.Key)
+            {
+                nextX = (int)(wire.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
+                nextZ = (int)(wire.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
+                //Debug.Log(nextX + ", " + nextZ + ", liste: " + nbList);
+                if (nextX == posX && nextZ == posZ)
+                {
+                    //Debug.Log("Trouvé!!!!");
+                    listFound = i.Key;
+                }
+            }
+                nbList++;
+        }
+        foreach (var i in listFound)
+        {
+            nextX = (int)(i.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
+            nextZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
+            foreach (var j in buildingTilesCopy)
+            {
+                if (j.Value == i)
+                {
+                    tileState[j.Key.X, j.Key.Z] = true;
+                    electrictyMap[j.Key.X, j.Key.Z] = false;
+                    buildingTiles.Remove(j.Key);
+                }
+            }
+            foreach (var j in buildingTilesCopy)
+            {
+                if (j.Key.X == nextX && j.Key.Z == nextZ)
+                {
+                    Destroy(j.Value);
+                }
+            }
+        }
+        //Debug.Log(wireDictionary.Count);
+        wireDictionary.Remove(listFound);
+        //Debug.Log(wireDictionary.Count);
+
+        foreach (var i in wireDictionary)
+        {
+            WireList(electrictyMap, i.Key);
+        }
+    }
+
     private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList, Dictionary<List<GameObject>, bool> wireDictionary)
     {
-
+        List<GameObject> wireListCopy = new List<GameObject>();
+        
         if (wireList.Count != 0)
         {
             wireList.Add(newBuilding);
@@ -239,21 +301,29 @@ public class GridManager : MonoBehaviour
             Point2D PositionDestination = new Point2D(posXOld, posZOld);
 
             wireList = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles, wireList);
-
-            wireDictionary.Add(wireList, WireList(electrictyMap, wireList));
+            foreach (var i in wireList)
+            {
+                wireListCopy.Add(i);
+            }
+            wireDictionary.Add(wireListCopy, WireList(electrictyMap, wireList));
 
         }
 
         if (wireList.Count == 0)
         {
+            if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
+            {
+                newBuilding.GetComponent<Renderer>().material = electricMat;
+            }
+            else
+                newBuilding.GetComponent<Renderer>().material = noElectricity;
+
             wireList.Add(newBuilding);
         }
     }
     private bool WireList(bool[,] electrictyMap, List<GameObject> wireList)
     {
         bool conection = false;
-        //int nextX = (gridSize - (int)ground.transform.position.x) / 2;
-        //int nextZ = (gridSize - (int)ground.transform.position.x) / 2;
         int nextX = 0;
         int nextZ = 0;
         foreach (GameObject i in wireList)
@@ -272,9 +342,12 @@ public class GridManager : MonoBehaviour
             nextZ = (int)(i.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
             electrictyMap[nextX, nextZ] = conection;
             if (conection)
-                i.GetComponent<Renderer>().material.color = Color.green;
+            {
+
+                i.GetComponent<Renderer>().material = electricMat;
+            }
             else
-                i.GetComponent<Renderer>().material.color = Color.grey;
+                i.GetComponent<Renderer>().material = noElectricity;
         }
         return conection;
     }
