@@ -20,12 +20,18 @@ public class MousePosition : MonoBehaviour
     }
     void Update()
     {
+        
         mouseX = Input.mousePosition.x;
         mouseY = Input.mousePosition.y;
-        buildingLayout.transform.position = cam.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cam.focalLength * (float)0.75));
+        //ChangeBuilding(buildingLayout).transform.position = cam.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cam.focalLength * (float)0.75));
+        buildingLayout.transform.position = cam.ScreenToWorldPoint(new Vector3(mouseX, mouseY, cam.focalLength * (float)0.5));
         //On utilise le focal length, car plus le curseur sera éloigné du champ de vision, plus il
         //accélérera. il a été divisé par deux pour que le facteur d'accélération ne soit pas trop grand.
 
         snap.SnapToTiles(buildingLayout.transform);
     }
+    //public GameObject ChangeBuilding(GameObject newBuilding)
+    //{
+    //    return newBuilding;
+    //}
 }

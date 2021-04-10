@@ -138,13 +138,13 @@ public class TowerComponent : MonoBehaviour
         }
     }
 
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if(other.gameObject == null)
-    //    {
-    //        enemy.Remove(other.gameObject);
-    //    }
-    //}
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject == null)
+        {
+            enemy.Remove(other.gameObject);
+        }
+    }
 
     private void OnTriggerExit(Collider other) // Lorsqu'il quitte la zone, il est enlevé.
     {
