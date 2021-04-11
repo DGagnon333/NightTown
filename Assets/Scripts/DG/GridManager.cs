@@ -125,6 +125,7 @@ public class GridManager : MonoBehaviour
             //pour un bâtiment qui mesure une cased
             if (tileState[posX, posZ] && scaleDiffX == 0 && scaleDiffZ == 0)
             {
+                Conection(newBuilding, posX, posZ, electrictyMap);
                 buildingClone = Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
                 buildingTiles.Add(new Point2D(posX, posZ), buildingClone);
                 isAvailable = true;
@@ -143,6 +144,16 @@ public class GridManager : MonoBehaviour
             wireList.Clear();
         }
 
+    }
+    private void Conection(GameObject newBuilding, int posX, int posZ, bool[,] electricityMap)
+    {
+        Material baseMat = newBuilding.GetComponent<Renderer>().material;
+        if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
+        {
+            newBuilding.GetComponent<Renderer>().material = electricMat;
+        }
+        else
+            newBuilding.GetComponent<Renderer>().material = baseMat;
     }
     public void Eraser(GameObject newBuilding, Dictionary<List<GameObject>, bool> wireDictionary)
     {
@@ -241,17 +252,12 @@ public class GridManager : MonoBehaviour
 
         foreach (var i in wireDictionary)
         {
-            ///////////////////////////////////////////////////////////////////L'erreur est ici, vient du fait que le dictionaire prend en compte que la dernière liste et pas les autres d'avant...
-            ///////////////////////////////////////////////////////////////////peut-etre vient du fait que quand je fait mouse1 â efface la liste donc l'efface dans le dictionaire aussi
-            Debug.Log(i.Key.Count);
             foreach (var wire in i.Key)
             {
                 nextX = (int)(wire.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
                 nextZ = (int)(wire.transform.position.z + gridSize - (int)ground.transform.position.z) / 2;
-                //Debug.Log(nextX + ", " + nextZ + ", liste: " + nbList);
                 if (nextX == posX && nextZ == posZ)
                 {
-                    //Debug.Log("Trouvé!!!!");
                     listFound = i.Key;
                 }
             }
@@ -278,9 +284,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        //Debug.Log(wireDictionary.Count);
         wireDictionary.Remove(listFound);
-        //Debug.Log(wireDictionary.Count);
 
         foreach (var i in wireDictionary)
         {
