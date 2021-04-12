@@ -29,10 +29,10 @@ Transform:
   m_GameObject: {fileID: 7539281196462527940}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
 <<<<<<< HEAD
-  m_LocalPosition: {x: 18, y: 0, z: -2}
+  m_LocalPosition: {x: 26, y: 0, z: 16}
 =======
-  m_LocalPosition: {x: 2, y: 0, z: -6}
->>>>>>> parent of 4a436be (correction de bug + polyshing 2)
+  m_LocalPosition: {x: -6, y: 0, z: 0}
+>>>>>>> parent of 1eaf544 (wire: 3.0: effacement des wires ameliore)
   m_LocalScale: {x: 2, y: 5, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cc94491639a870c46b32e8e2bd4e0899, type: 2}
+  - {fileID: 2100000, guid: 02758698f6605d345a67239c79c069b6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

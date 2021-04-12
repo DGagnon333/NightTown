@@ -218,6 +218,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LocalPosition: {x: 5, y: 0, z: 9}
 =======
   m_LocalPosition: {x: 1, y: 0, z: 19}
@@ -225,6 +226,9 @@ Transform:
 =======
   m_LocalPosition: {x: -15, y: 0, z: -5}
 >>>>>>> 1eaf5444fd0c9989706b3f102418631fe159c0c3
+=======
+  m_LocalPosition: {x: 3, y: 0, z: -1}
+>>>>>>> parent of 1eaf544 (wire: 3.0: effacement des wires ameliore)
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 8619089281900271762}
