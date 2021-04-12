@@ -2770,7 +2770,6 @@ GameObject:
   - component: {fileID: 343585104}
   - component: {fileID: 343585105}
   - component: {fileID: 343585106}
-  - component: {fileID: 343585107}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -2792,7 +2791,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: 200
   ground: {fileID: 1990809615}
-  wireLenght: 0
   baseCopy: {fileID: 1646061865}
   electricMat: {fileID: 2100000, guid: 02758698f6605d345a67239c79c069b6, type: 2}
   noElectricity: {fileID: 2100000, guid: e80bf5945c9e01b4a8180c7fa7860a0f, type: 2}
@@ -2823,11 +2821,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingList:
-  - {fileID: 8613574946458135260, guid: c0b81f5c9bd69db439487677ea372d91, type: 3}
+  - {fileID: 3774394299256350306, guid: 593fc9249aef37142a26b4560569b52d, type: 3}
   - {fileID: 6292387212634838414, guid: 906030127f8ad224b9d163fbcfefe5b8, type: 3}
-  - {fileID: 7539281196462527940, guid: 985c26a8ec7c4d8459b4a6ecd2713cb9, type: 3}
-  - {fileID: 6055422096261074188, guid: b270aa3d83633ce4198dd37fb83ca96f, type: 3}
-  - {fileID: 8973387248160701669, guid: 1c1c2d774466d0340a794b6e967df4b9, type: 3}
+  - {fileID: 3774394299256350306, guid: 593fc9249aef37142a26b4560569b52d, type: 3}
+  - {fileID: 5789524606289387223, guid: 48e2fae63eba12444b293a916e147389, type: 3}
+  - {fileID: 3625390452790090212, guid: 18cfdd3b5aff62444ac5a0e59f2d0751, type: 3}
   buildingListUI:
   - {fileID: 1449912344}
   - {fileID: 1408275802}
@@ -2867,18 +2865,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingLayout: {fileID: 565219607}
---- !u!114 &343585107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343585101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 804290ad62d1dba47885fb87ad817194, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &345806564 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 880970725214738984, guid: c60edd51c065ceb46b345849a03bc106,
