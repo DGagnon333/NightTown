@@ -222,6 +222,7 @@ public class GridManager : MonoBehaviour
         }
         if (destroyedObject.CompareTag("Wire"))
         {
+<<<<<<< HEAD
             WireListArangment(posX, posZ, wireDictionary, buildingTiles);
         }
     }
@@ -284,13 +285,18 @@ public class GridManager : MonoBehaviour
         foreach (var i in wireDictionary)
         {
             WireList(electrictyMap, i.Key);
+=======
+            foreach (var i in wireDictionary)
+            {
+                ClearMap(electrictyMap);
+                WireList(electrictyMap, i.Key);
+            }
+>>>>>>> parent of 1eaf544 (wire: 3.0: effacement des wires ameliore)
         }
     }
-
     private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList, Dictionary<List<GameObject>, bool> wireDictionary)
     {
-        List<GameObject> wireListCopy = new List<GameObject>();
-        
+
         if (wireList.Count != 0)
         {
             wireList.Add(newBuilding);
@@ -300,11 +306,8 @@ public class GridManager : MonoBehaviour
             Point2D PositionDestination = new Point2D(posXOld, posZOld);
 
             wireList = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles, wireList);
-            foreach (var i in wireList)
-            {
-                wireListCopy.Add(i);
-            }
-            wireDictionary.Add(wireListCopy, WireList(electrictyMap, wireList));
+
+            wireDictionary.Add(wireList, WireList(electrictyMap, wireList));
 
         }
 
