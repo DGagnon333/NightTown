@@ -135,7 +135,6 @@ public class GridManager : MonoBehaviour
         //si le bâtiment est un "wire"
         if (newBuilding.CompareTag("Wire") && isAvailable)
         {
-            Debug.Log("ALLO");
             Wire(electricity, posX, posZ, buildingClone, buildingTiles, wireList, wireDictionary);
         }
 
@@ -244,7 +243,6 @@ public class GridManager : MonoBehaviour
         {
             ///////////////////////////////////////////////////////////////////L'erreur est ici, vient du fait que le dictionaire prend en compte que la dernière liste et pas les autres d'avant...
             ///////////////////////////////////////////////////////////////////peut-etre vient du fait que quand je fait mouse1 â efface la liste donc l'efface dans le dictionaire aussi
-            Debug.Log(i.Key.Count);
             foreach (var wire in i.Key)
             {
                 nextX = (int)(wire.transform.position.x + gridSize - (int)ground.transform.position.x) / 2;
