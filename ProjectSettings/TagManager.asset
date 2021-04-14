@@ -11,6 +11,8 @@ TagManager:
   - Eraser
   - Obstacle
   - SFX
+  - ConstructionMode
+  - Music
   layers:
   - Default
   - TransparentFX
