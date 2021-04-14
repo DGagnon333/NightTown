@@ -46,7 +46,7 @@ public class TowerComponent : MonoBehaviour
     }
 
     void Start()
-    {
+    {       
         InvokeRepeating("SearchTarget", 0f, 0.5f); // cherche un ennemi chaque demi-seconde.
     }
 

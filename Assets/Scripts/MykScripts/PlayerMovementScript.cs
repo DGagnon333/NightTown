@@ -11,6 +11,17 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] float runSpeed = 100f;
     public bool playerIsOnGround = true;
 
+    private Rigidbody body;
+
+    private void Awake()
+    {
+        body = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        body.freezeRotation = true;
+    }
 
     private void Update()
     {
