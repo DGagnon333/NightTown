@@ -28,6 +28,7 @@ public class GridManager : MonoBehaviour
     {
         ArrayCreation();
         BaseCreation();
+
     }
     /// <summary>
     /// Créer une des cases visibles lorsque le mode de construction est activé
@@ -88,6 +89,8 @@ public class GridManager : MonoBehaviour
         bool isAvailable = false;
         GameObject buildingClone = newBuilding; //simplement pour l'instancier
         newBuilding.transform.position = tf.position;
+        Material baseMat = newBuilding.GetComponent<Renderer>().material;
+        bool isConected = false;
 
         if (newBuilding.CompareTag("Eraser"))
         {
@@ -117,6 +120,13 @@ public class GridManager : MonoBehaviour
                         {
                             buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
                             tileState[posX + x, posZ + z] = false;
+                            if (electrictyMap[posX + 1 + x, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + z + 1] || electrictyMap[posX, posZ - 1])
+                            {
+                                newBuilding.GetComponent<Renderer>().material = electricMat;
+                                isConected = true;
+                            }
+                            if(!isConected)
+                                newBuilding.GetComponent<Renderer>().material = baseMat;
                         }
                     }
                 }
@@ -125,7 +135,7 @@ public class GridManager : MonoBehaviour
             //pour un bâtiment qui mesure une cased
             if (tileState[posX, posZ] && scaleDiffX == 0 && scaleDiffZ == 0)
             {
-                Conection(newBuilding, posX, posZ, electrictyMap);
+                Conection(newBuilding, posX, posZ, electrictyMap, baseMat);
                 buildingClone = Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
                 buildingTiles.Add(new Point2D(posX, posZ), buildingClone);
                 isAvailable = true;
@@ -145,9 +155,8 @@ public class GridManager : MonoBehaviour
         }
 
     }
-    private void Conection(GameObject newBuilding, int posX, int posZ, bool[,] electricityMap)
+    private void Conection(GameObject newBuilding, int posX, int posZ, bool[,] electricityMap, Material baseMat)
     {
-        Material baseMat = newBuilding.GetComponent<Renderer>().material;
         if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
         {
             newBuilding.GetComponent<Renderer>().material = electricMat;
