@@ -42,7 +42,7 @@ public class TowerComponent : MonoBehaviour
     void Awake()
     {
         enemy = new List<GameObject>(); // On initialise la liste
-        health = GetComponent<HealthComponent>();
+        health = GetComponentInChildren<HealthComponent>();
     }
 
     void Start()
