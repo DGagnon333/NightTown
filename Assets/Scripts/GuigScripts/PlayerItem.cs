@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class PlayerItem
 {
-    [SerializeField]
-    Sprite backpackIcon;
-    Sprite handTorchIcon;
-    Sprite questObjectIcon;
-    Sprite spearIcon;
-    Sprite AxeIcon;
-    Sprite swordIcon;
-    Sprite arrowIcon;
-    Sprite bowIcon;
-
     private const string
         BACKPACK_DESCRIPTION = "A backpack will double your player's inventory.",
         HANDTORCH_DESCRIPTION = "A hand torch will lighten your player's surroundings for a certain period of time",
@@ -35,14 +25,7 @@ public class PlayerItem
         Bow,
         NbPlayerItemType
     }
-    public PlayerItemType playerItemType;
-    public int count;
-    public PlayerItem(int amount, PlayerItemType itemType)
-    {
-        count = amount;
-        playerItemType = itemType;
-    }
-    public string GetDescription()
+    public static string GetDescription(PlayerItemType playerItemType)
     {
         switch (playerItemType)
         {
@@ -57,24 +40,24 @@ public class PlayerItem
             case PlayerItemType.Bow:         return BOW_DESCRIPTION;
         }
     }
-    //public Sprite GetSprite()
-    //{
-    //    switch (playerItemType)
-    //    {
-    //        default:
-    //        case PlayerItemType.Backpack:    return GameAssets BackpackIcon;
-    //        case PlayerItemType.HandTorch:   return HANDTORCH_DESCRIPTION;
-    //        case PlayerItemType.QuestObject: return QUESTOBJECT_DESCRIPTION;
-    //        case PlayerItemType.Spear:       return SPEAR_DESCRIPTION;
-    //        case PlayerItemType.Axe:         return AXE_DESCRIPTION;
-    //        case PlayerItemType.Sword:       return SWORD_DESCRIPTION;
-    //        case PlayerItemType.Arrow:       return ARROW_DESCRIPTION;
-    //        case PlayerItemType.Bow:         return BOW_DESCRIPTION;
-    //    }
-    //}
+    public static Sprite GetSprite(PlayerItemType playerItemType)
+    {
+        switch (playerItemType)
+        {
+            default:
+            case PlayerItemType.Backpack:    return IconManager.iconManagerInstance.backpackIcon;
+            case PlayerItemType.HandTorch:   return IconManager.iconManagerInstance.handTorchIcon;
+            case PlayerItemType.QuestObject: return IconManager.iconManagerInstance.questObjectIcon;
+            case PlayerItemType.Spear:       return IconManager.iconManagerInstance.spearIcon;
+            case PlayerItemType.Axe:         return IconManager.iconManagerInstance.axeIcon;
+            case PlayerItemType.Sword:       return IconManager.iconManagerInstance.swordIcon;
+            case PlayerItemType.Arrow:       return IconManager.iconManagerInstance.arrowIcon;
+            case PlayerItemType.Bow:         return IconManager.iconManagerInstance.bowIcon;
+        }
+    }
     // Guillaume: Afin de changer le coût d'un item, simplement changer la valeur associée
     //            à la ressource voulue dans les 3 fonctions ci-dessous.
-    public int GetWoodCost()
+    public static int GetWoodCost(PlayerItemType playerItemType)
     {
         switch (playerItemType)
         {
@@ -89,7 +72,7 @@ public class PlayerItem
             case PlayerItemType.Bow:         return 4;
         }
     }
-    public int GetStoneCost()
+    public static int GetStoneCost(PlayerItemType playerItemType)
     {
         switch (playerItemType)
         {
@@ -104,7 +87,7 @@ public class PlayerItem
             case PlayerItemType.Bow:         return 4;
         }
     }
-    public int GetGoldCost()
+    public static int GetGoldCost(PlayerItemType playerItemType)
     {
         switch (playerItemType)
         {
