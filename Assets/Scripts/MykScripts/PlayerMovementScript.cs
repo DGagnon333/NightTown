@@ -10,12 +10,16 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] float walkSpeed = 50f;
     [SerializeField] float runSpeed = 100f;
     public bool playerIsOnGround = true;
+    Animator animator;
+    int isWalkingHash;
 
     private Rigidbody body;
 
     private void Awake()
     {
         body = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+        isWalkingHash = Animator.StringToHash("IsWalking");
     }
 
     private void Start()
@@ -25,6 +29,21 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void Update()
     {
+        //début des animations
+        bool isWalking = animator.GetBool(isWalkingHash);
+        bool forwardPressed = Input.GetKey("w");
+        if (!isWalking && forwardPressed)
+        {
+            animator.SetBool(isWalkingHash, true);
+        }
+        if (isWalking && !forwardPressed)
+        {
+            animator.SetBool(isWalkingHash, false);
+        }
+        //les scripts d'animations ont été fortement inspiré par Nicky B, 
+        //sur youtube, How to Animate Characters in Unity 3D | Animation Transitions With Booleans
+        //fin animations
+
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
         float moveSpeed;
