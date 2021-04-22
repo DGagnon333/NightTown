@@ -8,6 +8,7 @@ public class UI_WeaponStore : MonoBehaviour
 {
     private Transform container;
     private Transform itemTemplate;
+    private IWeaponShopClient weaponShopClient;
 
     private void Awake()
     {
@@ -17,23 +18,14 @@ public class UI_WeaponStore : MonoBehaviour
     }
     private void Start()
     {
-        Sprite test = PlayerItem.GetSprite(PlayerItem.PlayerItemType.Backpack);
-        CreateItemButton(PlayerItem.GetSprite(PlayerItem.PlayerItemType.Backpack), "Backpack", PlayerItem.GetWoodCost(PlayerItem.PlayerItemType.Backpack), PlayerItem.GetStoneCost(PlayerItem.PlayerItemType.Backpack), PlayerItem.GetGoldCost(PlayerItem.PlayerItemType.Backpack), 0);
-
-        CreateItemButton(PlayerItem.GetSprite(PlayerItem.PlayerItemType.HandTorch), "Hand Torch", PlayerItem.GetWoodCost(PlayerItem.PlayerItemType.HandTorch), PlayerItem.GetStoneCost(PlayerItem.PlayerItemType.HandTorch), PlayerItem.GetGoldCost(PlayerItem.PlayerItemType.HandTorch), 1);
-
-        CreateItemButton(PlayerItem.GetSprite(PlayerItem.PlayerItemType.Spear), "Spear", PlayerItem.GetWoodCost(PlayerItem.PlayerItemType.Spear), PlayerItem.GetStoneCost(PlayerItem.PlayerItemType.Spear), PlayerItem.GetGoldCost(PlayerItem.PlayerItemType.Spear), 2);
-
-        CreateItemButton(PlayerItem.GetSprite(PlayerItem.PlayerItemType.Axe), "Axe", PlayerItem.GetWoodCost(PlayerItem.PlayerItemType.Axe), PlayerItem.GetStoneCost(PlayerItem.PlayerItemType.Axe), PlayerItem.GetGoldCost(PlayerItem.PlayerItemType.Axe), 3);
-
-        CreateItemButton(PlayerItem.GetSprite(PlayerItem.PlayerItemType.Sword), "Sword", PlayerItem.GetWoodCost(PlayerItem.PlayerItemType.Sword), PlayerItem.GetStoneCost(PlayerItem.PlayerItemType.Sword), PlayerItem.GetGoldCost(PlayerItem.PlayerItemType.Sword), 4);
-
-        CreateItemButton(PlayerItem.GetSprite(PlayerItem.PlayerItemType.Arrow), "Arrow", PlayerItem.GetWoodCost(PlayerItem.PlayerItemType.Arrow), PlayerItem.GetStoneCost(PlayerItem.PlayerItemType.Arrow), PlayerItem.GetGoldCost(PlayerItem.PlayerItemType.Arrow), 5);
-
-        CreateItemButton(PlayerItem.GetSprite(PlayerItem.PlayerItemType.Bow), "Bow", PlayerItem.GetWoodCost(PlayerItem.PlayerItemType.Bow), PlayerItem.GetStoneCost(PlayerItem.PlayerItemType.Bow), PlayerItem.GetGoldCost(PlayerItem.PlayerItemType.Bow), 6);
+        for(int i = 0; i < (int)PlayerItem.PlayerItemType.NbPlayerItemType - 1; i++)
+        {
+            CreateItemButton((PlayerItem.PlayerItemType)i, PlayerItem.GetSprite((PlayerItem.PlayerItemType)i), PlayerItem.GetName((PlayerItem.PlayerItemType)i), PlayerItem.GetWoodCost((PlayerItem.PlayerItemType)i), PlayerItem.GetStoneCost((PlayerItem.PlayerItemType)i), PlayerItem.GetGoldCost((PlayerItem.PlayerItemType)i), i);
+        }
+        HideClient();
     }
 
-    private void CreateItemButton(Sprite itemIcon, string itemName, int woodCost, int stoneCost, int goldCost, int orderIndex)
+    private void CreateItemButton(PlayerItem.PlayerItemType itemType, Sprite itemIcon, string itemName, int woodCost, int stoneCost, int goldCost, int orderIndex)
     {
         Transform itemTransform = Instantiate(itemTemplate, container);
         itemTransform.gameObject.SetActive(true);
@@ -48,6 +40,22 @@ public class UI_WeaponStore : MonoBehaviour
         itemTransform.Find("itemGoldCostText").GetComponent<TextMeshProUGUI>().SetText(goldCost.ToString());
 
         itemTransform.Find("itemIcon").GetComponent<Image>().sprite = itemIcon;
+
+        itemTransform.GetComponent<Button>().onClick => { TryBuyItem(itemType); }
+    }
+    private void TryBuyItem(PlayerItem.PlayerItemType playerItemType)
+    {
+        weaponShopClient.BoughtItem(playerItemType);
+    }
+
+    public void ShowClient(IWeaponShopClient weaponShopClient)
+    {
+        this.weaponShopClient = weaponShopClient;
+        gameObject.SetActive(true);
+    }
+    public void HideClient()
+    {
+        gameObject.SetActive(false);
     }
 
 }

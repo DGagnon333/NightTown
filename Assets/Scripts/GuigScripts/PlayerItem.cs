@@ -4,40 +4,40 @@ using UnityEngine;
 
 public class PlayerItem
 {
-    private const string
-        BACKPACK_DESCRIPTION = "A backpack will double your player's inventory.",
-        HANDTORCH_DESCRIPTION = "A hand torch will lighten your player's surroundings for a certain period of time",
-        QUESTOBJECT_DESCRIPTION = "Collect all quest objects to complete the game",
-        SPEAR_DESCRIPTION = "Spears are low cost / low damage melee weapons.",
-        AXE_DESCRIPTION = "Axes are medium cost / medium damage melee weapons.",
-        SWORD_DESCRIPTION = "Swords are high cost / high damage melee weapons.",
-        ARROW_DESCRIPTION = "It serves as ammunition for your bow.",
-        BOW_DESCRIPTION = "A bow is a long range weapon. It requires arrows";
+    public const string
+        BACKPACK_NAME = "Backpack",
+        HANDTORCH_NAME = "Hand torch",
+        QUESTOBJECT_NAME = "Quest object",
+        SPEAR_NAME = "Spear",
+        AXE_NAME = "Axe",
+        SWORD_NAME = "Sword",
+        ARROW_NAME = "Arrow",
+        BOW_NAME = "Bow";
     public enum PlayerItemType 
     { 
         Backpack,
         HandTorch,
-        QuestObject,
         Spear,
         Axe,
         Sword,
         Arrow,
         Bow,
+        QuestObject,
         NbPlayerItemType
     }
-    public static string GetDescription(PlayerItemType playerItemType)
+    public static string GetName(PlayerItemType playerItemType)
     {
         switch (playerItemType)
         {
             default:
-            case PlayerItemType.Backpack:    return BACKPACK_DESCRIPTION;
-            case PlayerItemType.HandTorch:   return HANDTORCH_DESCRIPTION;
-            case PlayerItemType.QuestObject: return QUESTOBJECT_DESCRIPTION;
-            case PlayerItemType.Spear:       return SPEAR_DESCRIPTION;
-            case PlayerItemType.Axe:         return AXE_DESCRIPTION;
-            case PlayerItemType.Sword:       return SWORD_DESCRIPTION;
-            case PlayerItemType.Arrow:       return ARROW_DESCRIPTION;
-            case PlayerItemType.Bow:         return BOW_DESCRIPTION;
+            case PlayerItemType.Backpack:    return BACKPACK_NAME;
+            case PlayerItemType.HandTorch:   return HANDTORCH_NAME;
+            case PlayerItemType.QuestObject: return QUESTOBJECT_NAME;
+            case PlayerItemType.Spear:       return SPEAR_NAME;
+            case PlayerItemType.Axe:         return AXE_NAME;
+            case PlayerItemType.Sword:       return SWORD_NAME;
+            case PlayerItemType.Arrow:       return ARROW_NAME;
+            case PlayerItemType.Bow:         return BOW_NAME;
         }
     }
     public static Sprite GetSprite(PlayerItemType playerItemType)
