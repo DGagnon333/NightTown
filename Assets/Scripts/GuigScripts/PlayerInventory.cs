@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerInventory : IWeaponShopClient
+public class PlayerInventory /*: IWeaponShopClient*/
 {
     const int
         INVENTORY_SIZE = 8,
