@@ -113,13 +113,10 @@ public class GridManager : MonoBehaviour
                 }
                 if (tileDispo == 0)
                 {
-                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
                     for (int z = 0; z <= scaleDiffZ; z++)
                     {
                         for (int x = 0; x <= scaleDiffX; x++)
                         {
-                            buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
-                            tileState[posX + x, posZ + z] = false;
                             if (electrictyMap[posX + 1 + x, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + z + 1] || electrictyMap[posX, posZ - 1])
                             {
                                 newBuilding.GetComponent<Renderer>().material = electricMat;
@@ -127,8 +124,11 @@ public class GridManager : MonoBehaviour
                             }
                             if(!isConected)
                                 newBuilding.GetComponent<Renderer>().material = baseMat;
+                            buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
+                            tileState[posX + x, posZ + z] = false;
                         }
                     }
+                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
                 }
 
             }

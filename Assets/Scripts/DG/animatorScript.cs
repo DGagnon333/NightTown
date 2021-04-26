@@ -6,17 +6,18 @@ public class animatorScript : MonoBehaviour
 {
     Animator animator;
     int isWalkingHash;
+    bool playerIsOnGround = false;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         isWalkingHash = Animator.StringToHash("IsWalking");
-
     }
     void Update()
     {
         //début des animations
         bool isWalking = animator.GetBool(isWalkingHash);
+        bool state = false;
 
         if (!isWalking)
         {
@@ -24,37 +25,46 @@ public class animatorScript : MonoBehaviour
             {
                 animator.SetBool(isWalkingHash, true);
                 transform.localRotation = Quaternion.Euler(0, 0, 0);
+                state = true;
             }
             if (Input.GetKey("s"))
             {
                 animator.SetBool(isWalkingHash, true);
                 transform.localRotation = Quaternion.Euler(0, 180, 0);
+                state = true;
             }
             if (Input.GetKey("a"))
             {
                 animator.SetBool(isWalkingHash, true);
                 transform.localRotation = Quaternion.Euler(0, -90, 0);
+                state = true;
             }
             if (Input.GetKey("d"))
             {
                 animator.SetBool(isWalkingHash, true);
                 transform.localRotation = Quaternion.Euler(0, 90, 0);
+                state = true;
             }
         }
-        if (isWalking && !(Input.GetKey("w") || Input.GetKey("s") || Input.GetKey("a") || Input.GetKey("d")))
+        if (isWalking && !state)
         {
             animator.SetBool(isWalkingHash, false);
         }
-        //if (Input.GetButtonDown("Jump") && playerIsOnGround == true)
-        //{
-        //    rb.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
-        //    playerIsOnGround = false;
-        //    animator.SetBool(isWalkingHash, true);
+        if (Input.GetButtonDown("Jump") && playerIsOnGround == true)
+        {
+            playerIsOnGround = false;
+            animator.SetBool(isWalkingHash, true);
 
-        //}
+        }
+        
 
         //les scripts d'animations ont été fortement inspiré par Nicky B, 
         //sur youtube, How to Animate Characters in Unity 3D | Animation Transitions With Booleans
         //fin animations
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+            playerIsOnGround = true;
     }
 }
