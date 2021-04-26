@@ -41,11 +41,17 @@ public class UI_WeaponStore : MonoBehaviour
 
         itemTransform.Find("itemIcon").GetComponent<Image>().sprite = itemIcon;
 
-        itemTransform.GetComponent<Button>().onClick => { TryBuyItem(itemType); }
+        itemTransform.GetComponent<Button>().onClick.AddListener(delegate { TryBuyItem(itemType); });
     }
     private void TryBuyItem(PlayerItem.PlayerItemType playerItemType)
     {
-        weaponShopClient.BoughtItem(playerItemType);
+        if (weaponShopClient.TryGetNewItem(playerItemType))
+        {
+            if (weaponShopClient.TrySpendRessources(PlayerItem.GetWoodCost(playerItemType), PlayerItem.GetStoneCost(playerItemType), PlayerItem.GetGoldCost(playerItemType)))
+            {
+                weaponShopClient.BoughtItem(playerItemType);
+            }
+        }
     }
 
     public void ShowClient(IWeaponShopClient weaponShopClient)
