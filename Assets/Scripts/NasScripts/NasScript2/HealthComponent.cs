@@ -18,7 +18,7 @@ public class HealthComponent : MonoBehaviour
                 gameObject.transform.position = new Vector3(0, -1000, 0); // Pour faire appel au OnTriggerExit
                 Destroy(gameObject, 1);         
             }    
-            else if (gameObject.CompareTag("Base"))
+            else if (gameObject.CompareTag("Tower"))
             {
                 Destroy(transform.parent.gameObject);
             }
