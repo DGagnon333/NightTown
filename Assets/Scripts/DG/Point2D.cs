@@ -1,4 +1,6 @@
-﻿//fait par Dérick Gagnon
+﻿//Classe qui retient une position X et X 
+
+//fait par Dérick Gagnon
 
 using System.Collections;
 using System.Collections.Generic;
