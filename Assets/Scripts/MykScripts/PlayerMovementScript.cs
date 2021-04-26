@@ -25,31 +25,29 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void Update()
     {
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
-        float moveSpeed;
-        if (Input.GetKey(KeyCode.L))
-        {
-            moveSpeed = runSpeed;
-        }
+        
 
-        else
-        {
-            moveSpeed = walkSpeed;
-        }
+            float x = Input.GetAxisRaw("Horizontal");
+            float z = Input.GetAxisRaw("Vertical");
+            float moveSpeed;
+            if (Input.GetKey(KeyCode.L))
+            {
+                moveSpeed = runSpeed;
+            }
 
-        Vector3 movement = (transform.right * x + transform.forward * z).normalized;
-        rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
+            else
+            {
+                moveSpeed = walkSpeed;
+            }
 
-        if (Input.GetButtonDown("Jump") && playerIsOnGround == true)
-        {
-            rb.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
-            playerIsOnGround = false;
-        }
-        rb.constraints = RigidbodyConstraints.FreezeRotationX;
-        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+            Vector3 movement = (transform.right * x + transform.forward * z).normalized;
+            rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
+
+            
+            rb.constraints = RigidbodyConstraints.FreezeRotationX;
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+        
     }
-
     private void FixedUpdate()
     {
         float x = Input.GetAxisRaw("Horizontal");

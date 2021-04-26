@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerInventory
+public class PlayerInventory /*: IWeaponShopClient*/
 {
     const int
         INVENTORY_SIZE = 8,
@@ -52,5 +52,10 @@ public class PlayerInventory
     {
         ownBackpack = true;
         playerItemList.Capacity = INVENTORY_BACKPACK_SIZE;
+    }
+
+    public void BoughtItem(PlayerItem.PlayerItemType itemType)
+    {
+        Debug.Log("Bought item: " + itemType);
     }
 }
