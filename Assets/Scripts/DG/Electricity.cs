@@ -1,5 +1,5 @@
-﻿//Ce script a été inspiré par ma tp3 dans la session 3 avec Nassour Nassour, travail qui portait sur le pathfinding.
-// Cette classe permet d'instancié des objets d'une source jusqu'à une destination, et créer un tableau de bool
+﻿// Cette classe permet d'instancié des objets d'une source jusqu'à une destination, et créer un tableau de bool
+//
 // qui retient l'emplacement de chacun de ces objets
 
 using System;
@@ -92,7 +92,7 @@ public class Electricity : MonoBehaviour
         }
         foreach (var i in cameFrom)
         {
-            //permet de voir toutes les position cherchées--
+            //permet de voir toutes les positions cherchées--
             //Instantiate(wire, new Vector3(i.Key.X * 2 - gridSize, 0, i.Key.Z * 2 - gridSize), Quaternion.identity);
             //----------------------------------------------
             if (i.Key.X == PositionDestination.X && i.Key.Z == PositionDestination.Z)
@@ -124,7 +124,6 @@ public class Electricity : MonoBehaviour
         {
             for (int x = 0; x < gridSize; x++)
             {
-                //newMap[z, x] = tileState[z, x];
                 newMap[x, z] = true;
             }
         }

@@ -2,21 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class PlayerInventory /*: IWeaponShopClient*/
+public class PlayerInventory
 {
-    const int
-        INVENTORY_SIZE = 8,
-        INVENTORY_BACKPACK_SIZE = 16;
+    private const int MAX_DEFAULT_INVENTORY_SIZE = 8,
+                      MAX_BACKPACK_INVENTORY_SIZE = 16;
     private List<PlayerItem> playerItemList;
-    private bool ownBackpack = false;
-
+    private bool ownsBackpack;
+    public bool OwnsBackpack
+    {
+        get
+        {
+            return ownsBackpack;
+        }
+        private set
+        {
+            ownsBackpack = value;
+        }
+    }
     public PlayerInventory()
     {
         playerItemList = new List<PlayerItem>();
-        if (ownBackpack)
-            playerItemList.Capacity = INVENTORY_BACKPACK_SIZE;
-        else
-            playerItemList.Capacity = INVENTORY_SIZE;
+        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Axe, 1));
+        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Sword, 2));
+        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Bow, 1));
+        OwnsBackpack = false;
+        playerItemList.Capacity = MAX_DEFAULT_INVENTORY_SIZE;
     }
     public void HandleNewPlayerItem(PlayerItem item)
     {
@@ -35,14 +45,7 @@ public class PlayerInventory /*: IWeaponShopClient*/
     }
     public void AddPlayerItem(PlayerItem item)
     {
-        //playerItemList.Add(item);
-        //foreach(PlayerItem i in playerItemList)
-        //{
-        //    if(i.playerItemType == item.playerItemType)
-        //}
-
-        //if (playerItemList.Contains(item))
-        //    playerItemList.
+        playerItemList.Add(item);
     }
     public void RemovePlayerItem(PlayerItem item)
     {
@@ -50,12 +53,11 @@ public class PlayerInventory /*: IWeaponShopClient*/
     }
     public void IncreasePlayerInventoryCapacity()
     {
-        ownBackpack = true;
-        playerItemList.Capacity = INVENTORY_BACKPACK_SIZE;
+        OwnsBackpack = true;
+        playerItemList.Capacity = MAX_BACKPACK_INVENTORY_SIZE;
     }
-
-    public void BoughtItem(PlayerItem.PlayerItemType itemType)
+    public List<PlayerItem> GetPlayerItemList()
     {
-        Debug.Log("Bought item: " + itemType);
+        return playerItemList;
     }
 }

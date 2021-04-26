@@ -6,7 +6,6 @@ public class ShowBigMap : MonoBehaviour
 {
 
     public GameObject map;
-
     void Start()
     {
         map.SetActive(false);

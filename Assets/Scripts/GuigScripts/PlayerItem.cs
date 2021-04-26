@@ -25,6 +25,35 @@ public class PlayerItem
         QuestObject,
         NbPlayerItemType
     }
+    private PlayerItemType type;
+    public PlayerItemType Type
+    {
+        get
+        {
+            return type;
+        }
+        private set
+        {
+            type = value;
+        }
+    }
+    private int amount;
+    public int Amount
+    {
+        get
+        {
+            return amount;
+        }
+        private set
+        {
+            amount = value;
+        }
+    }
+    public PlayerItem(PlayerItemType type, int amount)
+    {
+        Type = type;
+        Amount = amount;
+    }
     public static string GetName(PlayerItemType playerItemType)
     {
         switch (playerItemType)
