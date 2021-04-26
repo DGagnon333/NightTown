@@ -14,6 +14,7 @@ TagManager:
   - ConstructionMode
   - Music
   - Enemy
+  - Tower
   layers:
   - Default
   - TransparentFX
