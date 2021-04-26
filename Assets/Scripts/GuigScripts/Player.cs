@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour, IWeaponShopClient
 {
+    [SerializeField]
+    private UI_PlayerInventory uiPlayerInventory;
+
+    private PlayerInventory playerInventory;
+
     private const int MAX_DEFAULT_INVENTORY_SIZE = 8,
                       MAX_BACKPACK_INVENTORY_SIZE = 16;
     public event EventHandler OnWoodAmountChanged;
@@ -78,25 +83,39 @@ public class Player : MonoBehaviour, IWeaponShopClient
         WoodAmount = 0;
         StoneAmount = 0;
         GoldAmount = 0;
+
+        playerInventory = new PlayerInventory();
+        uiPlayerInventory.SetPlayerInventory(playerInventory);
     }
     public void EquipBackpack()
     {
         OwnsBackpack = true;
     }
+    public void AddWoodAmount(int addWoodAmount)
+    {
+        WoodAmount += addWoodAmount;
+    }
+    public void AddStoneAmount(int addStoneAmount)
+    {
+        StoneAmount += addStoneAmount;
+    }
+    public void AddGoldAmount(int addGoldAmount)
+    {
+        GoldAmount += addGoldAmount;
+    }
     public void BoughtItem(PlayerItem.PlayerItemType itemType)
     {
         Debug.Log("Bought item: " + itemType);
-        //switch (itemType)
-        //{
-        //    default:
-        //    case PlayerItem.PlayerItemType.Backpack:  return null;
-        //    case PlayerItem.PlayerItemType.HandTorch: return HANDTORCH_NAME;
-        //    case PlayerItem.PlayerItemType.Spear:     return SPEAR_NAME;
-        //    case PlayerItem.PlayerItemType.Axe:       return AXE_NAME;
-        //    case PlayerItem.PlayerItemType.Sword:     return SWORD_NAME;
-        //    case PlayerItem.PlayerItemType.Arrow:     return ARROW_NAME;
-        //    case PlayerItem.PlayerItemType.Bow:       return BOW_NAME;
-        //}
+        switch (itemType)
+        {
+            case PlayerItem.PlayerItemType.Backpack: EquipBackpack(); break;
+                //case PlayerItem.PlayerItemType.HandTorch: return HANDTORCH_NAME;
+                //case PlayerItem.PlayerItemType.Spear: return SPEAR_NAME;
+                //case PlayerItem.PlayerItemType.Axe: return AXE_NAME;
+                //case PlayerItem.PlayerItemType.Sword: return SWORD_NAME;
+                //case PlayerItem.PlayerItemType.Arrow: return ARROW_NAME;
+                //case PlayerItem.PlayerItemType.Bow: return BOW_NAME;
+        }
     }
 
     public bool TrySpendRessources(int woodCost, int stoneCost, int goldCost)
