@@ -6,6 +6,7 @@ public class HealthBarBillboard : MonoBehaviour
 {
     public Transform cam;
 
+
     void Update()
     {
         transform.LookAt(transform.position + cam.forward);

@@ -7,11 +7,14 @@ public class BossHealthComponent : MonoBehaviour
 {
     public float maxHealth = 300f;
     public float currentHealth;
-    public HealthBarComponent healthBar; 
+    public HealthBarComponent healthBar;
+
+    private Animator animator;
 
     private void Awake()
     {
         currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -25,8 +28,9 @@ public class BossHealthComponent : MonoBehaviour
         healthBar.SetHealth((int)currentHealth);
         if (currentHealth <= 0)
         {
-            Destroy(gameObject, 1);
-            Debug.Log("less goo");
+            animator.SetTrigger("die");
+            Destroy(gameObject, 25);
+            Debug.Log("Boss death");
         }
     }
 }
