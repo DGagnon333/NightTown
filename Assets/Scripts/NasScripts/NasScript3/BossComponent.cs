@@ -2,18 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Assisté par derick gagnon
 [RequireComponent(typeof(Rigidbody))]
 public class BossComponent : MonoBehaviour
 {
+    [Header("Settings")]
+    public Transform playerPosition; // position du joueur
+    public Material normalMat; // Materiel du boss
+    public Material vulnerableMat; // Mat du boss quand il est vulnérable
+
+    [Header("Values")]
+    public float speed = 15f; // vitesse du boss
+
     private Animator animator;
     private BossHealthComponent health;
-    private Rigidbody rb;
+    private SkinnedMeshRenderer mesh;
 
-    public Transform playerPosition;
-    public float speed = 15f;
+    
+    
+    // Deux compteurs
+    private float elapsedTime = 0f; 
+    private float idleTimer = 0f;
 
-    private float elapsedTime = 0f;
-    private bool charged = false;
+
+    // Détermine si le boss est vulnérable
+    private bool _vulnerable = true;
+    public bool Vulnerable
+    {
+        get
+        {
+            return _vulnerable;
+        }
+
+        set
+        {
+            _vulnerable = value;
+        }
+    }
+
     Vector3 direction;
 
     // Start is called before the first frame update
@@ -21,7 +48,7 @@ public class BossComponent : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         health = GetComponent<BossHealthComponent>();
-        rb = GetComponentInChildren<Rigidbody>();
+        mesh = GetComponentInChildren<SkinnedMeshRenderer>();
         direction = transform.position;
     } 
 
@@ -29,39 +56,31 @@ public class BossComponent : MonoBehaviour
     void Update()
     {
         elapsedTime += Time.deltaTime;
-        ChargeAttack();
-    }
+        idleTimer += Time.deltaTime;
 
-    void ChargeAttack()
-    {
-        //float elapsedTime = 0;
-        //Vector3 lastKnownPos = playerPosition.position;
-        //do
-        //{
-        //    animator.SetTrigger("run");
-        //    transform.position = Vector3.MoveTowards(transform.position, lastKnownPos, speed * Time.deltaTime);
-
-        //    elapsedTime += Time.deltaTime;
-        //} while (elapsedTime <= 3);
-
-        //Debug.Log("end of charge");
-
-        //Vector3 lastKnownPos = transform.position;
-        //if (elapsedTime >= 3)
-        //{
-        //    animator.SetTrigger("run");
-        //    elapsedTime = 0;
-        //    lastKnownPos = playerPosition.position;
-        //}
-        //transform.position = Vector3.MoveTowards(transform.position, lastKnownPos, speed * Time.deltaTime);
-
-        if (elapsedTime >= 3)
+        transform.LookAt(playerPosition);
+        if (elapsedTime >= 5)
         {
             direction = playerPosition.position;
-            elapsedTime = 0;
+            animator.SetTrigger("run");
+            mesh.material = normalMat;
+            Vulnerable = false;
+            elapsedTime -= 5;
+        }
+        else if (idleTimer >= 0.2f )
+        {          
+            if ((transform.position - direction) == Vector3.zero)
+            {
+                animator.ResetTrigger("run");
+                animator.SetTrigger("idle");
+                mesh.material = vulnerableMat;
+                Vulnerable = true;
+
+                transform.LookAt(transform.forward);
+            }
+            idleTimer -= 0.2f;         
         }
         transform.position = Vector3.MoveTowards(transform.position, direction, speed * Time.deltaTime);
-
-        //transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
+        //Debug.Log(transform.position - direction);
     }
 }

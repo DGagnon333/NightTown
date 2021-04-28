@@ -175,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPosition: {fileID: 1560476089}
   speed: 30
+  vulnerable: 1
 --- !u!54 &235099734
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -269,7 +270,7 @@ PrefabInstance:
     - target: {fileID: 13761724, guid: b89e0c3c675d2f6468bb44ecbf17fb04, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8a40bd489d60fe8469c3b7fa721285d5, type: 2}
+      objectReference: {fileID: 2100000, guid: 2adcd0740dbab9543950e17d5421900e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b89e0c3c675d2f6468bb44ecbf17fb04, type: 3}
 --- !u!1 &487573913
@@ -782,7 +783,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8a40bd489d60fe8469c3b7fa721285d5, type: 2}
+  - {fileID: 2100000, guid: 538531ce54d11c14ab5ce501300459c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
