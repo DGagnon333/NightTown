@@ -14,12 +14,15 @@ public class BossComponent : MonoBehaviour
 
     private float elapsedTime = 0f;
     private bool charged = false;
+    Vector3 direction;
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         health = GetComponent<BossHealthComponent>();
-        rb = GetComponentInChildren<Rigidbody>();   
+        rb = GetComponentInChildren<Rigidbody>();
+        direction = transform.position;
     } 
 
     // Update is called once per frame
@@ -27,8 +30,6 @@ public class BossComponent : MonoBehaviour
     {
         elapsedTime += Time.deltaTime;
         ChargeAttack();
-
-
     }
 
     void ChargeAttack()
@@ -54,13 +55,13 @@ public class BossComponent : MonoBehaviour
         //}
         //transform.position = Vector3.MoveTowards(transform.position, lastKnownPos, speed * Time.deltaTime);
 
-        Vector3 direction = transform.position;
-        if (elapsedTime >=3)
+        if (elapsedTime >= 3)
         {
-            direction = playerPosition.position - transform.position;
-            
+            direction = playerPosition.position;
             elapsedTime = 0;
         }
-        transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
+        transform.position = Vector3.MoveTowards(transform.position, direction, speed * Time.deltaTime);
+
+        //transform.Translate(direction.normalized * speed * Time.deltaTime, Space.World);
     }
 }
