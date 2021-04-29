@@ -3,34 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Ce script est fait par Nassour Nassour
 public class BossHealthComponent : MonoBehaviour
 {
-    public float maxHealth = 300f;
-    public float currentHealth;
+    public float maxHealth = 300f; // vie maximale
+    public float currentHealth; // vie courante
     public HealthBarComponent healthBar;
 
+    private BossComponent boss;
     private Animator animator;
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        currentHealth = maxHealth; 
         animator = GetComponent<Animator>();
+        boss = GetComponent<BossComponent>();
     }
 
     private void Start()
     {
-        healthBar.SetMaxHealth((int)maxHealth);
+        healthBar.SetMaxHealth((int)maxHealth); // La barre de vie est remplie
     }
 
     public void TakeDamage(float damageTaken)
     {
-        currentHealth -= damageTaken;
-        healthBar.SetHealth((int)currentHealth);
-        if (currentHealth <= 0)
+        if(boss.Vulnerable) // si le boss est vulnérable
         {
-            animator.SetTrigger("die");
-            Destroy(gameObject, 25);
-            Debug.Log("Boss death");
-        }
+            currentHealth -= damageTaken; // il perds de la vie
+            healthBar.SetHealth((int)currentHealth); // la barre de vie diminue
+            if (currentHealth <= 0) // si la vie est egale a 0, le boss meure et la partie est gagnée
+            {
+                animator.SetTrigger("die");
+                Destroy(gameObject, 25);
+                Debug.Log("Victoire!!");
+            }
+        }  
     }
 }
