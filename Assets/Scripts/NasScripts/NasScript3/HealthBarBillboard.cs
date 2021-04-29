@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class HealthBarBillboard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Transform cam;
 
-    // Update is called once per frame
+
     void Update()
     {
-        
+        transform.LookAt(transform.position + cam.forward);
     }
 }

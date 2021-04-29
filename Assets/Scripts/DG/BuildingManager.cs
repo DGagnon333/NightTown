@@ -16,7 +16,6 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private GameObject Canevas; //le Canevas du UI qui sera afficher à l'écran
     private int key; //Cette clée permet de retenir la touche appuyée sur le clavier
     [SerializeField] private  GameObject buildingLayout; //le "phantôme" du bâtiment sélectionné, qui retient sa positino et sa grosseur
-    private GameObject[] tiles; //utilisé pour pouvoir afficher ou non les tuiles
     private GameObject selectedBuilding; //le bâtiment choisit
     public bool buildingModeState = false; //l'état du mode de construction, activé ou désactivé
     [SerializeField] private Material gridTexture;
@@ -88,7 +87,7 @@ public class BuildingManager : MonoBehaviour
             }
             //on peut déselectioner le placement des fils au besoin avec un click droit de la souris
             //if (Input.GetKeyDown(KeyCode.Mouse1) || !Input.GetKeyDown(KeyCode.Mouse0))
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown("r"))
             {
                 wireList.Clear();
                 wireList = new List<GameObject>();
@@ -129,13 +128,17 @@ public class BuildingManager : MonoBehaviour
             key = 4;
             selectedBuilding = buildingList[key];
         }
+        //changements de couleurs pour le UI
         for (int i = 0; i < buildingList.Count; i++)
         {
             if (i != key)
                 buildingListUI[i].color = Color.white;
         }
+
+        //change la taille du "phantôme" de l'objet pour celui de l'objet sélectionné
         buildingLayout.transform.localScale = selectedBuilding.transform.localScale;
 
+        //changement des couleurs du "phantôme" de l'objet dépendamment s'il est une efface ou non
         if (selectedBuilding.CompareTag("Eraser"))
             buildingLayout.GetComponent<Renderer>().material.color = Color.red;
         else

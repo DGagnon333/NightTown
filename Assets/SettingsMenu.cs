@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿//Ce script a été pris de Brackeys, SETTINGS MENU in Unity, sur youtube
+//https://www.youtube.com/watch?v=YOaYQrN1oYQ
+//
+//modifié par Dérick Gagnon
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -8,6 +13,8 @@ public class SettingsMenu : MonoBehaviour
     public AudioMixer audioMixer;
 
     public Dropdown resolutionDropDown;
+    [SerializeField] private Camera camera;
+
 
     Resolution[] resolutions;
     private void Start()
@@ -45,6 +52,11 @@ public class SettingsMenu : MonoBehaviour
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("Volume", volume);
+    }
+
+    public void SetSize(float size)
+    {
+        camera.orthographicSize = size;
     }
 
     public void SetQuality(int qualityIndex)

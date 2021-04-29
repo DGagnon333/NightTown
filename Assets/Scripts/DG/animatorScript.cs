@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿//les scripts d'animations ont été fortement inspiré par Nicky B, 
+//sur youtube, How to Animate Characters in Unity 3D | Animation Transitions With Booleans
+//fin animations
+//
+//modifié par Dérick Gagnon
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -58,9 +64,7 @@ public class animatorScript : MonoBehaviour
         }
         
 
-        //les scripts d'animations ont été fortement inspiré par Nicky B, 
-        //sur youtube, How to Animate Characters in Unity 3D | Animation Transitions With Booleans
-        //fin animations
+        
     }
     private void OnCollisionEnter(Collision collision)
     {

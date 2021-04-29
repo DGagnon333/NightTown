@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿//Ce script a été pris de Brackeys, START MENU in Unity, sur youtube
+//https://www.youtube.com/watch?v=zc8ac_qUXQY
+//
+//modifié par Dérick Gagnon
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;

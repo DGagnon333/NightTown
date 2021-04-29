@@ -12,7 +12,7 @@ using System.Linq;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] public int gridSize = 30;
+    [SerializeField] public int gridSize = 200;
     private int step = 2;
     public bool[,] tileState;
     [SerializeField] public GameObject ground;
@@ -51,6 +51,12 @@ public class GridManager : MonoBehaviour
         Obstacles();
     }
 
+    /// <summary>
+    /// S'occupe de rendre la position de la base dans le monde non
+    /// disponible et mettre les cases qu'elle occupe conductible
+    /// (alimenté par un courant... la base représente la source
+    /// de courant initial)
+    /// </summary>
     private void BaseCreation()
     {
         posBaseX = (int)(baseCopy.transform.position.x - 1 + gridSize - (int)GetComponent<GridManager>().ground.transform.position.x) / 2;
@@ -89,14 +95,14 @@ public class GridManager : MonoBehaviour
         bool isAvailable = false;
         GameObject buildingClone = newBuilding; //simplement pour l'instancier
         newBuilding.transform.position = tf.position;
-        Material baseMat = newBuilding.GetComponent<Renderer>().material;
+        //Material baseMat = newBuilding.GetComponent<Renderer>().material;
         bool isConected = false;
 
         if (newBuilding.CompareTag("Eraser"))
         {
             Eraser(newBuilding, wireDictionary);
         }
-        else
+        if (!newBuilding.CompareTag("Eraser") && !newBuilding.CompareTag("Wire"))
         {
             //pour un bâtiment qui mesure plus qu'une case
             if (scaleDiffX != 0 && scaleDiffZ != 0)
@@ -119,11 +125,11 @@ public class GridManager : MonoBehaviour
                         {
                             if (electrictyMap[posX + 1 + x, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + z + 1] || electrictyMap[posX, posZ - 1])
                             {
-                                newBuilding.GetComponent<Renderer>().material = electricMat;
+                                //newBuilding.GetComponent<Renderer>().material = electricMat;
                                 isConected = true;
                             }
                             if(!isConected)
-                                newBuilding.GetComponent<Renderer>().material = baseMat;
+                                //newBuilding.GetComponent<Renderer>().material = baseMat;
                             buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
                             tileState[posX + x, posZ + z] = false;
                         }
@@ -135,7 +141,7 @@ public class GridManager : MonoBehaviour
             //pour un bâtiment qui mesure une cased
             if (tileState[posX, posZ] && scaleDiffX == 0 && scaleDiffZ == 0)
             {
-                Conection(newBuilding, posX, posZ, electrictyMap, baseMat);
+                //Conection(newBuilding, posX, posZ, electrictyMap, baseMat);
                 buildingClone = Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
                 buildingTiles.Add(new Point2D(posX, posZ), buildingClone);
                 isAvailable = true;
@@ -144,8 +150,12 @@ public class GridManager : MonoBehaviour
         }
 
         //si le bâtiment est un "wire"
-        if (newBuilding.CompareTag("Wire") && isAvailable)
+        if (newBuilding.CompareTag("Wire"))
         {
+            //Conection(newBuilding, posX, posZ, electrictyMap, baseMat);
+            buildingClone = Instantiate(newBuilding, position + ground.transform.position, Quaternion.identity);
+            buildingTiles.Add(new Point2D(posX, posZ), buildingClone);
+            tileState[posX, posZ] = false;
             Wire(electricity, posX, posZ, buildingClone, buildingTiles, wireList, wireDictionary);
         }
 
@@ -326,10 +336,10 @@ public class GridManager : MonoBehaviour
         {
             if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
             {
-                newBuilding.GetComponent<Renderer>().material = electricMat;
+                //newBuilding.GetComponent<Renderer>().material = electricMat;
             }
-            else
-                newBuilding.GetComponent<Renderer>().material = noElectricity;
+            //else
+                //newBuilding.GetComponent<Renderer>().material = noElectricity;
 
             wireList.Add(newBuilding);
         }

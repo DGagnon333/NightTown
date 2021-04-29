@@ -7,6 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
+    public GameObject SettingsMenuUI;
     GameObject gridManager;
     GameObject music;
 
@@ -38,6 +39,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        SettingsMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
         music.SetActive(false);
