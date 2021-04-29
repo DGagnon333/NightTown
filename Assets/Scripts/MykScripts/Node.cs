@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// Fait par Mykael Arsenault et je me suis inspiré de ce vidéo afin de faire le Pathfinding : https://www.youtube.com/watch?v=AKKpPmxx07w
 public class Node
 {
 
