@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Ce script est fait par Nassour Nassour
+// Inspiré par:
 public class HealthBarBillboard : MonoBehaviour
 {
     public Transform cam;
