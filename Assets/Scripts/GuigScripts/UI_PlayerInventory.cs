@@ -1,22 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_PlayerInventory : MonoBehaviour
 {
     private PlayerInventory playerInventory;
-    private Transform container;
-    private Transform template;
-    private Transform border;
-    private Transform background;
+    private Transform inventoryContainer;
+    private Transform inventoryTemplate;
+    private Transform cam;
 
     private void Awake()
     {
-        container = transform.Find("container");
-        template = container.Find("template");
-        border = transform.Find("border");
-        background = transform.Find("background");
-        template.gameObject.SetActive(false);
+        inventoryContainer = transform.Find("inventoryContainer");
+        Debug.Log(inventoryContainer.position.x.ToString());
+        inventoryTemplate = inventoryContainer.Find("inventoryTemplate");
+        Debug.Log(inventoryTemplate.position.y.ToString());
+    }
+    private void Update()
+    {
+        transform.LookAt(transform.position + cam.forward);
     }
 
     public void SetPlayerInventory(PlayerInventory playerInventory)
@@ -28,12 +31,16 @@ public class UI_PlayerInventory : MonoBehaviour
     {
         int i = 0;
         int j = 0;
-        float slotSize = 35f;
+        float slotSize = 90f;
         foreach  (PlayerItem item in playerInventory.GetPlayerItemList())
         {
-            RectTransform rectTransform = Instantiate(template, container).GetComponent<RectTransform>();
-            rectTransform.gameObject.SetActive(true);
+            Transform itemTransform = Instantiate(inventoryTemplate, inventoryContainer);
+            itemTransform.gameObject.SetActive(true);
+            RectTransform rectTransform = itemTransform.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector3(i * slotSize, j * slotSize, 0);
+            Image image = rectTransform.Find("itemIcon").GetComponent<Image>();
+            image.sprite = PlayerItem.GetSprite(item.Type);
+
             i++;
             if (i > 4)
             {
@@ -42,12 +49,12 @@ public class UI_PlayerInventory : MonoBehaviour
             }
         }
     }
-    //private void RefreshDisplaySize()
+    //private float SlotDisplaySize(bool ownsBackpack)
     //{
-    //    if(playerInventory.GetPlayerItemList().Capacity > 8)
-    //    {
-    //        border/*.GetComponent<RectTransform>()*/.rect.height *= 2;
-    //    }
+    //    if (ownsBackpack)
+    //        return 17.5f;
+    //    else
+    //        return 35f;
     //}
 
 }    

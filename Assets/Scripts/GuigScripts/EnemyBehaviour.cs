@@ -1,42 +1,101 @@
-﻿//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-//// Auteur: Guillaume
-//public class EnemyBehaviour : MonoBehaviour
-//{
-//    [SerializeField]
-//    const int Movement_Speed = 10; // Guillaume: à ajuster
-//    [SerializeField]
-//    int health = 100;
-//    // Start is called before the first frame update
-//    void Start()
-//    {
-        
-//    }
-
-//    // Update is called once per frame
-//    void Update()
-//    {
-        
-//    }
-//}
+﻿// Auteur: Guillaume
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    private GameObject[] player;
-    [SerializeField] private string targetTag;
+    enum EnemyState { Inactive, Active, Attack}
+    private GameObject player;
+    private GameObject[] buildings;
+    [SerializeField] private string playerTag;
+    [SerializeField] private string buildingTag;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private int moveSpeed = 150;
+    [SerializeField] private int moveSpeed;
 
-    private Vector3 dir = new Vector3();
+    private Vector3 targetDirection;
+    private EnemyState currentEnemyState;
+    private GameObject target;
+
+    private void Awake()
+    {
+        currentEnemyState = EnemyState.Inactive;
+    }
     private void Update()
     {
-        player = GameObject.FindGameObjectsWithTag(targetTag);
-        dir = player[0].transform.position - transform.position;
-        rb.MovePosition(transform.position + dir.normalized * moveSpeed * Time.deltaTime);
+        switch (currentEnemyState)
+        {
+            case EnemyState.Inactive: ManageInactiveState(); break;
+            case EnemyState.Active: ManageActiveState(); break;
+        }
+    }
+    private void ManageInactiveState()
+    {
+        Debug.Log("Inactive");
+        target = FindClosestTarget();
+        Debug.Log("My target is: " + target.tag);
+        currentEnemyState = EnemyState.Active;
+    }
+    private void ManageActiveState()
+    {
+        Debug.Log("Active");
+        targetDirection = (target.transform.position-transform.position).normalized;
+        Debug.Log(target.transform.position);
+        rb.AddForce(targetDirection * moveSpeed);
+    }
+
+    private GameObject FindClosestTarget()
+    {
+        player = GameObject.FindGameObjectWithTag(playerTag);
+        Vector3 playerDirection = player.transform.position - transform.position;
+        target = player;
+        buildings = GameObject.FindGameObjectsWithTag(buildingTag);
+        Vector3 closestBuildingDirection = buildings[0].transform.position - transform.position;
+        int closestBuildingIndex = 0;
+        for(int i = 1; i < buildings.Length; i++)
+        {
+            Vector3 currentBuildingDirection = buildings[i].transform.position - transform.position;
+            if((closestBuildingDirection - currentBuildingDirection).magnitude > Vector3.zero.magnitude)
+            {
+                closestBuildingDirection = currentBuildingDirection;
+                closestBuildingIndex = i;
+            }
+        }
+        if((playerDirection -closestBuildingDirection).magnitude > Vector3.zero.magnitude)
+        {
+            target = buildings[closestBuildingIndex];
+        }
+        return target;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag(playerTag)|| collision.gameObject.CompareTag(buildingTag))
+        {
+            Debug.Log("collision with " + collision.gameObject.name);
+            target = collision.gameObject;
+            currentEnemyState = EnemyState.Attack;
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag(playerTag) || collision.gameObject.CompareTag(buildingTag))
+        {
+            Debug.Log("ATTACK RANGE");
+            rb.velocity = Vector3.zero;
+            target.GetComponent<HealthComponent>().TakeDamage(5);
+            if (target == null)
+                currentEnemyState = EnemyState.Inactive;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if(target == null)
+            currentEnemyState = EnemyState.Inactive;
+        else
+        {
+            targetDirection = (target.transform.position - transform.position).normalized;
+            rb.AddForce(targetDirection * moveSpeed);
+        }
     }
 }
 

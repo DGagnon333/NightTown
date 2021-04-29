@@ -30,9 +30,8 @@ public class UI_WeaponStore : MonoBehaviour
         Transform itemTransform = Instantiate(itemTemplate, container);
         itemTransform.gameObject.SetActive(true);
         RectTransform itemRectTransform = itemTransform.GetComponent<RectTransform>();
-        float itemHeight = 35f;
-        float startingHeight = 105f;
-        itemRectTransform.anchoredPosition = new Vector3(80, startingHeight - itemHeight * orderIndex, 0);
+        float itemHeight = 60f;
+        itemRectTransform.anchoredPosition = new Vector3(container.position.x, container.position.y - itemHeight * orderIndex, 0);
 
         itemTransform.Find("itemNameText").GetComponent<TextMeshProUGUI>().SetText(itemName);
         itemTransform.Find("itemWoodCostText").GetComponent<TextMeshProUGUI>().SetText(woodCost.ToString());
