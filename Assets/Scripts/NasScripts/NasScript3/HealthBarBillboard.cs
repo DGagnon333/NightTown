@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 // Ce script est fait par Nassour Nassour
-// Inspiré par:
+// Inspiré par:https://youtu.be/BLfNP4Sc_iA
 public class HealthBarBillboard : MonoBehaviour
 {
     public Transform cam;
