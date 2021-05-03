@@ -4000,7 +4000,7 @@ MonoBehaviour:
   - {fileID: 1291537489}
   Canevas: {fileID: 2116628295}
   buildingLayout: {fileID: 565219607}
-  buildingModeState: 1
+  buildingModeState: 0
   gridTexture: {fileID: 2100000, guid: f8bf9033cffec4a4c8ba1908372d8094, type: 2}
   greenTexture: {fileID: 2100000, guid: b4335c2781c0a3f4c848224331494d0a, type: 2}
   gridRenderer: {fileID: 1990809617}
@@ -19792,6 +19792,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8823014215275485975, guid: c6cd9480ff004d4479909ecb625389d8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8823014215275485975, guid: c6cd9480ff004d4479909ecb625389d8,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8823014215275485975, guid: c6cd9480ff004d4479909ecb625389d8,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8823014215275485975, guid: c6cd9480ff004d4479909ecb625389d8,
         type: 3}

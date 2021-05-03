@@ -23,37 +23,35 @@ public class PlayerMovementScript : MonoBehaviour
         body.freezeRotation = true;
     }
 
-    private void Update()
-    {
-        
+    //private void Update()
+    //{
+    //        float x = Input.GetAxisRaw("Horizontal");
+    //        float z = Input.GetAxisRaw("Vertical");
+    //        float moveSpeed;
+    //        if (Input.GetKey(KeyCode.LeftShift))
+    //        {
+    //            moveSpeed = runSpeed;
+    //        }
 
-            float x = Input.GetAxisRaw("Horizontal");
-            float z = Input.GetAxisRaw("Vertical");
-            float moveSpeed;
-            if (Input.GetKey(KeyCode.L))
-            {
-                moveSpeed = runSpeed;
-            }
+    //        else
+    //        {
+    //            moveSpeed = walkSpeed;
+    //        }
 
-            else
-            {
-                moveSpeed = walkSpeed;
-            }
-
-            Vector3 movement = (transform.right * x + transform.forward * z).normalized;
-            rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
+    //        Vector3 movement = (transform.right * x + transform.forward * z).normalized;
+    //        rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
 
             
-            rb.constraints = RigidbodyConstraints.FreezeRotationX;
-            rb.constraints = RigidbodyConstraints.FreezeRotationZ;
+    //        rb.constraints = RigidbodyConstraints.FreezeRotationX;
+    //        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
         
-    }
+    //}
     private void FixedUpdate()
     {
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
         float moveSpeed;
-        if (Input.GetKey(KeyCode.L))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             moveSpeed = runSpeed;
         }
