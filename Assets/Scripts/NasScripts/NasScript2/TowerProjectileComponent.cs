@@ -41,5 +41,6 @@ public class TowerProjectileComponent : MonoBehaviour
         }
 
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+
     }
 }
