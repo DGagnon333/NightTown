@@ -8,7 +8,12 @@ using UnityEngine.UI;
 // Inspiré par:https://youtu.be/BLfNP4Sc_iA
 public class HealthBarComponent : MonoBehaviour
 {
-    public Slider slider;
+    private Slider slider;
+
+    private void Awake()
+    {
+        slider = GetComponentInChildren<Slider>();
+    }
 
     public void SetMaxHealth(int health)
     {
