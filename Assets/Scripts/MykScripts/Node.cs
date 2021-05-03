@@ -1,29 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// Fait par Mykael Arsenault et je me suis inspiré de ce vidéo afin de faire le Pathfinding : https://www.youtube.com/watch?v=AKKpPmxx07w
 public class Node
 {
 
-    public int iGridX;//X Position in the Node Array
-    public int iGridY;//Y Position in the Node Array
+    public int positionInX;//Position en x dans la matrice du noeud.
+    public int positionInY;//Position en y dans la matrice du noeud.
 
-    public bool bIsWall;//Tells the program if this node is being obstructed.
-    public Vector3 vPosition;//The world position of the node.
+    public bool buildingIsOnNode;//Dit s'il y a un bâtiment sur un noeud.
+    public Vector3 worldPosition;//Position dans le monde du noeud.
 
-    public Node ParentNode;//For the AStar algoritm, will store what node it previously came from so it cn trace the shortest path.
+    public Node ParentNode;//Le noeud précédent celui présent
 
-    public int igCost;//The cost of moving to the next square.
-    public int ihCost;//The distance to the goal from this node.
+    public int gCost;//Le coût pour passer au prochain noeud. 
+    public int hCost;//La distance entre le noeud et la position d'arrivée.
 
-    public int FCost { get { return igCost + ihCost; } }//Quick get function to add G cost and H Cost, and since we'll never need to edit FCost, we dont need a set function.
+    public int fCost { get { return gCost + hCost; } }//Le fCost qui est la somme du gCost et hCost.
 
-    public Node(bool a_bIsWall, Vector3 a_vPos, int a_igridX, int a_igridY)//Constructor
+    public Node(bool theBuildingIsOnNode, Vector3 thePosition, int thePositionInX, int thePositionInY)
     {
-        bIsWall = a_bIsWall;//Tells the program if this node is being obstructed.
-        vPosition = a_vPos;//The world position of the node.
-        iGridX = a_igridX;//X Position in the Node Array
-        iGridY = a_igridY;//Y Position in the Node Array
+        buildingIsOnNode = theBuildingIsOnNode;//Dit s'il y a un bâtiment sur un noeud.
+        worldPosition = thePosition;//Position dans le monde du noeud.
+        positionInX = thePositionInX;//Position en x dans la matrice du noeud.
+        positionInY = thePositionInY;//Position en y dans la matrice du noeud.
     }
 
 }

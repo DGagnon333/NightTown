@@ -1,163 +1,133 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// Fait par Mykael Arsenault et je me suis inspiré de ce vidéo afin de faire le Pathfinding : https://www.youtube.com/watch?v=AKKpPmxx07w
 public class Grid : MonoBehaviour
 {
 
-    public Transform StartPosition;//This is where the program will start the pathfinding from.
-    public LayerMask WallMask;//This is the mask that the program will look for when trying to find obstructions to the path.
-    public Vector2 vGridWorldSize;//A vector2 to store the width and height of the graph in world units.
-    public float fNodeRadius;//This stores how big each square on the graph will be
-    public float fDistanceBetweenNodes;//The distance that the squares will spawn from eachother.
+    public Transform StartPosition;//La postition de départ pour le pathfinding. 
+    public LayerMask Building;//Permet de contourner les obstacles. 
+    public Vector2 gridSize;//Grandeur du grid. 
+    public float nodeRadius;//Détermine comment gros sera chaque case du grid. 
 
-    Node[,] NodeArray;//The array of nodes that the A Star algorithm uses.
-    public List<Node> FinalPath;//The completed path that the red line will be drawn along
+    Node[,] NodeArray;//La matrice de noeuds. 
+    public List<Node> FinalPath;//La liste des noeuds du chemin trouvés par le pathfinding.  
 
 
-    float fNodeDiameter;//Twice the amount of the radius (Set in the start function)
-    int iGridSizeX, iGridSizeY;//Size of the Grid in Array units.
+    float nodeDiameter;
+    int gridSizeInX, gridSizeInY;//Taille du grid en unités pour la matrice.
 
-    public Camera gizmosCamera;
     public GameObject cube;
 
-    private void Start()//Ran once the program starts
+    private void Start()
     {
-        fNodeDiameter = fNodeRadius * 2;//Double the radius to get diameter
-        iGridSizeX = Mathf.RoundToInt(vGridWorldSize.x / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
-        iGridSizeY = Mathf.RoundToInt(vGridWorldSize.y / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
-        CreateGrid();//Draw the grid
+        nodeDiameter = nodeRadius * 2;//Trouver le diamètre à partir du rayon. 
+        gridSizeInX = Mathf.RoundToInt(gridSize.x / nodeDiameter);//Trouve la grandeur en x de chaque case du grid.
+        gridSizeInY = Mathf.RoundToInt(gridSize.y / nodeDiameter);//Trouve la grandeur en y de chaque case du grid.
+        CreateGrid();
     }
 
 
 
     void CreateGrid()
     {
-        NodeArray = new Node[iGridSizeX, iGridSizeY];//Declare the array of nodes.
-        Vector3 bottomLeft = transform.position - Vector3.right * vGridWorldSize.x / 2 - Vector3.forward * vGridWorldSize.y / 2;//Get the real world position of the bottom left of the grid.
-        for (int x = 0; x < iGridSizeX; x++)//Loop through the array of nodes.
+        NodeArray = new Node[gridSizeInX, gridSizeInY];//Matruce de noeuds de la grosseur du grid.
+        Vector3 bottomLeft = transform.position - Vector3.right * gridSize.x / 2 - Vector3.forward * gridSize.y / 2;//Prend la position dans le monde à partir d'en bas à gauche du grid.
+        for (int x = 0; x < gridSizeInX; x++)
         {
-            for (int y = 0; y < iGridSizeY; y++)//Loop through the array of nodes
+            for (int y = 0; y < gridSizeInY; y++)//Les deux boucles for sont sont pour passer au travers de la matrice de noeuds. 
             {
-                Vector3 worldPoint = bottomLeft + Vector3.right * (x * fNodeDiameter + fNodeRadius) + Vector3.forward * (y * fNodeDiameter + fNodeRadius);//Get the world co ordinates of the bottom left of the graph
-                bool Wall = true;//Make the node a wall
+                Vector3 worldPoint = bottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);//Les coordonnées du monde. 
+                bool isBuilding = true;//Faire du noeud comme s'il était sur un bâtiment et on va vérifier après s'il l'est et changer le "true" en "false" s'il ne l'est pas. 
 
-                //If the node is not being obstructed
-                //Quick collision check against the current node and anything in the world at its position. If it is colliding with an object with a WallMask,
-                //The if statement will return false.
-                if (Physics.CheckSphere(worldPoint, fNodeRadius, WallMask))
+
+                if (Physics.CheckSphere(worldPoint, nodeRadius, Building))
                 {
-                    Wall = false;//Object is not a wall
+                    isBuilding = false;//Dit que ce n'est pas un bâtiment s'il n'a pas de bâtiment à contourner. 
                 }
 
-                NodeArray[x, y] = new Node(Wall, worldPoint, x, y);//Create a new node in the array.
+                NodeArray[x, y] = new Node(isBuilding, worldPoint, x, y);//Crée un nouveau noeud.
             }
         }
     }
 
-    //Function that gets the neighboring nodes of the given node.
-    public List<Node> GetNeighboringNodes(Node a_NeighborNode)
+    //Trouve la distance par rapport au monde. 
+    public Node NodeFromWorldPoint(Vector3 thePosition)//Trouve la distance du noeud par rapport au monde. 
     {
-        List<Node> NeighborList = new List<Node>();//Make a new list of all available neighbors.
-        int icheckX;//Variable to check if the XPosition is within range of the node array to avoid out of range errors.
-        int icheckY;//Variable to check if the YPosition is within range of the node array to avoid out of range errors.
+        float inX = ((thePosition.x + gridSize.x / 2) / gridSize.x);
+        float inY = ((thePosition.z + gridSize.y / 2) / gridSize.y);
 
-        //Check the right side of the current node.
-        icheckX = a_NeighborNode.iGridX + 1;
-        icheckY = a_NeighborNode.iGridY;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
-        {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
-            {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
-            }
-        }
-        //Check the Left side of the current node.
-        icheckX = a_NeighborNode.iGridX - 1;
-        icheckY = a_NeighborNode.iGridY;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
-        {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
-            {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
-            }
-        }
-        //Check the Top side of the current node.
-        icheckX = a_NeighborNode.iGridX;
-        icheckY = a_NeighborNode.iGridY + 1;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
-        {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
-            {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
-            }
-        }
-        //Check the Bottom side of the current node.
-        icheckX = a_NeighborNode.iGridX;
-        icheckY = a_NeighborNode.iGridY - 1;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
-        {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
-            {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
-            }
-        }
+        inX = Mathf.Clamp01(inX);
+        inY = Mathf.Clamp01(inY);
 
-        return NeighborList;//Return the neighbors list.
+        int x = Mathf.RoundToInt((gridSizeInX - 1) * inX);
+        int y = Mathf.RoundToInt((gridSizeInY - 1) * inY);
+
+        return NodeArray[x, y];
     }
 
-    //Gets the closest node to the given world position.
-    public Node NodeFromWorldPoint(Vector3 a_vWorldPos)
+    public List<Node> GetNeighboringNodes(Node nodesAround)
     {
-        float ixPos = ((a_vWorldPos.x + vGridWorldSize.x / 2) / vGridWorldSize.x);
-        float iyPos = ((a_vWorldPos.z + vGridWorldSize.y / 2) / vGridWorldSize.y);
+        List<Node> NeighborList = new List<Node>();//Une liste de tous les noeuds autour du noeud présent. 
+        int lookAtX;//Regarde si la position en x n'est pas plus grande que la matrice.
+        int lookAtY;//Regarde si la position en y n'est pas plus grande que la matrice.
 
-        ixPos = Mathf.Clamp01(ixPos);
-        iyPos = Mathf.Clamp01(iyPos);
-
-        int ix = Mathf.RoundToInt((iGridSizeX - 1) * ixPos);
-        int iy = Mathf.RoundToInt((iGridSizeY - 1) * iyPos);
-
-        return NodeArray[ix, iy];
-    }
-    private void Update()//Every frame
-    {
-        if (NodeArray != null)//If the grid is not empty
+        //Regarde à droite du noeud présent.
+        lookAtX = nodesAround.positionInX + 1;
+        lookAtY = nodesAround.positionInY;
+        if (lookAtX >= 0 && lookAtX < gridSizeInX)//Si la position en x n'est pas plus grande que la matrice.
         {
-            if (FinalPath != null)
+            if (lookAtY >= 0 && lookAtY < gridSizeInY)//Si la position en y n'est pas plus grande que la matrice.
             {
-                if (Camera.current != Camera.main)
-                {
-                    foreach (Node n in FinalPath)
-                    {
-                        Instantiate(cube, n.vPosition, cube.transform.rotation);
+                NeighborList.Add(NodeArray[lookAtX, lookAtY]);//Ajoute au grid le noeud à la liste de noeuds autour. 
+            }
+        }
+        //Regarde à gauche du noeud présent.
+        lookAtX = nodesAround.positionInX - 1;
+        lookAtY = nodesAround.positionInY;
+        if (lookAtX >= 0 && lookAtX < gridSizeInX)//Si la position en x n'est pas plus grande que la matrice.
+        {
+            if (lookAtY >= 0 && lookAtY < gridSizeInY)//Si la position en y n'est pas plus grande que la matrice.
+            {
+                NeighborList.Add(NodeArray[lookAtX, lookAtY]);//Ajoute au grid le noeud à la liste de noeuds autour. 
+            }
+        }
+        //Regarde en haut du noeud présent.
+        lookAtX = nodesAround.positionInX;
+        lookAtY = nodesAround.positionInY + 1;
+        if (lookAtX >= 0 && lookAtX < gridSizeInX)//Si la position en x n'est pas plus grande que la matrice.
+        {
+            if (lookAtY >= 0 && lookAtY < gridSizeInY)//Si la position en y n'est pas plus grande que la matrice.
+            {
+                NeighborList.Add(NodeArray[lookAtX, lookAtY]);//Ajoute au grid le noeud à la liste de noeuds autour. 
+            }
+        }
+        //Regarde en bas du noeud présent.
+        lookAtX = nodesAround.positionInX;
+        lookAtY = nodesAround.positionInY - 1;
+        if (lookAtX >= 0 && lookAtX < gridSizeInX)//Si la position en x n'est pas plus grande que la matrice.
+        {
+            if (lookAtY >= 0 && lookAtY < gridSizeInY)//Si la position en y n'est pas plus grande que la matrice.
+            {
+                NeighborList.Add(NodeArray[lookAtX, lookAtY]);//Ajoute au grid le noeud à la liste de noeuds autour. 
+            }
+        }
 
-                    }
-                }
+        return NeighborList;//Donne la liste des noeuds autour.
+    }
+
+   
+    private void Update()
+    {
+        if (NodeArray != null)//Si le grid n'est pas vide
+        {
+            if (FinalPath != null)//Si un chemin final a été trouvé.
+            {
+                 foreach (Node n in FinalPath)
+                 {
+                    Instantiate(cube, n.worldPosition, cube.transform.rotation);//Mettre des cubes pour montrer le chemin. 
+                 }
             }
         }
     }
-
-    //Function that draws the wireframe
-    /*public void OnDrawGizmos()
-    {
-
-        Gizmos.DrawWireCube(transform.position, new Vector3(vGridWorldSize.x, 1, vGridWorldSize.y));//Draw a wire cube with the given dimensions from the Unity inspector
-
-        if (NodeArray != null)//If the grid is not empty
-        {
-            if (FinalPath != null)
-            {
-                if (Camera.current != Camera.main)
-                {
-                    foreach (Node n in FinalPath)
-                    {
-                            Gizmos.color = Color.red;
-                            Gizmos.DrawCube(n.vPosition, Vector3.one * (fNodeDiameter - fDistanceBetweenNodes));//Draw the node at the position of the node.
-                        
-                    }
-                }
-            }
-        }
-    }*/
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4495064039479172683}
   - component: {fileID: 7890770188464586286}
+  - component: {fileID: 7391501912853502757}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -92,6 +93,19 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &7391501912853502757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751019824897417538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17304c7f075a83d46803fa384d57906e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointLight: {fileID: 0}
 --- !u!1 &2128645325372970628
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,7 +304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3165737927727513967}
   m_Layer: 0
-  m_Name: Torch
+  m_Name: PlacedTorch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
