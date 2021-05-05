@@ -31,16 +31,12 @@ public class EnemyBehaviour : MonoBehaviour
     }
     private void ManageInactiveState()
     {
-        Debug.Log("Inactive");
         target = FindClosestTarget();
-        Debug.Log("My target is: " + target.tag);
         currentEnemyState = EnemyState.Active;
     }
     private void ManageActiveState()
     {
-        Debug.Log("Active");
         targetDirection = (target.transform.position-transform.position).normalized;
-        Debug.Log(target.transform.position);
         rb.AddForce(targetDirection * moveSpeed);
     }
 

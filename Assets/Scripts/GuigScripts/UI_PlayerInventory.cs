@@ -8,18 +8,12 @@ public class UI_PlayerInventory : MonoBehaviour
     private PlayerInventory playerInventory;
     private Transform inventoryContainer;
     private Transform inventoryTemplate;
-    private Transform cam;
 
-    private void Awake()
+    private void Start()
     {
         inventoryContainer = transform.Find("inventoryContainer");
-        Debug.Log(inventoryContainer.position.x.ToString());
         inventoryTemplate = inventoryContainer.Find("inventoryTemplate");
-        Debug.Log(inventoryTemplate.position.y.ToString());
-    }
-    private void Update()
-    {
-        transform.LookAt(transform.position + cam.forward);
+        Hide();
     }
 
     public void SetPlayerInventory(PlayerInventory playerInventory)
@@ -48,6 +42,14 @@ public class UI_PlayerInventory : MonoBehaviour
                 j++;
             }
         }
+    }
+    public void Show()
+    {
+        transform.Find("Inventory").gameObject.SetActive(true);
+    }
+    public void Hide()
+    {
+        transform.Find("Inventory").gameObject.SetActive(false);
     }
     //private float SlotDisplaySize(bool ownsBackpack)
     //{

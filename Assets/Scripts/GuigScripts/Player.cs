@@ -86,6 +86,7 @@ public class Player : MonoBehaviour, IWeaponShopClient
 
         playerInventory = new PlayerInventory();
         uiPlayerInventory.SetPlayerInventory(playerInventory);
+        uiPlayerInventory.Hide();
     }
     public void EquipBackpack()
     {
