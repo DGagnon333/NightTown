@@ -134,7 +134,7 @@ public class GridManager : MonoBehaviour
                             tileState[posX + x, posZ + z] = false;
                         }
                     }
-                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.identity);
+                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.Euler(0, 180, 0));
                 }
 
             }
