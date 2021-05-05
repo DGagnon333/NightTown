@@ -17,7 +17,6 @@ public class GridManager : MonoBehaviour
     public bool[,] tileState;
     [SerializeField] public GameObject ground;
     public bool[,] electrictyMap;
-    public int wireLenght;
     int posBaseX = 0;
     int posBaseZ = 0;
     [SerializeField] public GameObject baseCopy;
