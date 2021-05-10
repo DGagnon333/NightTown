@@ -13,7 +13,7 @@ using System.Linq;
 public class GridManager : MonoBehaviour
 {
     [SerializeField] public int gridSize = 200;
-    private int step = 2;
+    private int STEP = 2;
     public bool[,] tileState;
     [SerializeField] public GameObject ground;
     public bool[,] electrictyMap;
@@ -22,6 +22,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] public GameObject baseCopy;
     [SerializeField] private Material electricMat;
     [SerializeField] private Material noElectricity;
+    [SerializeField] private GameObject connected;
+    [SerializeField] private GameObject UnConnected;
 
     private void Awake()
     {
@@ -83,14 +85,14 @@ public class GridManager : MonoBehaviour
     /// <param name = "scale" > la taille de l'objet sélectionné</param>
     public void TileState(GameObject newBuilding, Transform tf, Vector3 scale, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList, Dictionary<List<GameObject>, bool> wireDictionary)
     {
-        int tileDispo = 0;
+        bool tileDispo = true;
         Electricity electricity = new Electricity();
         //on change la position et la taille du transform pour que ce soit proportionel à la grille
         int posX = (int)(tf.position.x + gridSize - (int)ground.transform.position.x) / 2;
         int posZ = (int)(tf.position.z + gridSize - (int)ground.transform.position.z) / 2;
         int scaleDiffX = (int)(scale.x - 2) / 2;
         int scaleDiffZ = (int)(scale.z - 2) / 2;
-        Vector3 position = new Vector3(posX * step - gridSize, 0, posZ * step - gridSize);
+        Vector3 position = new Vector3(posX * STEP - gridSize, 0, posZ * STEP - gridSize);
         bool isAvailable = false;
         GameObject buildingClone = newBuilding; //simplement pour l'instancier
         newBuilding.transform.position = tf.position;
@@ -112,28 +114,27 @@ public class GridManager : MonoBehaviour
                     {
                         if (!tileState[posX + z, posZ + x])
                         {
-                            tileDispo++;
+                            tileDispo = false;
                         }
                     }
                 }
-                if (tileDispo == 0)
+                if (tileDispo)
                 {
+                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.Euler(0, 180, 0));
                     for (int z = 0; z <= scaleDiffZ; z++)
                     {
                         for (int x = 0; x <= scaleDiffX; x++)
                         {
-                            if (electrictyMap[posX + 1 + x, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + z + 1] || electrictyMap[posX, posZ - 1])
+                            if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
                             {
-                                //newBuilding.GetComponent<Renderer>().material = electricMat;
-                                isConected = true;
+                                Instantiate(connected, newBuilding.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
                             }
-                            if(!isConected)
-                                //newBuilding.GetComponent<Renderer>().material = baseMat;
+                            else
+                                Instantiate(UnConnected, newBuilding.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
                             buildingTiles.Add(new Point2D(posX + x, posZ + z), buildingClone);
                             tileState[posX + x, posZ + z] = false;
                         }
                     }
-                    buildingClone = Instantiate(newBuilding, position + new Vector3(1, 0, 1) + ground.transform.position, Quaternion.Euler(0, 180, 0));
                 }
 
             }
@@ -308,6 +309,7 @@ public class GridManager : MonoBehaviour
         {
             WireList(electrictyMap, i.Key);
         }
+
     }
 
     private void Wire(Electricity electricity, int posX, int posZ, GameObject newBuilding, Dictionary<Point2D, GameObject> buildingTiles, List<GameObject> wireList, Dictionary<List<GameObject>, bool> wireDictionary)
@@ -333,12 +335,7 @@ public class GridManager : MonoBehaviour
 
         if (wireList.Count == 0)
         {
-            if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
-            {
-                //newBuilding.GetComponent<Renderer>().material = electricMat;
-            }
-            //else
-                //newBuilding.GetComponent<Renderer>().material = noElectricity;
+            
 
             wireList.Add(newBuilding);
         }
