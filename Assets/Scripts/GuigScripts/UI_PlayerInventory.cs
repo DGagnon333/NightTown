@@ -5,38 +5,37 @@ using UnityEngine.UI;
 
 public class UI_PlayerInventory : MonoBehaviour
 {
-    private PlayerInventory playerInventory;
-    private Transform inventoryContainer;
+    private PlayerInventory inventory;
+    private Transform container;
     private Transform inventoryTemplate;
 
     private void Start()
     {
-        inventoryContainer = transform.Find("inventoryContainer");
-        inventoryTemplate = inventoryContainer.Find("inventoryTemplate");
+        container = transform.Find("container");
+        inventoryTemplate = container.Find("inventoryTemplate");
         Hide();
     }
 
     public void SetPlayerInventory(PlayerInventory playerInventory)
     {
-        this.playerInventory = playerInventory;
+        inventory = playerInventory;
         RefreshInventory();
     }
-    private void RefreshInventory()
+    public void RefreshInventory()
     {
         int i = 0;
         int j = 0;
         float slotSize = 90f;
-        foreach  (PlayerItem item in playerInventory.GetPlayerItemList())
+        foreach  (PlayerItem item in inventory.GetPlayerItemList())
         {
-            Transform itemTransform = Instantiate(inventoryTemplate, inventoryContainer);
+            Transform itemTransform = Instantiate(inventoryTemplate, container);
             itemTransform.gameObject.SetActive(true);
             RectTransform rectTransform = itemTransform.GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector3(i * slotSize, j * slotSize, 0);
-            Image image = rectTransform.Find("itemIcon").GetComponent<Image>();
-            image.sprite = PlayerItem.GetSprite(item.Type);
+            rectTransform.anchoredPosition = new Vector3(-140 + i * slotSize,140 - j * slotSize, 0);
+            itemTransform.Find("itemIcon").GetComponent<Image>().sprite = PlayerItem.GetSprite(item.Type);
 
             i++;
-            if (i > 4)
+            if (i >= 4)
             {
                 i = 0;
                 j++;
@@ -45,11 +44,12 @@ public class UI_PlayerInventory : MonoBehaviour
     }
     public void Show()
     {
-        transform.Find("Inventory").gameObject.SetActive(true);
+        transform.Find("container").gameObject.SetActive(true);
+        inventoryTemplate.gameObject.SetActive(false);
     }
     public void Hide()
     {
-        transform.Find("Inventory").gameObject.SetActive(false);
+        transform.Find("container").gameObject.SetActive(false);
     }
     //private float SlotDisplaySize(bool ownsBackpack)
     //{

@@ -7,26 +7,15 @@ public class PlayerInventory
     private const int MAX_DEFAULT_INVENTORY_SIZE = 8,
                       MAX_BACKPACK_INVENTORY_SIZE = 16;
     private List<PlayerItem> playerItemList;
-    private bool ownsBackpack;
-    public bool OwnsBackpack
-    {
-        get
-        {
-            return ownsBackpack;
-        }
-        private set
-        {
-            ownsBackpack = value;
-        }
-    }
+
+    public bool OwnsBackpack { get; private set; }
     public PlayerInventory()
     {
         playerItemList = new List<PlayerItem>();
-        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Axe, 1));
-        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Sword, 2));
-        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Bow, 1));
         OwnsBackpack = false;
         playerItemList.Capacity = MAX_DEFAULT_INVENTORY_SIZE;
+        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Arrow, 1));
+        
     }
     public void HandleNewPlayerItem(PlayerItem item)
     {
@@ -45,6 +34,11 @@ public class PlayerInventory
     }
     public void AddPlayerItem(PlayerItem item)
     {
+        if(item.Type == 0)
+        {
+            OwnsBackpack = true;
+            playerItemList.Capacity = MAX_BACKPACK_INVENTORY_SIZE;
+        }
         playerItemList.Add(item);
     }
     public void RemovePlayerItem(PlayerItem item)
