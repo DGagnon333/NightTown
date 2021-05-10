@@ -81,15 +81,12 @@ public class Player : MonoBehaviour, IWeaponShopClient
     public bool TryGetNewItem(PlayerItem.PlayerItemType itemType)
     {
         bool canGetNewItem;
-        Debug.Log("sac a dos:" + OwnsBackpack);
-        Debug.Log(itemType);
         if (itemType == 0 && OwnsBackpack)
             canGetNewItem = false;
         else if (playerInventory.GetPlayerItemList().Count >= playerInventory.GetPlayerItemList().Capacity)
             canGetNewItem = false;
         else
             canGetNewItem = true;
-        Debug.Log(canGetNewItem);
         return canGetNewItem;
     }
 }

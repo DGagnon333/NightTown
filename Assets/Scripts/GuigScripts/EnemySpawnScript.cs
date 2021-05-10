@@ -31,15 +31,16 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
     [SerializeField]
     private DayNightCycle DayNightManager;
     [SerializeField]
-    private GridManager Grid;
+    private Transform PlayerTransform;
 
     public EnemyWave[] waves;
     private int nextWave = 0;
-    private WaveState currentWaveState = WaveState.Inactive;
+    public WaveState currentWaveState { get; private set; }
 
     public DayNightCycle dayNightCycle;
     private void Start()
     {
+        currentWaveState = WaveState.Inactive;
         dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
         textToStartWave.SetActive(false); //Myk
         textAlreadyInDay.SetActive(false); // Myk
@@ -131,7 +132,13 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
         Debug.Log("Spawning Enemy: " + enemy.name);
         Instantiate(enemy, spawnPoint, Quaternion.identity);
     }
-    private Vector3 DetermineSpawnPosition(GameObject spawnObject) { return Vector3.zero; }
+    //private Vector3 DetermineSpawnPosition()
+    //{
+    //    int spawnX;
+    //    int spawnY = 10;
+    //    int spawnZ = Random.Range(150, 200);
+
+    //}
 
 
     // Fait par Myk : 
