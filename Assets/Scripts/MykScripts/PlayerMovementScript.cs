@@ -6,10 +6,13 @@ using UnityEngine;
 public class PlayerMovementScript : MonoBehaviour
 {
     //Script fait par Mykael et avec une aide de Dérick Gagnon 
-    [SerializeField] Rigidbody rb;
+    [SerializeField] CharacterController rb;
     [SerializeField] float walkSpeed = 50f;
     [SerializeField] float runSpeed = 100f;
+    [SerializeField] float forceJump = 6f;
+    [SerializeField] float gravity = -9.81f;
     public bool playerIsOnGround = true;
+    private float jumpVelocity;
 
     private Rigidbody body;
 
@@ -23,29 +26,6 @@ public class PlayerMovementScript : MonoBehaviour
         body.freezeRotation = true;
     }
 
-    //private void Update()
-    //{
-    //        float x = Input.GetAxisRaw("Horizontal");
-    //        float z = Input.GetAxisRaw("Vertical");
-    //        float moveSpeed;
-    //        if (Input.GetKey(KeyCode.LeftShift))
-    //        {
-    //            moveSpeed = runSpeed;
-    //        }
-
-    //        else
-    //        {
-    //            moveSpeed = walkSpeed;
-    //        }
-
-    //        Vector3 movement = (transform.right * x + transform.forward * z).normalized;
-    //        rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
-
-            
-    //        rb.constraints = RigidbodyConstraints.FreezeRotationX;
-    //        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
-        
-    //}
     private void FixedUpdate()
     {
         float x = Input.GetAxisRaw("Horizontal");
@@ -61,24 +41,15 @@ public class PlayerMovementScript : MonoBehaviour
             moveSpeed = walkSpeed;
         }
 
-        Vector3 movement = (transform.right * x + transform.forward * z).normalized;
-        rb.MovePosition(transform.position + movement * moveSpeed * Time.deltaTime);
-
-        if (Input.GetButtonDown("Jump") && playerIsOnGround == true)
+        if (Input.GetButtonDown("Jump") && rb.isGrounded)
         {
-            rb.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+            jumpVelocity = forceJump;
             playerIsOnGround = false;
         }
-        rb.constraints = RigidbodyConstraints.FreezeRotationX;
-        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
-    }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-            playerIsOnGround = true;
+        jumpVelocity += gravity * Time.deltaTime;
 
-        if (collision.gameObject.tag != "Ground")
-            rb.velocity = Vector3.zero;
+        Vector3 movement = (transform.right * x + transform.forward * z).normalized + Vector3.up*jumpVelocity;
+        rb.Move( movement * moveSpeed * Time.deltaTime);
     }
 }

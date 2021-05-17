@@ -23,7 +23,7 @@ public class ControlPlayerView : MonoBehaviour
 
 
         rotationInY -= y; //Sinon c'est inversé
-        rotationInY = Mathf.Clamp(rotationInY, -50, 50);
+        rotationInY = Mathf.Clamp(rotationInY, -90, 90);
         transform.localRotation = Quaternion.Euler(rotationInY, x, 0f);
         Player.Rotate(Vector3.up * x);
 
