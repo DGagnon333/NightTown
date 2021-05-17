@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IWeaponShopClient
+public class Player : MonoBehaviour, IWeaponShopClient, IInventoryUser
 {
     [SerializeField]
     private UI_PlayerInventory uiPlayerInventory;
@@ -18,6 +18,8 @@ public class Player : MonoBehaviour, IWeaponShopClient
     public int WoodAmount { get; private set; }
     public int StoneAmount { get; private set; }
     public int GoldAmount { get; private set; }
+    public int EnergyCapacity { get; private set; }
+    public int EnergyUsage { get; private set; }
     public int ItemAmount { get; private set; }
     public bool OwnsBackpack { get; private set; }
     private void Start()
@@ -26,6 +28,8 @@ public class Player : MonoBehaviour, IWeaponShopClient
         WoodAmount = 100;
         StoneAmount = 100;
         GoldAmount = 100;
+        EnergyCapacity = 100;
+        EnergyUsage = 0;
         playerInventory = new PlayerInventory();
         uiPlayerInventory.SetPlayerInventory(playerInventory);
         uiRessources.RefreshRessources(WoodAmount, StoneAmount, GoldAmount);
@@ -88,5 +92,43 @@ public class Player : MonoBehaviour, IWeaponShopClient
         else
             canGetNewItem = true;
         return canGetNewItem;
+    }
+    public void EquipWeapon(PlayerItem item)
+    {
+        Debug.Log("equip" + item.Type);
+        //switch (item.Type)
+        //{
+        //    default:
+        //    //case: PlayerItem.PlayerItemType.Axe
+        //}
+    }
+    public void UseHandTorch(PlayerItem item)
+    {
+        // coder ce que la handtorch fait
+        Debug.Log("using" + item.Type);
+
+        playerInventory.RemovePlayerItem(item);
+        uiPlayerInventory.RefreshInventory();
+    }
+    public void UseItemInInventory(PlayerItem item, int index)
+    {
+        if (item.Type != PlayerItem.PlayerItemType.Backpack)
+        {
+            if (item.Type == PlayerItem.PlayerItemType.HandTorch)
+            {
+                UseHandTorch(item);
+            }
+            else
+                EquipWeapon(item);
+            // use the specific item
+            ///
+            ///
+
+            // remove the item from the inventory
+            ///
+            ///
+            //playerInventory.RemovePlayerItem(item);
+            //uiPlayerInventory.RefreshInventory();
+        }
     }
 }

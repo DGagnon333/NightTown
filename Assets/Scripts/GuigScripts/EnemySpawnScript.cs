@@ -7,7 +7,7 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 
-public class EnemySpawnScript : MonoBehaviour, IInteractable
+public class EnemySpawnScript : MonoBehaviour/*, IInteractable*/
 {
     public enum WaveState { Inactive, Active, Attack, AllCompleted, NbWaveStates };
 
@@ -42,9 +42,11 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
     {
         currentWaveState = WaveState.Inactive;
         dayNightCycle = DayNightManager.GetComponentInChildren<DayNightCycle>();
-        textToStartWave.SetActive(false); //Myk
-        textAlreadyInDay.SetActive(false); // Myk
-        textAlreadyInWave.SetActive(false); // Myk 
+
+
+        //textToStartWave.SetActive(false); //Myk
+        //textAlreadyInDay.SetActive(false); // Myk
+        //textAlreadyInWave.SetActive(false); // Myk 
     }
 
     private void Update()
@@ -63,13 +65,16 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
         if (isDay)
             SpawnLoop();
 
-        /*
+
         if (!isDay && currentWaveState == WaveState.Inactive)
         {
             KeyCode waveActivationKey = KeyCode.V; // Guillaume: Input temporaire pour l'activation d'une vague
             if (!isDay && Input.GetKeyDown(waveActivationKey))
+            {
+                Debug.Log("wave Activated");
                 StartCoroutine(SpawnWave(waves[nextWave]));
-        }*/
+            }
+        }
     }
     private void ManageEndOfWave()
     {
@@ -120,62 +125,62 @@ public class EnemySpawnScript : MonoBehaviour, IInteractable
         spawnCountdown -= Time.deltaTime;
         if (spawnCountdown <= 0f)
         {
-            Debug.Log("Regular Spawn Time");
             SpawnEnemy(enemySpawn);
             spawnCountdown = 10f;
         }
     }
     private void SpawnEnemy(GameObject enemy)
     {
-        Vector3 spawnPoint = Vector3.zero; // Guillaume: temporaire, nous devons utiliser DetermineSpawnPosition
-        //Vector3 spawnPoint = DetermineSpawnPosition();
+        Vector3 spawnPoint = DetermineSpawnPosition();
         Debug.Log("Spawning Enemy: " + enemy.name);
+        Debug.Log("Position de spawn: " + spawnPoint.ToString());
+        Debug.Log("Position joueur: " + PlayerTransform.position.ToString());
         Instantiate(enemy, spawnPoint, Quaternion.identity);
     }
-    //private Vector3 DetermineSpawnPosition()
+    private Vector3 DetermineSpawnPosition()
+    {
+        float rangeX = Random.Range(150, 200) * Mathf.Pow(-1f, Random.Range(1, 3));
+        float spawnY = 1f;
+        float rangeZ = Random.Range(150, 200) * Mathf.Pow(-1f, Random.Range(1, 3));
+        return PlayerTransform.position + new Vector3(rangeX, spawnY, rangeZ);
+    }
+
+
+    //// Fait par Myk : 
+    //public float MaxRange { get { return maxRange; } }
+    //public GameObject textToStartWave;
+    //public GameObject textAlreadyInDay;
+    //public GameObject textAlreadyInWave;
+    //private float maxRange = 100f;
+    //public void OnStartHover()
     //{
-    //    int spawnX;
-    //    int spawnY = 10;
-    //    int spawnZ = Random.Range(150, 200);
-
+    //    bool isDay = dayNightCycle.IsDay;
+    //    if (isDay)
+    //    {
+    //        textAlreadyInDay.SetActive(true);
+    //    }
+    //    else if (currentWaveState == WaveState.Active)
+    //    {
+    //        textAlreadyInWave.SetActive(true);
+    //    }
+    //    else if (!isDay && currentWaveState == WaveState.Inactive)
+    //    {
+    //        textToStartWave.SetActive(true);
+    //    }
     //}
-
-
-    // Fait par Myk : 
-    public float MaxRange { get { return maxRange; } }
-    public GameObject textToStartWave;
-    public GameObject textAlreadyInDay;
-    public GameObject textAlreadyInWave;
-    private float maxRange = 100f;
-    public void OnStartHover()
-    {
-        bool isDay = dayNightCycle.IsDay;
-        if (isDay)
-        {
-            textAlreadyInDay.SetActive(true);
-        }
-        else if (currentWaveState == WaveState.Active)
-        {
-            textAlreadyInWave.SetActive(true);
-        }
-        else if (!isDay && currentWaveState == WaveState.Inactive)
-        {
-            textToStartWave.SetActive(true);
-        }
-    }
-    public void OnInteract()
-    {
-        bool isDay = dayNightCycle.IsDay;
-        if (!isDay && currentWaveState == WaveState.Inactive)
-        {
-            StartCoroutine(SpawnWave(waves[nextWave]));
-        }
-    }
-    public void OnEndHover()
-    {
-        textToStartWave.SetActive(false);
-        textAlreadyInDay.SetActive(false);
-        textAlreadyInWave.SetActive(false);
-    }
+    //public void OnInteract()
+    //{
+    //    bool isDay = dayNightCycle.IsDay;
+    //    if (!isDay && currentWaveState == WaveState.Inactive)
+    //    {
+    //        StartCoroutine(SpawnWave(waves[nextWave]));
+    //    }
+    //}
+    //public void OnEndHover()
+    //{
+    //    textToStartWave.SetActive(false);
+    //    textAlreadyInDay.SetActive(false);
+    //    textAlreadyInWave.SetActive(false);
+    //}
 
 }

@@ -6,6 +6,10 @@ public class InventoryTrigger : MonoBehaviour
 {
     [SerializeField]
     private UI_PlayerInventory uiPlayerInventory;
+    [SerializeField]
+    private Transform player;
+
+    private IInventoryUser inventoryUser;
 
     private bool isShowing;
 
@@ -13,6 +17,7 @@ public class InventoryTrigger : MonoBehaviour
     {
         isShowing = false;
         uiPlayerInventory.Hide();
+        inventoryUser = player.GetComponent<IInventoryUser>();
     }
 
     void Update()
@@ -22,7 +27,7 @@ public class InventoryTrigger : MonoBehaviour
         {
             if (!isShowing)
             {
-                uiPlayerInventory.Show();
+                uiPlayerInventory.Show(inventoryUser);
                 isShowing = true;
             }
             else

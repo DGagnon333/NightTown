@@ -15,6 +15,7 @@ TagManager:
   - Music
   - Enemy
   - Tower
+  - WeaponStore
   layers:
   - Default
   - TransparentFX
@@ -25,8 +26,8 @@ TagManager:
   - 
   - 
   - Maps
-  - 
-  - 
+  - Building
+  - Player
   - 
   - 
   - 

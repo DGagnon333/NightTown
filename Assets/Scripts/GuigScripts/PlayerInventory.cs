@@ -14,23 +14,6 @@ public class PlayerInventory
         playerItemList = new List<PlayerItem>();
         OwnsBackpack = false;
         playerItemList.Capacity = MAX_DEFAULT_INVENTORY_SIZE;
-        AddPlayerItem(new PlayerItem(PlayerItem.PlayerItemType.Arrow, 1));
-        
-    }
-    public void HandleNewPlayerItem(PlayerItem item)
-    {
-        //switch ((int)item.playerItemType)
-        //{
-        //    default:
-        //    case 0: return BACKPACK_DESCRIPTION;
-        //    case 1: return HANDTORCH_DESCRIPTION;
-        //    case 2: return QUESTOBJECT_DESCRIPTION;
-        //    case 3: return SPEAR_DESCRIPTION;
-        //    case 4: return AXE_DESCRIPTION;
-        //    case 5: return SWORD_DESCRIPTION;
-        //    case 6: return ARROW_DESCRIPTION;
-        //    case 7: return BOW_DESCRIPTION;
-        //}
     }
     public void AddPlayerItem(PlayerItem item)
     {
@@ -45,6 +28,7 @@ public class PlayerInventory
     {
         playerItemList.Remove(item);
     }
+
     public void IncreasePlayerInventoryCapacity()
     {
         OwnsBackpack = true;

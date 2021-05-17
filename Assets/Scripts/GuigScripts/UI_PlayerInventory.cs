@@ -8,6 +8,7 @@ public class UI_PlayerInventory : MonoBehaviour
     private PlayerInventory inventory;
     private Transform container;
     private Transform inventoryTemplate;
+    private IInventoryUser inventoryUser;
 
     private void Start()
     {
@@ -23,8 +24,14 @@ public class UI_PlayerInventory : MonoBehaviour
     }
     public void RefreshInventory()
     {
+        Transform[] currentInventoryTemplates = container.GetComponentsInChildren<Transform>(true);
+        for(int index = 7; index < currentInventoryTemplates.Length; index++)
+        {
+            Destroy(currentInventoryTemplates[index].gameObject);
+        }
         int i = 0;
         int j = 0;
+        int itemIndex = 0;
         float slotSize = 90f;
         foreach  (PlayerItem item in inventory.GetPlayerItemList())
         {
@@ -33,17 +40,35 @@ public class UI_PlayerInventory : MonoBehaviour
             RectTransform rectTransform = itemTransform.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector3(-140 + i * slotSize,140 - j * slotSize, 0);
             itemTransform.Find("itemIcon").GetComponent<Image>().sprite = PlayerItem.GetSprite(item.Type);
-
             i++;
             if (i >= 4)
             {
                 i = 0;
                 j++;
             }
+            itemTransform.GetComponent<Button>().onClick.AddListener(delegate { UseItem(item, itemIndex); });
+            itemIndex++;
         }
     }
-    public void Show()
+    private void UseItem(PlayerItem item, int itemIndex)
     {
+        //switch (item.Type)
+        //{
+        //    default:
+        //    case PlayerItem.PlayerItemType.Arrow: break;
+        //    case PlayerItem.PlayerItemType.QuestObject: break;
+        //    case PlayerItem.PlayerItemType.Backpack: break;
+        //    case PlayerItem.PlayerItemType.Axe: inventoryUser.EquipWeapon(item); break;
+        //    case PlayerItem.PlayerItemType.Spear: inventoryUser.EquipWeapon(item); break;
+        //    case PlayerItem.PlayerItemType.Bow: inventoryUser.EquipWeapon(item); break;
+        //    case PlayerItem.PlayerItemType.Sword: inventoryUser.EquipWeapon(item); break;
+        //    case PlayerItem.PlayerItemType.HandTorch: inventoryUser.UseHandTorch(item); break;
+        //}
+        inventoryUser.UseItemInInventory(item, itemIndex);
+    }
+    public void Show(IInventoryUser inventoryUser)
+    {
+        this.inventoryUser = inventoryUser;
         transform.Find("container").gameObject.SetActive(true);
         inventoryTemplate.gameObject.SetActive(false);
     }
@@ -51,12 +76,6 @@ public class UI_PlayerInventory : MonoBehaviour
     {
         transform.Find("container").gameObject.SetActive(false);
     }
-    //private float SlotDisplaySize(bool ownsBackpack)
-    //{
-    //    if (ownsBackpack)
-    //        return 17.5f;
-    //    else
-    //        return 35f;
-    //}
+
 
 }    
