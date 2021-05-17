@@ -3980,7 +3980,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 200
-  ground: {fileID: 1990809615}
   baseCopy: {fileID: 1646061865}
   electricMat: {fileID: 2100000, guid: 02758698f6605d345a67239c79c069b6, type: 2}
   noElectricity: {fileID: 2100000, guid: e80bf5945c9e01b4a8180c7fa7860a0f, type: 2}
@@ -13008,7 +13007,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5f6b872cb01cf444d90964836de55e53, type: 2}
+  - {fileID: 2100000, guid: 2bb868f2895312f48aad196c0b75625e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13045,7 +13044,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 982950761}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.181662, y: 5.388973, z: 7.4664755}
+  m_LocalPosition: {x: 3.181662, y: -5, z: 7.4664755}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -17338,7 +17337,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b100fbefbe0fbfb4486a1a451e09eacf, type: 2}
+  - {fileID: 2100000, guid: dd84db51d7fb9a64e8bcac5649d1e8a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17375,7 +17374,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1278848429}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.68, y: 5.388973, z: 7.4664755}
+  m_LocalPosition: {x: 4.68, y: -5, z: 7.4664755}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
