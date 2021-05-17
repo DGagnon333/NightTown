@@ -164,12 +164,12 @@ public class GridManager : MonoBehaviour
                 posZ = i.Key.Z;
                 scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
                 scaleDiffZ = (int)(i.Value.transform.localScale.z - 2) / 2;
-                for (int z = 0; z < scaleDiffZ; z++)
+                for (int z = 0; z <= scaleDiffZ; z++)
                 {
-                    for (int x = 0; x < scaleDiffX; x++)
+                    for (int x = 0; x <= scaleDiffX; x++)
                     {
 
-                        if ((electrictyMap[posX + x + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + z + 1] || electrictyMap[posX, posZ - 1]))
+                        if ((electrictyMap[posX + x + 1, posZ] || electrictyMap[posX - z, posZ] || electrictyMap[posX, posZ + z + 1] || electrictyMap[posX, posZ - z]))
                         {
                             connection = true;
                         }
@@ -376,7 +376,7 @@ public class GridManager : MonoBehaviour
         {
             nextX = (int)(i.transform.position.x + gridSize) / 2;
             nextZ = (int)(i.transform.position.z + gridSize) / 2;
-            if (electrictyMap[nextX + 1, nextZ] || electrictyMap[nextX - 1, nextZ] || electrictyMap[nextX, nextZ + 1] || electrictyMap[nextX, nextZ - 1])
+            if (electrictyMap[nextX + 1 , nextZ] || electrictyMap[nextX - 1, nextZ] || electrictyMap[nextX, nextZ + 1] || electrictyMap[nextX, nextZ - 1])
             {
                 conection = true;
                 break;
