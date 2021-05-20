@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// Fait par Guillaume
+// Ce code nous permet d'accéder à différents icônes utilisés dans le jeu en tant que GameObject 
+// ce qui facilite leur utilisation dans un interface utilisateur qui se mets régulièrement à jour.
 public class IconManager : MonoBehaviour
 {
     private static IconManager _iconManagerInstance;

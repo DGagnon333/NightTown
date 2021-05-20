@@ -24,7 +24,7 @@ public class EnemyBehaviour : MonoBehaviour
     private bool destinationSet;
     private bool chasingPlayer;
 
-    [SerializeField] private float sight;
+    [SerializeField] private float sight; // Guillaume: la grandeur de sa distance de vision
     private bool playerInSight;
 
     [SerializeField] private float attackRange;
@@ -55,7 +55,7 @@ public class EnemyBehaviour : MonoBehaviour
         else if (playerInSight && playerInAttackRange)
             ManageAttacking();
 
-        transform.LookAt(new Vector3(destination.x,1,destination.z)); //Guillaume: la valeur de y (2) est codé pour empêcher que l'ennemi regarde le ciel
+        transform.LookAt(new Vector3(destination.x,1,destination.z)); //Guillaume: la valeur de y (1) est codé pour empêcher que l'ennemi regarde le ciel
     }
     private void ManageRoaming()
     {
@@ -162,7 +162,7 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
 
-    /// Version précédente moins efficace avec quelque bug
+    /// Version précédente moins efficace avec quelques bogues
 
 
     //private void OnCollisionEnter(Collision collision)

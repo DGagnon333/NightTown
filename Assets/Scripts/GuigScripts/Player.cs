@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Fait par Guillaume
+// Définit simplement ce que possède un joueur (inventaire, ressource, etc.)
+
 public class Player : MonoBehaviour, IWeaponShopClient, IInventoryUser
 {
     [SerializeField]

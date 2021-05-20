@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Fait par Guillaume
+// Ce code gère l'interface de l'inventaire du joueur et toutes ses fonctionalités
 public class UI_PlayerInventory : MonoBehaviour
 {
     private PlayerInventory inventory;

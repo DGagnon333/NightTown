@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Fait par Guillaume
+// Ce code nous permet d'afficher l'inventaire et de le cacher pour rendre le jeu moins encombré.
+
 public class InventoryTrigger : MonoBehaviour
 {
     [SerializeField]

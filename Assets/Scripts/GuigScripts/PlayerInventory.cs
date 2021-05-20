@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// Fait par Guillaume
+// Définit simplement ce qu'est un inventaire d'un joueur
+
 public class PlayerInventory
 {
     private const int MAX_DEFAULT_INVENTORY_SIZE = 8,

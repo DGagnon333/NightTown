@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+// Fait par Guillaume
+// Ce code gère l'interface du magasin d'armes et toutes les conditions qui doivent être respectées lorsqu'un joueur magasine.
 public class UI_WeaponStore : MonoBehaviour
 {
     private Transform container;
