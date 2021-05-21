@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Fait par Guillaume
+// Ce code donne accès à tous les informations utiles pour décrire un item (son nom, son type, la quantité, son icone, son cout, etc.)
 public class PlayerItem
 {
     public const string

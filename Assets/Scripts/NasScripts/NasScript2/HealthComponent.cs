@@ -13,6 +13,9 @@ public class HealthComponent : MonoBehaviour
         health -= damageTaken;
         if (health <= 0)
         {
+            // Guillaume: On doit coder ce qui arrive si le joueur meurt...
+
+
             if(gameObject.CompareTag("Enemy"))
             {
                 gameObject.transform.position = new Vector3(0, -1000, 0); // Pour faire appel au OnTriggerExit
@@ -21,6 +24,10 @@ public class HealthComponent : MonoBehaviour
             else if (gameObject.CompareTag("Tower"))
             {
                 Destroy(transform.parent.gameObject);
+            }
+            else if (gameObject.CompareTag("Building")) // Guillaume: ajuster pour mes besoins doit cheker avec nass
+            {
+                Destroy(transform.gameObject);
             }
         }
     }

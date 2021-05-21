@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+// Fait par Guillaume
+// Ce code gère l'interface qui affiche les ressources du joueur
 public class UI_Ressources : MonoBehaviour
 {
     private Transform container;
