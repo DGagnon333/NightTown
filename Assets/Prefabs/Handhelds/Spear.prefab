@@ -107,5 +107,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeDamage: 4
-  meleeRange: 4
+  meleeRange: 40
   meleeCooldown: 1

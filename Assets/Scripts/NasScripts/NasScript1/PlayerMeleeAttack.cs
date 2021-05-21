@@ -23,9 +23,9 @@ public class PlayerMeleeAttack : MonoBehaviour // Mettre sur le joueur
 
     void Update()
     {
-        attackTimer += Time.deltaTime;
+        //attackTimer += Time.deltaTime;
 
-        if(Input.GetKeyDown(KeyCode.F) && attackTimer >= weapon.MeleeCooldown )
+        if(Input.GetKeyDown(KeyCode.F) /*&& attackTimer*/ /*>= weapon.MeleeCooldown*/ )
             // faire l'attaque lorsque le boutton gauche de la souris est appuyé.
         {
             

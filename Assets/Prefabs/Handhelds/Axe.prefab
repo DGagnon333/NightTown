@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeDamage: 6
-  meleeRange: 2
+  meleeRange: 200
   meleeCooldown: 2
 --- !u!114 &-4892928247584543783
 MonoBehaviour:

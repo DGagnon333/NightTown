@@ -70,6 +70,9 @@ public class EnemySpawnScript : MonoBehaviour
     {
         Debug.Log("Wave Completed!");
 
+        //Ajout de nas:
+        dayNightCycle.Pause = false;
+        //
         CurrentWaveState = WaveState.Inactive;
 
         if(nextWave + 1 > waves.Length - 1)
