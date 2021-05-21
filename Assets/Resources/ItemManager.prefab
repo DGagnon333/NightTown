@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1510650678454955315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8195508888271583383}
+  - component: {fileID: 2731705998868456090}
+  m_Layer: 0
+  m_Name: ItemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8195508888271583383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510650678454955315}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2731705998868456090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510650678454955315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2068de21fbc0fe469147efad1a0e6fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backpackObject: {fileID: 0}
+  handTorchObject: {fileID: 0}
+  questObjectObject: {fileID: 0}
+  spearObject: {fileID: 6850873203524766167, guid: 157ae3c6c4dc9ed42b124ffc86d03172,
+    type: 3}
+  axeObject: {fileID: 4440273846273206914, guid: 987f7dc6e6114234cae22f24871e677d,
+    type: 3}
+  swordObject: {fileID: 7619370859407801308, guid: 40f5b4d0499a3a0478a9b87ea2d84b09,
+    type: 3}
+  arrowObject: {fileID: 0}
+  bowObject: {fileID: 0}

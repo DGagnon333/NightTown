@@ -98,12 +98,15 @@ public class Player : MonoBehaviour, IWeaponShopClient, IInventoryUser
     }
     public void EquipWeapon(PlayerItem item)
     {
-        Debug.Log("equip" + item.Type);
-        //switch (item.Type)
-        //{
-        //    default:
-        //    //case: PlayerItem.PlayerItemType.Axe
-        //}
+        Transform playerRightHand = transform.Find("Caracter3_Model_animations Variant").Find("Armature").Find("Spine1").Find("Spine2").Find("Spine3").Find("Shoulder.R").Find("UpperArm.R").Find("LowerArm.R").Find("Hand.R").Find("Hand.R_end").Find("HandHeldObject");
+        Debug.Log(playerRightHand);
+        if(playerRightHand.Find("weapon") != null)
+            Destroy(playerRightHand.Find("weapon").gameObject);
+        GameObject weaponEquip = Instantiate(PlayerItem.GetObject(item.Type), playerRightHand, false);
+        // new modif
+        transform.GetComponent<PlayerMeleeAttack>().weapon = playerRightHand.GetComponentInChildren<MeleeWeaponComponent>();
+        //
+        weaponEquip.name = "weapon";
     }
     public void UseHandTorch(PlayerItem item)
     {
@@ -115,15 +118,11 @@ public class Player : MonoBehaviour, IWeaponShopClient, IInventoryUser
     }
     public void UseItemInInventory(PlayerItem item, int index)
     {
-        if (item.Type != PlayerItem.PlayerItemType.Backpack)
+        if (item.Type != PlayerItem.PlayerItemType.Backpack && item.Type != PlayerItem.PlayerItemType.Arrow)
         {
             if (item.Type == PlayerItem.PlayerItemType.HandTorch)
             {
                 UseHandTorch(item);
-            }
-            if(item.Type == PlayerItem.PlayerItemType.Arrow)
-            {
-                // rien faire, on peut pas utiliser de flèche
             }
             else
                 EquipWeapon(item);

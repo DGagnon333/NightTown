@@ -66,6 +66,21 @@ public class PlayerItem
             case PlayerItemType.Bow:         return IconManager.iconManagerInstance.bowIcon;
         }
     }
+    public static GameObject GetObject(PlayerItemType playerItemType)
+    {
+        switch (playerItemType)
+        {
+            default:
+            case PlayerItemType.Backpack:    return ItemManager.itemManagerInstance.backpackObject;
+            case PlayerItemType.HandTorch:   return ItemManager.itemManagerInstance.handTorchObject;
+            case PlayerItemType.QuestObject: return ItemManager.itemManagerInstance.questObjectObject;
+            case PlayerItemType.Spear:       return ItemManager.itemManagerInstance.spearObject;
+            case PlayerItemType.Axe:         return ItemManager.itemManagerInstance.axeObject;
+            case PlayerItemType.Sword:       return ItemManager.itemManagerInstance.swordObject;
+            case PlayerItemType.Arrow:       return ItemManager.itemManagerInstance.arrowObject;
+            case PlayerItemType.Bow:         return ItemManager.itemManagerInstance.bowObject;
+        }
+    }
     // Guillaume: Afin de changer le coût d'un item, simplement changer la valeur associée
     //            à la ressource voulue dans les 3 fonctions ci-dessous.
     public static int GetWoodCost(PlayerItemType playerItemType)

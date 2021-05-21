@@ -9,23 +9,23 @@ public class PlayerMeleeAttack : MonoBehaviour // Mettre sur le joueur
     [SerializeField()]
     GameObject Hand; // la main qui tient l'arme
     
-    MeleeWeaponComponent weapon; // l'arme
+    public MeleeWeaponComponent weapon; // l'arme
 
     [SerializeField()]
     Transform weaponEdge; // le bout de l'arme
 
     private float attackTimer = 0f;
 
-    void Start()
-    {
-        weapon = Hand.GetComponentInChildren<MeleeWeaponComponent>();
-    }
+    //void Start()
+    //{
+    //    weapon = Hand.GetComponentInChildren<MeleeWeaponComponent>();
+    //}
 
     void Update()
     {
         attackTimer += Time.deltaTime;
 
-        if(Input.GetKeyDown(KeyCode.Mouse0) && attackTimer >= weapon.MeleeCooldown )
+        if(Input.GetKeyDown(KeyCode.F) && attackTimer >= weapon.MeleeCooldown )
             // faire l'attaque lorsque le boutton gauche de la souris est appuyé.
         {
             

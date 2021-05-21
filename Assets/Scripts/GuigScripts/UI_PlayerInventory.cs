@@ -54,18 +54,6 @@ public class UI_PlayerInventory : MonoBehaviour
     }
     private void UseItem(PlayerItem item, int itemIndex)
     {
-        //switch (item.Type)
-        //{
-        //    default:
-        //    case PlayerItem.PlayerItemType.Arrow: break;
-        //    case PlayerItem.PlayerItemType.QuestObject: break;
-        //    case PlayerItem.PlayerItemType.Backpack: break;
-        //    case PlayerItem.PlayerItemType.Axe: inventoryUser.EquipWeapon(item); break;
-        //    case PlayerItem.PlayerItemType.Spear: inventoryUser.EquipWeapon(item); break;
-        //    case PlayerItem.PlayerItemType.Bow: inventoryUser.EquipWeapon(item); break;
-        //    case PlayerItem.PlayerItemType.Sword: inventoryUser.EquipWeapon(item); break;
-        //    case PlayerItem.PlayerItemType.HandTorch: inventoryUser.UseHandTorch(item); break;
-        //}
         inventoryUser.UseItemInInventory(item, itemIndex);
     }
     public void Show(IInventoryUser inventoryUser)
