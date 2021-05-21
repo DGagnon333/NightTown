@@ -34,8 +34,8 @@ public class Player : MonoBehaviour, IWeaponShopClient, IInventoryUser
         EnergyCapacity = 100;
         EnergyUsage = 0;
         playerInventory = new PlayerInventory();
-        uiPlayerInventory.SetPlayerInventory(playerInventory);
         uiRessources.RefreshRessources(WoodAmount, StoneAmount, GoldAmount);
+        uiPlayerInventory.SetPlayerInventory(playerInventory);
     }
     public void EquipBackpack()
     {
@@ -120,6 +120,10 @@ public class Player : MonoBehaviour, IWeaponShopClient, IInventoryUser
             if (item.Type == PlayerItem.PlayerItemType.HandTorch)
             {
                 UseHandTorch(item);
+            }
+            if(item.Type == PlayerItem.PlayerItemType.Arrow)
+            {
+                // rien faire, on peut pas utiliser de flèche
             }
             else
                 EquipWeapon(item);

@@ -22,10 +22,10 @@ public class UI_PlayerInventory : MonoBehaviour
     public void SetPlayerInventory(PlayerInventory playerInventory)
     {
         inventory = playerInventory;
-        RefreshInventory();
     }
     public void RefreshInventory()
     {
+        Show(inventoryUser);
         Transform[] currentInventoryTemplates = container.GetComponentsInChildren<Transform>(true);
         for(int index = 7; index < currentInventoryTemplates.Length; index++)
         {

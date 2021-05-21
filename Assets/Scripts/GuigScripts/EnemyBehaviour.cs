@@ -34,7 +34,7 @@ public class EnemyBehaviour : MonoBehaviour
     private bool attackingBuilding;
     private bool attackReady;
     [SerializeField] private float attackRate;
-    [SerializeField] private float attackDamage;
+    [SerializeField] private float attackDamage = 25;
 
     private void Awake()
     {
@@ -59,13 +59,11 @@ public class EnemyBehaviour : MonoBehaviour
     }
     private void ManageRoaming()
     {
-        Debug.Log("roaming");
         navigation.isStopped = false;
-        // Guillaume: On regarde si l'ennemi cherche à cause qu'il a perdu de vue le joueur
+        
         if (buildingInAttackRange)
         {
             attackingBuilding = true;
-            Debug.Log(closestBuilding);
             ManageAttacking();
         }
         else
@@ -73,6 +71,7 @@ public class EnemyBehaviour : MonoBehaviour
             attackingBuilding = false;
             destinationSet = false;
         }
+        // Guillaume: On regarde si l'ennemi cherche à cause qu'il a perdu de vue le joueur
         if (chasingPlayer)
         {
             chasingPlayer = false;
@@ -107,13 +106,11 @@ public class EnemyBehaviour : MonoBehaviour
             //destination.parent.GetComponent<HealthComponent>.TakeDamage(attackDamage);
             if (playerInAttackRange)
             {
-                player.GetComponent<HealthComponent>().TakeDamage(attackDamage);
-                Debug.Log("Attack");
+                player.GetComponent<PlayerHealthComponent>().TakeDamage(attackDamage);
             }
             else if (buildingInAttackRange)
             {
                 closestBuilding.GetComponent<HealthComponent>().TakeDamage(attackDamage);
-                Debug.Log("Attack");
             }
             attackReady = false;
             Invoke(nameof(RechargeAttack), attackRate);
@@ -148,7 +145,11 @@ public class EnemyBehaviour : MonoBehaviour
             navigation.SetDestination(destination);
             destinationSet = true;
         }
-        else destinationSet = false; // Guillaume: doit coder ce qui arrive lorsque tous les buildings sont détruits
+        else
+        {
+            destinationSet = false; // Guillaume: doit coder ce qui arrive lorsque tous les buildings sont détruits
+            navigation.isStopped = true;
+        }
     }
 
     // Guillaume: cette fonction permet de visualiser la vision de l'ennemi et le distance d'attaque de l'ennemi dans la scene

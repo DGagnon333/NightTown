@@ -18,9 +18,9 @@ public class InventoryTrigger : MonoBehaviour
 
     private void Awake()
     {
-        isShowing = false;
-        uiPlayerInventory.Hide();
         inventoryUser = player.GetComponent<IInventoryUser>();
+        isShowing = false;
+        //uiPlayerInventory.Hide();
     }
 
     void Update()

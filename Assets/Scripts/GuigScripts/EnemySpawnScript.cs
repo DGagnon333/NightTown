@@ -126,9 +126,9 @@ public class EnemySpawnScript : MonoBehaviour
     }
     private Vector3 DetermineSpawnPosition()
     {
-        float rangeX = Random.Range(150, 200) * Mathf.Pow(-1f, Random.Range(1, 3));
+        float rangeX = Random.Range(15, 20) * Mathf.Pow(-1f, Random.Range(1, 3));
         float spawnY = 1f;
-        float rangeZ = Random.Range(150, 200) * Mathf.Pow(-1f, Random.Range(1, 3));
+        float rangeZ = Random.Range(15, 20) * Mathf.Pow(-1f, Random.Range(1, 3));
         return PlayerTransform.position + new Vector3(rangeX, spawnY, rangeZ);
     }
 }
