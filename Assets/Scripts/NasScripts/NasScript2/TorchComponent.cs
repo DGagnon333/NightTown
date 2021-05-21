@@ -28,27 +28,21 @@ public class TorchComponent : MonoBehaviour
 
     private void Start()
     {
-        if(consumable) // Pour les torches à main
-        {
-            InvokeRepeating("ReduceLightRange", 0f, 5f);
-        }
-        else
-        {
-            InvokeRepeating("LightOnNight", 0f, 5f);
-        }  
+        InvokeRepeating("LightOnNight", 0f, 5f);
+
     }
 
-    private void ReduceLightRange()
+    private void ReduceLightRange() // Non implémenté, vraiment inutile.
     {
-        if(torch.range > maxRange * (1-minRange))
+        if (torch.range > maxRange * (1 - minRange))
         {
             torch.range -= 2;
-        } 
+        }
     }
 
     private void LightOnNight()
     {
-        if(dayNight.IsDay)
+        if (dayNight.IsDay)
         {
             torch.enabled = false;
             Debug.Log("lights off");
