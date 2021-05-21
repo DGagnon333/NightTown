@@ -157,7 +157,7 @@ public class GridManager : MonoBehaviour
 
         foreach (var i in buildingTiles)
         {
-            if (!i.Value.CompareTag("Wire"))
+            if (!i.Value.CompareTag("Wire") && !i.Value.CompareTag("Torche"))
             {
                 connection = false;
                 posX = i.Key.X;

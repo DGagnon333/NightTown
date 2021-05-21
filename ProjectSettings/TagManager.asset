@@ -16,6 +16,7 @@ TagManager:
   - Enemy
   - Tower
   - WeaponStore
+  - Torche
   layers:
   - Default
   - TransparentFX

@@ -25,7 +25,7 @@ public class InventoryTrigger : MonoBehaviour
 
     void Update()
     {
-        KeyCode showInventoryKey = KeyCode.Mouse1; // Guillaume: Input pour l'affichage de l'inventaire
+        KeyCode showInventoryKey = KeyCode.I; // Guillaume: Input pour l'affichage de l'inventaire
         if (Input.GetKeyDown(showInventoryKey))
         {
             if (!isShowing)
