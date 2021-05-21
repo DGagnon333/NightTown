@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Ce script est fait par: Nassour Nassour
-
+// Ce script créé le système jour/nuit du jeu en utilisant le système de lighting de Unity.
+// Il permet de définir la durée d'une journée et permet de savoir si on est le jour ou la nuit.
+// Le temps se fait pauser après chaque nuit, puis se fait redémarré par un script de Guillaume.
 // Inspiré par: https://youtu.be/babgYCTyw3Y
 
 
