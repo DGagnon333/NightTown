@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Ce script est fait par Nassour Nassour
+// Ce script gère le comportement du boss.
+// Etat 1: Le boss est invulnerable et fonce vers le joueur.
+// Etat 2: Le boss ne bouge pas et est vulnérable.
 // Assisté par derick gagnon
 [RequireComponent(typeof(Rigidbody))]
 public class BossComponent : MonoBehaviour
@@ -18,9 +21,7 @@ public class BossComponent : MonoBehaviour
 
     private Animator animator;
     private BossHealthComponent health;
-    private SkinnedMeshRenderer mesh;
-
-    
+    private SkinnedMeshRenderer mesh;  
     
     // Deux compteurs
     private float elapsedTime = 0f; 

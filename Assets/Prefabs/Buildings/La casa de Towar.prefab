@@ -183,7 +183,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1788183480890614274}
   - component: {fileID: 710398522526994822}
-  m_Layer: 0
+  - component: {fileID: 7181560886809162363}
+  m_Layer: 9
   m_Name: La casa de Towar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +199,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785076452185621212}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: -0.00000004371139}
-  m_LocalPosition: {x: 31, y: 0, z: 11}
+  m_LocalPosition: {x: -17, y: 0, z: 45}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 1788321975331844242}
@@ -218,6 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7272cb0f00abf0b43ba42e8272b7049b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isConnected: 0
   towerHead: {fileID: 1788321975331844242}
   projectile: {fileID: 236046049278404669, guid: 15d8a075afea66348b6c7f176b4154d9,
     type: 3}
@@ -225,6 +227,19 @@ MonoBehaviour:
   headRotationSpeed: 5
   shotsPerSecond: 1
   maxHealth: 100
+--- !u!135 &7181560886809162363
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785076452185621212}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6687452311340432634
 GameObject:
   m_ObjectHideFlags: 0

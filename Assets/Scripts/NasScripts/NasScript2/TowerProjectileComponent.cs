@@ -12,7 +12,7 @@ public class TowerProjectileComponent : MonoBehaviour
     private float speed = 50f; // Vitesse du projectile
 
     [SerializeField]
-    private float damage = 20f; // dommages du projectile
+    private float damage = 2f; // dommages du projectile
 
     public void Chase(Transform target) // Permet de transférer la cible de TowerComponent
     {

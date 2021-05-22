@@ -27,6 +27,8 @@ public class EnemySpawnScript : MonoBehaviour
     private DayNightCycle DayNightManager;
     [SerializeField]
     private Transform PlayerTransform;
+    [SerializeField]
+    private GameObject finalBoss;
 
     public EnemyWave[] waves;
     private int nextWave = 0;
@@ -72,7 +74,7 @@ public class EnemySpawnScript : MonoBehaviour
 
         //Ajout de nas:
         dayNightCycle.Pause = false;
-        //
+
         CurrentWaveState = WaveState.Inactive;
 
         if(nextWave + 1 > waves.Length - 1)
@@ -80,6 +82,11 @@ public class EnemySpawnScript : MonoBehaviour
             nextWave = 0;
             Debug.Log("ALL WAVES COMPLETED!");
             CurrentWaveState = WaveState.AllCompleted;
+
+            // Ajout de Nassour
+            finalBoss.GetComponentInChildren<BossComponent>().playerPosition = PlayerTransform;
+            Instantiate(finalBoss);
+            //       
         }
         else
             nextWave++;

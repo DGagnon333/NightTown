@@ -7,12 +7,16 @@ using UnityEngine;
 // Inspiré par: https://youtu.be/QKhn2kl9_8I
 // et par https://youtu.be/oqidgRQAMB8
 // (Brackeys)
+// Ceci est le script qui gère le comportement des tours. Il permet aux tours de traquer l'ennemi le plus proche dans leur
+// zone de portée, de viser et de tirer. Tir de projectiles dans un autre script. 
 public class TowerComponent : MonoBehaviour
 {
     private Transform target; // Le transform de l'ennemi à tuer
     private List<GameObject> enemy; // Une liste de tous les ennemis dans la zone d'attaque de cette tour (mettre pruvate)
     private float fireCountdown; // Compteur de tir
     private HealthComponent health;
+    
+    public bool isConnected = false;
 
     [Header("Settings")]
     [SerializeField]
@@ -75,8 +79,7 @@ public class TowerComponent : MonoBehaviour
             {
                 target = null;
             }
-        }
-        
+        }        
     }
 
 
@@ -127,7 +130,6 @@ public class TowerComponent : MonoBehaviour
     //    Gizmos.color = Color.red;
     //    Gizmos.DrawWireSphere(transform.position, range);
     //}
-
 
 
     void OnTriggerEnter(Collider other) // Quand un ennemi entre dans la zone trigger, il est ajouté à la liste

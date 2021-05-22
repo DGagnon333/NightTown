@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 // Ce script est fait par Nassour Nassour.
+// Ce script permet de gérer l'attaque tu joueur à courte portée avec du raycasting.
 public class PlayerMeleeAttack : MonoBehaviour // Mettre sur le joueur
 {
     [SerializeField()]
