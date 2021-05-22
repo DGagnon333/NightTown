@@ -11,7 +11,6 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] float runSpeed = 100f;
     [SerializeField] float forceJump = 6f;
     [SerializeField] float gravity = -9.81f;
-    public bool playerIsOnGround = true;
     private float jumpVelocity;
 
     private Rigidbody body;
@@ -44,7 +43,7 @@ public class PlayerMovementScript : MonoBehaviour
         if (Input.GetButtonDown("Jump") && rb.isGrounded)
         {
             jumpVelocity = forceJump;
-            playerIsOnGround = false;
+            
         }
 
         jumpVelocity += gravity * Time.deltaTime;
