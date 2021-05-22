@@ -8,10 +8,10 @@ public class LongRangeAttackPlayer : MonoBehaviour
     //Script fait par Mykaël 
     // Un vidép qui m'a aidé à comprendre est celui-ci https://www.youtube.com/watch?v=YOP49qGzR8Y
     public float pullSpeed = 1f; //Va affecter la force du tir
-    public GameObject arrowPrefab;
+    public GameObject arrowPrefab; //Le Prefab de la flèche.
     public GameObject arrow;
-    public GameObject ArrowSpawn;
-    public int remainingArrows = 30;
+    public GameObject ArrowSpawn;//L'endroit où apparaît la flèche (juste à côté de l'arc).
+    public int remainingArrows = 30;//Nombre de flèche restante.
     float pull;
     bool arrowReady = false;
     // Start is called before the first frame update
@@ -29,21 +29,21 @@ public class LongRangeAttackPlayer : MonoBehaviour
     void PlaceArrow() //Permet de placer la flèche sur l'arc
     {
         arrowReady = true;
-        arrow = Instantiate(arrowPrefab, ArrowSpawn.transform.position, ArrowSpawn.transform.rotation) as GameObject;
+        arrow = Instantiate(arrowPrefab, ArrowSpawn.transform.position, ArrowSpawn.transform.rotation) as GameObject; //Permet de placer la flèche. 
     }
 
     void ShootTheArrow()
     {
-        if (remainingArrows != 0)
+        if (remainingArrows != 0)//Regarde le nombre de flèches restantes.
         {
 
             if (Input.GetMouseButton(0))
-                pull += Time.deltaTime * pullSpeed;
+                pull += Time.deltaTime * pullSpeed; //Permet de tirer plus fort. 
             if (Input.GetMouseButtonUp(0))
             {
                 ShootTheArrow theArrow = arrow.transform.GetComponent<ShootTheArrow>();
                 theArrow.shootForce = theArrow.shootForce * (pull / 100);
-                remainingArrows -= 1;
+                remainingArrows -= 1; //Enlève une flèche sur le nombre de flèches restantes.
                 pull = 0f;
                 arrowReady = false;
                 theArrow.enabled = true;

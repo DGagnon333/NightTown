@@ -11,7 +11,6 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] float runSpeed = 100f;
     [SerializeField] float forceJump = 6f;
     [SerializeField] float gravity = -9.81f;
-    public bool playerIsOnGround = true;
     private float jumpVelocity;
 
     private Rigidbody body;
@@ -23,7 +22,7 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void Start()
     {
-        body.freezeRotation = true;
+        body.freezeRotation = true;//Permet au joueur de ne pas bouger nimporte comment.
     }
 
     private void FixedUpdate()
@@ -31,7 +30,7 @@ public class PlayerMovementScript : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
         float moveSpeed;
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))//En fonction de la touche pesée, le joueur peut courir plus vite.
         {
             moveSpeed = runSpeed;
         }
@@ -44,12 +43,12 @@ public class PlayerMovementScript : MonoBehaviour
         if (Input.GetButtonDown("Jump") && rb.isGrounded)
         {
             jumpVelocity = forceJump;
-            playerIsOnGround = false;
+            
         }
 
-        jumpVelocity += gravity * Time.deltaTime;
+        jumpVelocity += gravity * Time.deltaTime;  //Permet qu'il y ait de la gravité.
 
         Vector3 movement = (transform.right * x + transform.forward * z).normalized + Vector3.up*jumpVelocity;
-        rb.Move( movement * moveSpeed * Time.deltaTime);
+        rb.Move( movement * moveSpeed * Time.deltaTime);//Bouge le joueur.
     }
 }

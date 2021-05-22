@@ -52,5 +52,5 @@ MonoBehaviour:
     type: 3}
   swordObject: {fileID: 7619370859407801308, guid: 40f5b4d0499a3a0478a9b87ea2d84b09,
     type: 3}
-  arrowObject: {fileID: 0}
-  bowObject: {fileID: 0}
+  arrowObject: {fileID: 100000, guid: cff4c024d20095a458a66e6e0d47bf1b, type: 3}
+  bowObject: {fileID: 100000, guid: 955645f89c76a7149b1df5d94e6f3cf4, type: 3}

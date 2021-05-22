@@ -12,18 +12,22 @@ using System.Linq;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] public int gridSize = 200;
-    private int STEP = 2;
-    public bool[,] tileState;
-    public bool[,] electrictyMap;
-    int posBaseX = 0;
+
+    [SerializeField] public int gridSize = 500; //la taille de la matrice
+    private int STEP = 2; //la grandeur de pour chaque case
+    public bool[,] tileState; //le tableau qui s'occupe de la disponibilité de chaque case
+    public bool[,] electrictyMap; //le tableau qui s'occupe de l'alimentation de chaque case
+    int posBaseX = 0; //la position initiale de la base
     int posBaseZ = 0;
-    [SerializeField] public GameObject baseCopy;
+    [SerializeField] public GameObject baseCopy; //
     [SerializeField] private Material electricMat;
     [SerializeField] private Material noElectricity;
     [SerializeField] private GameObject connected;
     [SerializeField] private GameObject UnConnected;
 
+    /// <summary>
+    /// initialisation de la matrice
+    /// </summary>
     private void Awake()
     {
         ArrayCreation();
@@ -31,8 +35,7 @@ public class GridManager : MonoBehaviour
 
     }
     /// <summary>
-    /// Créer une des cases visibles lorsque le mode de construction est activé
-    /// poistion voulue (step)
+    /// initialise chaque case de la matrice comme étant disponible et non-alimenté
     /// </summary>
     /// <returns></returns>
     private void ArrayCreation()
@@ -53,9 +56,7 @@ public class GridManager : MonoBehaviour
 
     /// <summary>
     /// S'occupe de rendre la position de la base dans le monde non
-    /// disponible et mettre les cases qu'elle occupe conductible
-    /// (alimenté par un courant... la base représente la source
-    /// de courant initial)
+    /// disponible et mettre les cases qu'elle occupe alimentées
     /// </summary>
     private void BaseCreation()
     {
@@ -75,7 +76,7 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Cette fonction permet de vérifier si une case est disponible ou non.Si elle l'est, 
+    /// Cette fonction permet de vérifier si une case est disponible ou non. Si elle l'est, 
     /// un objet est placé à l'endroit souhaité et les tuiles utilisé par cet objet seront
     /// ensuite indisponible.
     /// </summary>
@@ -89,16 +90,20 @@ public class GridManager : MonoBehaviour
         int posZ = (int)(tf.position.z + gridSize) / 2;
         int scaleDiffX = (int)(scale.x - 2) / 2;
         int scaleDiffZ = (int)(scale.z - 2) / 2;
+
+
         bool tileDispo = true;
         newBuilding.transform.position = tf.position;
         Vector3 position = new Vector3(posX * STEP - gridSize, 0, posZ * STEP - gridSize);
-        GameObject buildingClone = new GameObject(); //simplement pour l'instancier
-        Electricity electricity = new Electricity();
+        GameObject buildingClone = new GameObject(); //copie du bâtiment sélectionné
+        Electricity electricity = new Electricity(); //Classe pour l'électricité
+
 
         if (newBuilding.CompareTag("Eraser"))
         {
             Eraser(newBuilding, wireDictionary);
         }
+
         if (!newBuilding.CompareTag("Eraser") && !newBuilding.CompareTag("Wire"))
         {
             for (int z = 0; z <= scaleDiffZ; z++)
@@ -125,7 +130,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        //si le bâtiment est un "wire"
+        //si le bâtiment est un fil électrique
         if (newBuilding.CompareTag("Wire"))
         {
             buildingClone = Instantiate(newBuilding, position, Quaternion.identity);
@@ -134,6 +139,7 @@ public class GridManager : MonoBehaviour
             Wire(electricity, posX, posZ, buildingClone, buildingTiles, wireList, wireDictionary);
         }
 
+        //s'occupe de créer les boules en haut des bâtiments pour voir si ils sont fonctionel ou non
         if (!newBuilding.CompareTag("Wire"))
         {
             wireList.Clear();
@@ -145,19 +151,34 @@ public class GridManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// créer des boules en haut des bâtiment pour voir si ils sont fonctionel ou non.
+    /// Si oui, la boule est bleue, si non la boule est rouge
+    /// </summary>
+    /// <param name="buildingTiles">le tableau de disponibilité</param>
+    /// <param name="buildingClone">la copie du bâtiment sélectioné</param>
     private void LookForConnection(Dictionary<Point2D, GameObject> buildingTiles, GameObject buildingClone)
     {
+        //position et taille du bâtiment
         int posX;
         int posZ;
         int scaleDiffX;
         int scaleDiffZ;
+
+        //alimenté ou non
         bool connection;
+
+        //la "boule"
         GameObject ball = new GameObject();
+
+        //dernier objet regardé
         GameObject lastObject = new GameObject();
 
+
+        //vérifie pour chaque bâtiment s'il est alimenté.
         foreach (var i in buildingTiles)
         {
-            if (!i.Value.CompareTag("Wire"))
+            if (!i.Value.CompareTag("Wire") && !i.Value.CompareTag("Torche"))
             {
                 connection = false;
                 posX = i.Key.X;
@@ -175,49 +196,59 @@ public class GridManager : MonoBehaviour
                         }
                     }
                 }
+
+                //s'il est alimenté, créée une boule bleue
                 if (connection && (buildingClone == i.Value) && (lastObject != i.Value))
                 {
                     ball = Instantiate(connected, i.Value.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
                 }
+
+                //s'il n'est pas alimenté, créée une boule rouge
                 if (!connection && (buildingClone == i.Value) && (lastObject != i.Value))
                 {
                     ball = Instantiate(UnConnected, i.Value.transform.position + new Vector3(0, 5, 0), Quaternion.identity);
                 }
-                ball.transform.SetParent(i.Value.transform);
+                ball.transform.SetParent(i.Value.transform);//on met la boule un enfant du nouveau bâtiment. De cette façon, 
+                //quand on l'efface, la boule s'efface aussi.
 
                 lastObject = i.Value;
             }
-            
+
 
         }
+
     }
-    private void Conection(GameObject newBuilding, int posX, int posZ, bool[,] electricityMap, Material baseMat)
-    {
-        if (electrictyMap[posX + 1, posZ] || electrictyMap[posX - 1, posZ] || electrictyMap[posX, posZ + 1] || electrictyMap[posX, posZ - 1])
-        {
-            newBuilding.GetComponent<Renderer>().material = electricMat;
-        }
-        else
-            newBuilding.GetComponent<Renderer>().material = baseMat;
-    }
+
+    /// <summary>
+    /// fonction qui s'occupe d'effacer les bâtiments
+    /// </summary>
+    /// <param name="newBuilding"></param>
+    /// <param name="wireDictionary"></param>
     public void Eraser(GameObject newBuilding, Dictionary<List<GameObject>, bool> wireDictionary)
     {
-        //j'utilise une propriété GetComponent même pour les propriétés de la même classe pour que les autres scripts n'aient pas à le faire aussi.
-        //donc la fonction a seulement besoin d'avoir un GameObject en intrants et tout le reste est fait.
+        //position et taille dans la matrice
         int posX = (int)(newBuilding.transform.position.x + gridSize) / 2;
         int posZ = (int)(newBuilding.transform.position.z + gridSize) / 2;
-        int keyX;
-        int keyZ;
-        bool isDestroyed = false;
         int scaleDiffX;
         int scaleDiffZ;
+
+        //position plus la différence de taille
+        int keyX;
+        int keyZ;
+
+        bool isDestroyed = false;
         GameObject destroyedObject = new GameObject();
-        Dictionary<Point2D, GameObject> buildingTiles = GetComponent<BuildingManager>().buildingTiles;
-        Dictionary<Point2D, GameObject> buildingTilesCopy = new Dictionary<Point2D, GameObject>();
+        Dictionary<Point2D, GameObject> buildingTiles = GetComponent<BuildingManager>().buildingTiles; //liste des bâtiments et de leur position
+        Dictionary<Point2D, GameObject> buildingTilesCopy = new Dictionary<Point2D, GameObject>(); // copie du tableau de disponibilité
+
+        //ici on copie le tableau puisque quand des bâtiment vont commencer à être 
+        //effacer on veut garder un tableau intacte pour continuer à chercher
         foreach (var i in buildingTiles)
         {
             buildingTilesCopy.Add(i.Key, i.Value);
         }
+
+
         foreach (var i in buildingTiles)
         {
             scaleDiffX = (int)(i.Value.transform.localScale.x - 2) / 2;
@@ -276,15 +307,24 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+
+        //Si le bâtiment est un fil électrique, l'effacement se fera d'une autre façon
         if (destroyedObject.CompareTag("Wire"))
         {
             WireListArangment(posX, posZ, wireDictionary, buildingTiles);
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="posX"></param>
+    /// <param name="posZ"></param>
+    /// <param name="wireDictionary"></param>
+    /// <param name="buildingTiles"></param>
     private void WireListArangment(int posX, int posZ, Dictionary<List<GameObject>, bool> wireDictionary, Dictionary<Point2D, GameObject> buildingTiles)
     {
-        ClearMap(electrictyMap);
+        ClearMap(electrictyMap); //on réinitialise le tableau d'alimention pour le vérifier dans un nouvel ordre plus tard
         List<GameObject> listFound = new List<GameObject>();
         int nextX = 0;
         int nextZ = 0;
@@ -295,6 +335,7 @@ public class GridManager : MonoBehaviour
             buildingTilesCopy.Add(i.Key, i.Value);
         }
 
+        //on chercher le fil éléectrique à la case que l'on veut effacer
         foreach (var i in wireDictionary)
         {
             foreach (var wire in i.Key)
@@ -308,6 +349,9 @@ public class GridManager : MonoBehaviour
             }
             nbList++;
         }
+
+        //pour le fil truové on accède à toute sa rangée 
+        //(le fil complèt créer à partir de l'algorithme de recherche)
         foreach (var i in listFound)
         {
             nextX = (int)(i.transform.position.x + gridSize) / 2;
@@ -329,8 +373,10 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        wireDictionary.Remove(listFound);
+        wireDictionary.Remove(listFound); //on l'enleve de la liste du fil électrique
 
+
+        //après l'avoir enlever, on regarde quels fils sont maintenant alimentés
         foreach (var i in wireDictionary)
         {
             WireList(electrictyMap, i.Key);
@@ -343,6 +389,7 @@ public class GridManager : MonoBehaviour
     {
         List<GameObject> wireListCopy = new List<GameObject>();
 
+        //S'il y a déjà un point de départ, on utilise un algorithme de recher pour se rendre jusqu'au prochain fil choisit
         if (wireList.Count != 0)
         {
             wireList.Add(newBuilding);
@@ -351,22 +398,32 @@ public class GridManager : MonoBehaviour
             Point2D PositionSource = new Point2D(posX, posZ);
             Point2D PositionDestination = new Point2D(posXOld, posZOld);
 
+
+            //C'est ici qu'on accède à la classe qui s'occupera de faire l'algorithme de recherche pour placer des fils du point
+            //de départ jusqu'au point d'arrivé.
             wireList = electricity.ElectrictyState(gridSize, tileState, PositionSource, PositionDestination, newBuilding, electrictyMap, buildingTiles, wireList);
+
             foreach (var i in wireList)
             {
                 wireListCopy.Add(i);
             }
             wireDictionary.Add(wireListCopy, WireList(electrictyMap, wireList));
-
         }
 
+            //s'il n'y a pas encore de point de départ, on créer le premier fil de la liste de fil
         if (wireList.Count == 0)
         {
-
-
             wireList.Add(newBuilding);
         }
     }
+
+    /// <summary>
+    /// on regarde quel fil sont alimenté et change leur couleur dépendament
+    /// de leur alimentation.
+    /// </summary>
+    /// <param name="electrictyMap"></param>
+    /// <param name="wireList"></param>
+    /// <returns></returns>
     private bool WireList(bool[,] electrictyMap, List<GameObject> wireList)
     {
         bool conection = false;
@@ -376,7 +433,7 @@ public class GridManager : MonoBehaviour
         {
             nextX = (int)(i.transform.position.x + gridSize) / 2;
             nextZ = (int)(i.transform.position.z + gridSize) / 2;
-            if (electrictyMap[nextX + 1 , nextZ] || electrictyMap[nextX - 1, nextZ] || electrictyMap[nextX, nextZ + 1] || electrictyMap[nextX, nextZ - 1])
+            if (electrictyMap[nextX + 1, nextZ] || electrictyMap[nextX - 1, nextZ] || electrictyMap[nextX, nextZ + 1] || electrictyMap[nextX, nextZ - 1])
             {
                 conection = true;
                 break;
@@ -397,6 +454,10 @@ public class GridManager : MonoBehaviour
         }
         return conection;
     }
+
+    /// <summary>
+    /// on cherche la case associé à chaque obstalce et rend sa case non-indisponible
+    /// </summary>
     private void Obstacles()
     {
         foreach (GameObject i in GameObject.FindGameObjectsWithTag("Obstacle"))
@@ -415,6 +476,10 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// réinitialisation des données pour le tableau d'alimentation
+    /// </summary>
+    /// <param name="map"></param>
     private void ClearMap(bool[,] map)
     {
         for (int z = 0; z < map.GetLength(1) - 1; z++)

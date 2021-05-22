@@ -7,71 +7,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class animatorScript : MonoBehaviour
 {
-    //Animator animator;
-    //int isWalkingHash;
-    //bool playerIsOnGround = false;
-
-    //private void Awake()
-    //{
-    //    animator = GetComponent<Animator>();
-    //    isWalkingHash = Animator.StringToHash("IsWalking");
-    //}
-    //void Update()
-    //{
-    //    //début des animations
-    //    bool isWalking = animator.GetBool(isWalkingHash);
-    //    bool state = false;
-
-    //    if (!isWalking)
-    //    {
-    //        if (Input.GetKey("w"))
-    //        {
-    //            animator.SetBool(isWalkingHash, true);
-    //            transform.localRotation = Quaternion.Euler(0, 0, 0);
-    //            state = true;
-    //        }
-    //        if (Input.GetKey("s"))
-    //        {
-    //            animator.SetBool(isWalkingHash, true);
-    //            transform.localRotation = Quaternion.Euler(0, 180, 0);
-    //            state = true;
-    //        }
-    //        if (Input.GetKey("a"))
-    //        {
-    //            animator.SetBool(isWalkingHash, true);
-    //            transform.localRotation = Quaternion.Euler(0, -90, 0);
-    //            state = true;
-    //        }
-    //        if (Input.GetKey("d"))
-    //        {
-    //            animator.SetBool(isWalkingHash, true);
-    //            transform.localRotation = Quaternion.Euler(0, 90, 0);
-    //            state = true;
-    //        }
-    //    }
-    //    if (isWalking && !state)
-    //    {
-    //        Debug.Log("test");
-    //        animator.SetBool(isWalkingHash, false);
-    //    }
-    //    if (Input.GetButtonDown("Jump") && playerIsOnGround == true)
-    //    {
-    //        playerIsOnGround = false;
-    //        animator.SetBool(isWalkingHash, true);
-    //    }
-
-
-
-    //}
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.tag == "Ground")
-    //        playerIsOnGround = true;
-    //}
-
+    
     Animator animator;
     private string currentState;
 

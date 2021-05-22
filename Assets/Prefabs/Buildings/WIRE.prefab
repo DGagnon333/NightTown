@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1338805419995449398}
   - component: {fileID: 2786107067736671319}
   m_Layer: 0
-  m_Name: Wire
+  m_Name: WIRE
   m_TagString: Wire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2151994829205507878}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24, y: 0, z: 18}
+  m_LocalPosition: {x: -2, y: 0, z: -18}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
