@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿//Ce code a été fortement inspiré par Brackeys
+//sur youtube, PAUSE MENU in Unity, URL: https://www.youtube.com/watch?v=JivuXdrIHK0
+//
+//modifié par Dérick Gagnon
+
+
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;

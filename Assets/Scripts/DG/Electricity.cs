@@ -1,4 +1,6 @@
-﻿// Cette classe permet d'instancié des objets d'une source jusqu'à une destination, et créer un tableau de bool
+﻿// Cette classe permet d'instancié des objets d'une source jusqu'à une destination, 
+// et change le tableau d'alimentation des cases. Ce code a été inspiré par un travail sur
+// les algorithmes de recherche dans la session 3.
 //
 // qui retient l'emplacement de chacun de ces objets
 
