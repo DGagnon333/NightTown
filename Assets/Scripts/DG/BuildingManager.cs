@@ -1,5 +1,5 @@
 ﻿//Cette classe s'occupe de toutes les actions possibles pour le mode de construction du jeu
-// avec les touches de claviers. Garde en compte les disponibilitées et alimentation des cases de la matrice,
+// avec les touches de claviers. Garde en compte les disponibilités et alimentation des cases de la matrice,
 // change la couleur des élément dans l'interface utilisateur et des effets sonores.
 //
 //fait par Dérick

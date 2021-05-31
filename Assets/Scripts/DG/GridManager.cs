@@ -13,7 +13,7 @@ using System.Linq;
 public class GridManager : MonoBehaviour
 {
 
-    [SerializeField] public int gridSize = 500; //la taille de la matrice
+    [SerializeField] public int gridSize = 750; //la taille de la matrice
     private int STEP = 2; //la grandeur de pour chaque case
     public bool[,] tileState; //le tableau qui s'occupe de la disponibilité de chaque case
     public bool[,] electrictyMap; //le tableau qui s'occupe de l'alimentation de chaque case

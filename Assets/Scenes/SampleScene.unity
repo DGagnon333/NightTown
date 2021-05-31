@@ -13256,7 +13256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66adb5864851dc642b5f3f03e1c73ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 200
+  gridSize: 750
   baseCopy: {fileID: 1646061865}
   electricMat: {fileID: 2100000, guid: 02758698f6605d345a67239c79c069b6, type: 2}
   noElectricity: {fileID: 2100000, guid: e80bf5945c9e01b4a8180c7fa7860a0f, type: 2}
@@ -43786,7 +43786,6 @@ MonoBehaviour:
   runSpeed: 40
   forceJump: 6
   gravity: -9.81
-  playerIsOnGround: 1
 --- !u!143 &1000531074
 CharacterController:
   m_ObjectHideFlags: 0
@@ -89850,6 +89849,7 @@ MonoBehaviour:
   searchEnemyCountdown: 5
   DayNightManager: {fileID: 1233453012}
   PlayerTransform: {fileID: 1000531069}
+  finalBoss: {fileID: 0}
   waves:
   - waveName: 1
     waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
