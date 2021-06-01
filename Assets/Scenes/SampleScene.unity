@@ -89131,47 +89131,23 @@ MonoBehaviour:
   searchEnemyCountdown: 5
   DayNightManager: {fileID: 1233453012}
   PlayerTransform: {fileID: 1000531069}
-  finalBoss: {fileID: 0}
+  finalBoss: {fileID: 8206696425556152827, guid: 40baee2f978e9ed4fa395c9976395b0a,
+    type: 3}
   waves:
   - waveName: 1
     waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
       type: 3}
     waveEnemyCount: 2
     waveSpawnRate: 1
-  - waveName: 2
+  - waveName: 1
     waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
       type: 3}
-    waveEnemyCount: 3
+    waveEnemyCount: 2
     waveSpawnRate: 1
-  - waveName: 3
+  - waveName: 1
     waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
       type: 3}
-    waveEnemyCount: 4
-    waveSpawnRate: 1
-  - waveName: 4
-    waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
-      type: 3}
-    waveEnemyCount: 4
-    waveSpawnRate: 1
-  - waveName: 5
-    waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
-      type: 3}
-    waveEnemyCount: 4
-    waveSpawnRate: 1
-  - waveName: 6
-    waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
-      type: 3}
-    waveEnemyCount: 4
-    waveSpawnRate: 1
-  - waveName: 7
-    waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
-      type: 3}
-    waveEnemyCount: 4
-    waveSpawnRate: 1
-  - waveName: 8
-    waveEnemySpawn: {fileID: 6867832897302389328, guid: 1ce121f192449194bb5f344d4f280413,
-      type: 3}
-    waveEnemyCount: 4
+    waveEnemyCount: 2
     waveSpawnRate: 1
   dayNightCycle: {fileID: 1233453012}
 --- !u!4 &1955001887
